@@ -49,7 +49,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	
         stdout = callbacks.getStdout();
 
-    	db("plugin version " + ILS.pluginVersion);
+    	db("plug-in version " + ILS.pluginVersion);
         db("registerExtenderCallbacks() is complete");
     }
     
