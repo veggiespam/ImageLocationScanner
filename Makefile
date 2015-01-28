@@ -15,7 +15,7 @@ $(BURPJAR):
 	cp LICENSE burp-build
 	pandoc README.md | sed 's/&quot;/"/g; s/<ol style="list-style-type: decimal">/<ol>/g;' > burp-build/BappDescription.html
 	cd burp-build ; zip -q -r ../$(BURPJAR) META-INF org burp com ; cd ..
-	cd src ; zip -u ../$(BURPJAR) burp/*.class com/veggiespam/imagelocationscanner/*.class ; cd ..
+	cd src ; zip -q -u ../$(BURPJAR) burp/*.class com/veggiespam/imagelocationscanner/*.class ; cd ..
 
 
 compile:
