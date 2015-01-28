@@ -28,7 +28,7 @@ download the correct installer.
 ## Burp Installation
 
 Burp Application Store: Launch Burp and go to the tabs: Extender &rarr;
-Bapp Store &rarr; Image Location Scanner.  In the right window pane, the
+Bapp Store &rarr; left pane &rarr; Image Location Scanner.  In the right window pane, the
 version and description of the plug-in will be shown; click the Install
 button to download and activate.
 
