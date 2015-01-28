@@ -43,6 +43,15 @@ get better in the future.
 
 &dagger; These items are included in the GitHub clone/fork.
 
+The system can compile with Make.  Do in this order:
+
+1. make clean
+2. make compile
+3. make
+
+That will build the Burp plug-in.  The ZAP plug-in is not yet in the
+repo and needs eclipse to build.
+
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure
 
 <!--

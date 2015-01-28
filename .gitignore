@@ -1,2 +1,3 @@
 burp-build
 .DS_Store
+*.class
