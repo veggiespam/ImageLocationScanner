@@ -1,0 +1,10 @@
+Uuid: 1234567890ab1234567098765f9f27c3
+ExtensionType: 1
+Name: Image Location Scanner
+ScreenVersion: 0.1
+SerialVersion: 1
+MinPlatformVersion: 0
+ProOnly: False
+Author: Jay Ball @veggiespam 
+ShortDescription: Passively scans response jpeg files for embedded GPS location. 
+EntryPoint: imagelocationscanner_burp.jar
