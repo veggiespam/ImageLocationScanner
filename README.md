@@ -15,6 +15,14 @@ risk based on context.  The organization of the code, however, is
 subject to change.  Java classnames might be munged about, the ZAP code
 needs to be added to the repo once it is fully plug-in-ized, etc.  
 
+## Contributors
+
+Special thanks to:
+
+* The fine folks at [Aspect Security](https://www.aspectsecurity.com/) for
+  performing initial tests of the alpha software and providing awesome
+  feedback
+
 
 # Usage Requirements
 The ImageLocationScanner runs as both a Burp and ZAP plug-in.  Just
