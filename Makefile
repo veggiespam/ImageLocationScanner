@@ -1,6 +1,6 @@
 
 
-BURPJAR=imagelocationscanner_burp.jar
+BURPJAR=image_location_scanner.jar
 
 
 # If we let eclipse build for me.  Probably a better way.
@@ -13,7 +13,8 @@ $(BURPJAR):
 	#cp -r $(BIN)/* burp-build
 	cp BappManifest.bmf burp-build
 	cp LICENSE burp-build
-	pandoc README.md | sed 's/&quot;/"/g; s/<ol style="list-style-type: decimal">/<ol>/g;' > burp-build/BappDescription.html
+	cp BappDescription.html burp-build
+	# pandoc README.md | sed 's/&quot;/"/g; s/<ol style="list-style-type: decimal">/<ol>/g;' > burp-build/BappDescription.html
 	cd burp-build ; zip -q -r ../$(BURPJAR) META-INF org burp com ; cd ..
 	cd src ; zip -q -u ../$(BURPJAR) burp/*.class com/veggiespam/imagelocationscanner/*.class ; cd ..
 

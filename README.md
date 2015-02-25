@@ -22,15 +22,16 @@ Special thanks to:
 * The fine folks at [Aspect Security](https://www.aspectsecurity.com/) for
   performing initial tests of the alpha software and providing awesome
   feedback
-
+* Simon Bennetts from ZAP for code reviews and help adding to the alpha
+  channel
 
 # Usage Requirements
 The ImageLocationScanner runs as both a Burp and ZAP plug-in.  Just
 download the correct installer.
 
-* Burp Free or Pro, 1.4 or newer
+* Burp Pro, 1.4 or newer
   http://portswigger.net/burp/
-* ZAP, 2.3.x or newer
+* ZAP, 2.4.x or newer
   https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 ## Burp Installation
@@ -46,6 +47,9 @@ downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location Scanner:
 plug-in version 0.1" if successful or display errors on the Error tab.
 Click close to return to Burp.
+
+Note: This is a scanner-type plug-in and the scanner is disabled in Burp
+Free version.  So, the plug-in will only function inside of Burp Pro.
 
 ## ZAP Installation
 
