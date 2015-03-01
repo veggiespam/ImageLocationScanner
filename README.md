@@ -6,7 +6,9 @@ Location Scanner assists in situations where end users may post profile
 images and possibly give away their home location, e.g. a dating site or
 children's chatroom.
 
-A whitepaper will be published soon based on a real-world site audit.
+More information on this topic, including a presentation at the New
+Jersey chapter of the OWASP organization, can be found at
+[www.veggiespam.com/ils/](http://www.veggiespam.com/ils/) .
 
 This software works well, finds the GPS information, flags it in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
@@ -83,7 +85,7 @@ The system can compile with Make.  Do in this order:
 That will build the Burp plug-in.  The ZAP plug-in is not yet in the
 GitHub repo and needs Eclipse to build.
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, Privacy
 
 <!--
 vim: sw=4 tw=72 spell
