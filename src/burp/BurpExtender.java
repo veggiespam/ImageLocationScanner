@@ -18,7 +18,7 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 0.1
+ * @version 0.2
  * @see http://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck
@@ -83,18 +83,20 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         //db(mimeStated + SEP + mimeInferred + SEP + extension);
         */
         
-        
-        // If body type is jpg, then we call the scanner on the response body
-        if (mimeInferred.equalsIgnoreCase("JPEG")) {
+        // If body type is png / jpg / tiff, then we call the scanner on the response body
+		if ((mimeInferred.equalsIgnoreCase("JPEG")) 
+		   ||  (mimeInferred.equalsIgnoreCase("PNG")) 
+		   ||  (mimeInferred.equalsIgnoreCase("TIFF")) ) {
             byte[] resp = baseRequestResponse.getResponse();
             int responseOffset = helpers.analyzeResponse(resp).getBodyOffset();
             //String responseBody = new String(baseRequestResponse.getResponse()).substring(responseOffset);
             byte[] body = Arrays.copyOfRange(resp,responseOffset, resp.length);
           
-            //db("Parsing JPEG " + fileName);
+            //db("Parsing image file " + fileName);
             String hasGPS = ILS.scanForLocationInImage(body);
             if (! hasGPS.isEmpty()) {
-            	db(fileName + ": found GPS: " + hasGPS);
+				// TODO: Future, print to burp stdio logs if the config option is enabled.
+            	// db(fileName + ": found location: " + hasGPS);
                 List<IScanIssue> alert = new ArrayList<IScanIssue>();
                 IHttpRequestResponse[] x = new IHttpRequestResponse[1];
                 x[0] = baseRequestResponse;
