@@ -1,3 +1,24 @@
-<p>This extension passively scans images in responses for embedded GPS location 
-details.</p>
-<p>It can identify situations where end users may post images and possibly give away their home location, e.g. a dating site or children's chatroom.</p>
+<h1 id="image-location-scanner">Image Location Scanner</h1>
+
+<p>Passively scans for GPS location exposure in images during normal security assessments of websites via a Burp plug-in. Image Location Scanner assists in situations where end users may post profile images and possibly give away their home location, e.g. a dating site or children's chatroom.</p>
+
+<p>A whitepaper / presentation based on a real-world site audit can be found at <a href="http://www.veggiespam.com/ils">http://www.veggiespam.com/ils</a>.</p>
+
+<p>This software finds the GPS information inside of Exif tags, IPTC codes, and proprietary Panasonic/Lumix codes. Then, this scanner flags the findings in the Burp Scanner as an information message. It would be up to the auditor to determine if location exposure is truly a security risk based on context.</p>
+
+<h1 id="usage-requirements">Usage Requirements</h1>
+<ul>
+<li>Burp Pro 1.4 or newer</li>
+<li>Java 1.6 or newer</li>
+</ul>
+
+<h1 id="sample-run">Sample Run</h1>
+
+<p>Configure the web browser to proxy through Burp  and then browse to a few sample sites:</p>
+<ul>
+<li>Sample Exif Site: http://readexifdata.com/</li>
+<li>MetaData Extractor has tons of examples: https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg</li>
+<li>Proprietary Panasonic with embedded location example: https://github.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg</li>
+</ul>
+
+<p>Keywords: Information Exposure, GPS, Exif, XMP, IPTC</p>

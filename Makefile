@@ -9,18 +9,19 @@ BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
 
 $(BURPJAR): 
 	mkdir -p burp-build
-	cd burp-build ; unzip -q ../lib/sanselan-0.97-incubator.jar ; cd ..
+	cd burp-build ; unzip -q ../lib/metadata-extractor-2.8.1.jar ; cd ..
+	cd burp-build ; unzip -q ../lib/xmpcore-5.1.2.jar ; cd ..
 	#cp -r $(BIN)/* burp-build
 	cp BappManifest.bmf burp-build
+	cp BappManifest.html burp-build
 	cp LICENSE burp-build
 	cp BappDescription.html burp-build
-	# pandoc README.md | sed 's/&quot;/"/g; s/<ol style="list-style-type: decimal">/<ol>/g;' > burp-build/BappDescription.html
 	cd burp-build ; zip -q -r ../$(BURPJAR) META-INF org burp com ; cd ..
 	cd src ; zip -q -u ../$(BURPJAR) burp/*.class com/veggiespam/imagelocationscanner/*.class ; cd ..
 
 
 compile:
-	javac -classpath lib/sanselan-0.97-incubator.jar \
+	javac -classpath lib/metadata-extractor-2.8.1.jar:lib/xmpcore-5.1.2.jar \
 		src/burp/*.java \
 		src/com/veggiespam/imagelocationscanner/ILS.java
 
@@ -30,7 +31,7 @@ do_not_use:
 	rm -rf dest
 	mkdir dest
 	cp -R $(BIN)/com $(BIN)/burp dest
-	cd dest ; unzip ../sanselan-0.97-incubator.jar ; cd ..
+	cd dest ; unzip ../metadata-extractor-2.8.1.jar ; cd ..
 	touch x
 
 	
