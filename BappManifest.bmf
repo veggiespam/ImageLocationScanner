@@ -7,4 +7,4 @@ MinPlatformVersion: 0
 ProOnly: True
 Author: Jay Ball @veggiespam 
 ShortDescription: Passively scans jpeg / png / tiff for embedded GPS, IPTC, and camera-proprietary location information. 
-EntryPoint: imagelocationscanner_burp.jar
+EntryPoint: image_location_scanner.jar

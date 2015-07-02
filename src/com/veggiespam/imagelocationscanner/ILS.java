@@ -196,7 +196,7 @@ public class ILS {
     public static void main(String[] args) throws Exception {
     	if (args.length == 0){
     		System.out.println("Java Image Location Scanner");
-    		System.out.println("Usage: java ILS.class file1.jpg file2.png file3.txt [...]");
+    		System.out.println("Usage: java ILS.class file1.jpg file2.png file3.tiff [...]");
     		return;
     	}
     	for (String s: args) {

@@ -13,7 +13,6 @@ $(BURPJAR):
 	cd burp-build ; unzip -q ../lib/xmpcore-5.1.2.jar ; cd ..
 	#cp -r $(BIN)/* burp-build
 	cp BappManifest.bmf burp-build
-	cp BappManifest.html burp-build
 	cp LICENSE burp-build
 	cp BappDescription.html burp-build
 	cd burp-build ; zip -q -r ../$(BURPJAR) META-INF org burp com ; cd ..

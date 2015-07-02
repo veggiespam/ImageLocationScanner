@@ -1,7 +1,7 @@
 # Image Location Scanner
 
 Passively scans for GPS location exposure in images during normal
-security assessments of websites via a Burp & ZAP plug-in.  Image
+security assessments of websites via plug-ins for both Burp & ZAP.  Image
 Location Scanner assists in situations where end users may post profile
 images and possibly give away their home location, e.g. a dating site or
 children's chatroom.
@@ -12,7 +12,7 @@ Jersey chapter of the OWASP organization, can be found at
 [www.veggiespam.com/ils/](http://www.veggiespam.com/ils/) .
 
 This software finds the GPS information inside of Exif tags, IPTC codes,
-and proprietary Panasonic/Lumix codes. Then, this scanner flags the
+and proprietary Panasonic/Lumix codes. Then, the Image Location Scanner flags the
 findings in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
@@ -65,18 +65,21 @@ available soon.  ZAP code is also mirrored in the ZAP source tree.
 ## Sample Run
 
 Configure the web browser to proxy through Burp or ZAP per the
-instructions of those products.  Then, browse to a few sample sites:
+instructions of those products.  Then, browse to a few sample sites to
+see Alerts being raised:
 
-* Sample Exif Site: http://readexifdata.com/ 
-* MetaData Extractor has tons of examples: https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg
-* Proprietary Panasonic with embedded location example:
-  https://github.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg
+* Sample Exif Site: [ReadExifData.com](http://readexifdata.com/)
+* MetaData Extractor has tons of examples: [MDE examples](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg)
+* Proprietary Panasonic tags with embedded location example: [MDE Panasonic  example](https://github.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg)
+* This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
-To run from the jar files, it is possible to directly run the scanner on
-local files.  The classpath must contain ILS along with the supporting
-jars for the MetaData Extractor and the Adobe XMP library.  Then do:
+The ILS jar file contains a `main()` function,  so it is possible to
+directly run the scanner from the command line on
+local files.  The classpath must contain the ILS jar file along with the supporting
+jars for the MetaData Extractor and the Adobe XMP library.  To from the
+command line, just do:
 
-`java -classpath ILS.jar:xmp.jar:mde.jar com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.txt`
+`java -classpath ILS.jar:xmp.jar:mde.jar   com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff`
 
 
 # Build Requirements
@@ -100,7 +103,18 @@ The system can compile with Make.  Do in this order:
 3. make
 
 That will build the Burp plug-in.  The ZAP plug-in is not yet in the
-GitHub repo and needs Eclipse to build.
+GitHub repo and needs Eclipse to build.  There is a big of flux with the
+ZAP migration to GitHub from GoogleCode.
+
+# Version Released
+
+* 0.1 -
+	* Initial release
+	* It works
+* 0.2 -
+	* Added location scanning inside IPTC tags and proprietary Panasonic codes
+	* Added scanning of png and tiff files
+	* Replaced Sanselan with MetaData Extractor and Adobe XMP libraries
 
 # Random Future Todos
 
@@ -119,7 +133,7 @@ GitHub repo and needs Eclipse to build.
 * Get the ZAP version into the mainline build; at alpha now, we need:
    1. Add i18n support, including a few translations.
    2. Custom wiki page on ZAP website.
-   3. Dynamic Load() and Unload().
+   3. Dynamic Load() and Unload() -- is this required for passive scanners.
    4. Help file integration.
 * More generalized research.  Images with embedded locations were found
   in a real-world situation with high privacy implications; thus a
