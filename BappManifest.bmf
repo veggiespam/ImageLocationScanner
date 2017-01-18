@@ -8,4 +8,4 @@ ProOnly: True
 Author: Jay Ball @veggiespam 
 ShortDescription: Passively scans jpeg / png / tiff for embedded GPS, IPTC, and camera-proprietary location information. 
 EntryPoint: build/libs/image-location-scanner-all.jar
-BuildCommand: gradle -PburpJar=$BURP_JAR fatJar
+BuildCommand: gradle fatJar
