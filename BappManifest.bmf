@@ -1,10 +1,12 @@
 Uuid: f3aec37088aa494c81962d965219be46
 ExtensionType: 1
 Name: Image Location Scanner
-ScreenVersion: 0.2
-SerialVersion: 2
+RepoName: image-location-scanner
+ScreenVersion: 0.3
+SerialVersion: 3
 MinPlatformVersion: 0
 ProOnly: True
 Author: Jay Ball @veggiespam 
 ShortDescription: Passively scans jpeg / png / tiff for embedded GPS, IPTC, and camera-proprietary location information. 
-EntryPoint: image_location_scanner.jar
+EntryPoint: build/libs/image-location-scanner-all.jar
+BuildCommand: gradle fatJar
