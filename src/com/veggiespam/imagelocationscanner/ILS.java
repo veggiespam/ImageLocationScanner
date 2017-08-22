@@ -20,6 +20,12 @@ import com.drew.metadata.iptc.IptcDirectory;
 import com.drew.metadata.iptc.IptcDescriptor;
 import com.drew.metadata.exif.makernotes.PanasonicMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.PanasonicMakernoteDescriptor;
+import com.drew.metadata.exif.makernotes.LeicaMakernoteDirectory;
+import com.drew.metadata.exif.makernotes.LeicaMakernoteDescriptor;
+import com.drew.metadata.exif.makernotes.ReconyxUltraFireMakernoteDirectory;
+import com.drew.metadata.exif.makernotes.ReconyxUltraFireMakernoteDescriptor;
+import com.drew.metadata.exif.makernotes.ReconyxHyperFireMakernoteDirectory;
+import com.drew.metadata.exif.makernotes.ReconyxHyperFireMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.CanonMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.CanonMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.SigmaMakernoteDirectory;
@@ -34,21 +40,23 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
 
 /**
- * Image Location Scanner main static class.  Passively scans an image data stream (jpg/png/etc)
- * and reports if the image contains embedded location information, such as Exif GPS, IPTC codes, and
- * some proprietary camera codes.  This class is designed to be a plug-in for both ZAP and Burp proxies.
+ * Image Location and Privacy Scanner main static class.  Passively scans an
+ * image data stream (jpg/png/etc) and reports if the image contains embedded
+ * location or privacy information, such as Exif GPS, IPTC codes, and some
+ * proprietary camera codes which may contain things like serial numbers.  This
+ * class is designed to be a plug-in for both ZAP and Burp proxies.
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 0.3
+ * @version 0.4
  * @see https://www.veggiespam.com/ils/
  */
 public class ILS {
 
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
     public static final String pluginName = "Image Location and Privary Scanner";
-    public static final String pluginVersion = "0.3";
-    public static final String alertTitle = "Image Exposes Location or PII Data";
+    public static final String pluginVersion = "0.4";
+    public static final String alertTitle = "Image Exposes Location or Privacy Data";
     public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
     public static final String alertBackground 
     	= "The image was found to contain embedded location information, such as GPS coordinates, or "
@@ -278,6 +286,7 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
+
 		// ** Proprietary camera: Panasonic / Lumix
 		subtype = "Panasonic";
 		Collection<PanasonicMakernoteDirectory> panasonicDirColl = md.getDirectoriesOfType(PanasonicMakernoteDirectory.class);
@@ -297,7 +306,7 @@ public class ILS {
 				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
 				for (int i=0; i< panasonic_tag_list.length; i++) {
 					String tag = descriptor.getDescription(panasonic_tag_list[i]);
-					// Panasonic occationally uses "---" when it cannot find info, we choose to strip it out.
+					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
 						String element = bigtype + subtype + panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag;
@@ -309,6 +318,7 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
+
 		// For Text, add the big type in the final entry
 		if (results[0].length() > 0) {
 			results[0] = bigtype + ":: " + results[0];
@@ -317,7 +327,6 @@ public class ILS {
 		return results;
     }
 
-
     public static String[] scanForPrivacy(Metadata md)   {
     	ArrayList<String> retarr = new ArrayList<String>();
 		String bigtype = "Privacy";  // Overall category type.
@@ -325,6 +334,10 @@ public class ILS {
 		ArrayList<String> exposure = new ArrayList<String>();
 
 		String[] results = { EmptyString, EmptyString };
+
+
+		/*  See https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7
+			for the reasons why this was disabled.
 
 
 		// ** XMP testing
@@ -350,7 +363,7 @@ public class ILS {
 				results = appendResults(results, bigtype, subtype, exposure);
 			}
 		}
-
+		*/
 
 		// ** IPTC testing
 		subtype = "IPTC";
@@ -400,7 +413,7 @@ public class ILS {
 				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
 				for (int i=0; i< panasonic_tag_list.length; i++) {
 					String tag = descriptor.getDescription(panasonic_tag_list[i]);
-					// Panasonic occationally uses "---" when it cannot find info, we choose to strip it out.
+					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						String element = bigtype + subtype + panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag;
 						retarr.add(element);
@@ -411,6 +424,82 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
+		// ** Proprietary camera: Leica
+		subtype = "Leica";
+		Collection<LeicaMakernoteDirectory> leicaDirColl = md.getDirectoriesOfType(LeicaMakernoteDirectory.class);
+
+		int leica_tag_list[] = {
+			LeicaMakernoteDirectory.TAG_SERIAL_NUMBER
+		};
+
+		if (leicaDirColl != null) {
+			exposure.clear();
+
+			for (LeicaMakernoteDirectory leicaDir : leicaDirColl) {
+				LeicaMakernoteDescriptor descriptor = new LeicaMakernoteDescriptor(leicaDir);
+				for (int i=0; i< leica_tag_list.length; i++) {
+					String tag = descriptor.getDescription(leica_tag_list[i]);
+					// Leica occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(leicaDir.getTagName(leica_tag_list[i]) + " = " + tag);
+						String element = bigtype + subtype + leicaDir.getTagName(leica_tag_list[i]) + " = " + tag;
+						retarr.add(element);
+					}
+				}
+			}
+		}
+
+
+		// ** Proprietary camera: ReconyxHyperFire
+		subtype = "ReconyxHyperFire";
+		Collection<ReconyxHyperFireMakernoteDirectory> reconyxHyperFireDirColl = md.getDirectoriesOfType(ReconyxHyperFireMakernoteDirectory.class);
+
+		int reconyxHyperFire_tag_list[] = {
+			ReconyxHyperFireMakernoteDirectory.TAG_SERIAL_NUMBER
+		};
+
+		if (reconyxHyperFireDirColl != null) {
+			exposure.clear();
+
+			for (ReconyxHyperFireMakernoteDirectory reconyxHyperFireDir : reconyxHyperFireDirColl) {
+				ReconyxHyperFireMakernoteDescriptor descriptor = new ReconyxHyperFireMakernoteDescriptor(reconyxHyperFireDir);
+				for (int i=0; i< reconyxHyperFire_tag_list.length; i++) {
+					String tag = descriptor.getDescription(reconyxHyperFire_tag_list[i]);
+					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag);
+						String element = bigtype + subtype + reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag;
+						retarr.add(element);
+					}
+				}
+			}
+		}
+
+
+		// ** Proprietary camera: ReconyxUltraFire
+		subtype = "ReconyxUltraFire";
+		Collection<ReconyxUltraFireMakernoteDirectory> reconyxUltraFireDirColl = md.getDirectoriesOfType(ReconyxUltraFireMakernoteDirectory.class);
+
+		int reconyxUltraFire_tag_list[] = {
+			ReconyxUltraFireMakernoteDirectory.TAG_SERIAL_NUMBER
+		};
+
+		if (reconyxUltraFireDirColl != null) {
+			exposure.clear();
+
+			for (ReconyxUltraFireMakernoteDirectory reconyxUltraFireDir : reconyxUltraFireDirColl) {
+				ReconyxUltraFireMakernoteDescriptor descriptor = new ReconyxUltraFireMakernoteDescriptor(reconyxUltraFireDir);
+				for (int i=0; i< reconyxUltraFire_tag_list.length; i++) {
+					String tag = descriptor.getDescription(reconyxUltraFire_tag_list[i]);
+					// ReconyxUltraFire occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag);
+						String element = bigtype + subtype + reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag;
+						retarr.add(element);
+					}
+				}
+			}
+		}
 
 
 		// ** Proprietary camera: Olympus
@@ -418,7 +507,7 @@ public class ILS {
 		Collection<OlympusMakernoteDirectory> olympusDirColl = md.getDirectoriesOfType(OlympusMakernoteDirectory.class);
 
 		int olympus_tag_list[] = {
-			OlympusMakernoteDirectory.TAG_SERIAL_NUMBER
+			OlympusMakernoteDirectory.TAG_SERIAL_NUMBER_1
 		};
 
 		if (olympusDirColl != null) {
@@ -591,9 +680,10 @@ public class ILS {
     		System.out.println("Java Image Location Scanner");
     		System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
     		System.out.println("\t-h : optional specifer to output results in HTML format");
-    		System.out.println("\t-t : optional specifer to output results in plain text format");
+			System.out.println("\t-t : optional specifer to output results in plain text format (default)");
     		return;
     	}
+
     	for (String s: args) {
 			if (s.equals("-h")) {
 				html=true;
@@ -603,6 +693,7 @@ public class ILS {
 				html=false;
 				continue;
 			}
+
             try {
 				System.out.print("Processing " + s + " : ");
 

@@ -18,7 +18,7 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 0.2
+ * @version 0.4
  * @see http://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck

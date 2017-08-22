@@ -49,7 +49,7 @@ Manual Install: Go to Extender &rarr; Extensions &rarr; Add.  Choose the
 type as Java, choose the Image Location & Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location & Privacy Scanner:
-plug-in version 0.3" if successful or display errors on the Error tab.
+plug-in version 0.4" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
@@ -60,7 +60,7 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 The Image Location & Privacy Scanner is available as part of the alpha channel
 passive scanners
 in the ZAP Marketplace.  It also can be downloaded and compiled directly
-into ZAP.  At this time, v0.2 is in the alpha channel and v0.3 will be
+into ZAP.  At this time, v0.2 is in the alpha channel and v0.4 will be
 available in the future.  ZAP code is also mirrored in the ZAP source tree.
 
 ## Sample Run
@@ -96,11 +96,8 @@ Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
 	-h : optional specifer to output results in HTML format
 	-t : optional specifer to output results in plain text format
 
-# Basic call with classpath
-java -classpath ILS.jar:xmp.jar:mde.jar   com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff
-
 # Call using the jar file from the Burp packaging
-java -classpath image_location_scanner.jar com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff
+java -classpath image_location_scanner-all.jar com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff
 
 # Command line output
 Processing ../Panasonic DMC-TZ10.jpg : Location Exif_GPS: 53° 8' 49.65", 8° 10' 45.1" 
@@ -140,27 +137,26 @@ Note the names of the jar files could be different, please confirm them.
 # Build Requirements
 
 * Java 1.6 or newer
-* Eclipse or Make to build
-* &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip) 
+* Eclipse or Gradle to build
+* [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip) 
+  1.7.13; included in the GitHub clone/fork.
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
-  version 2.8.1; uses Apache License v2.0
+  version 2.10.1; uses Apache License v2.0
 * &dagger; [XMP Library for Java](http://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/5.1.2)
-  version 5.1.2; uses BSD License
+  version 5.1.3; uses BSD License
 * Note: The [Apache Commons Imaging Library](http://commons.apache.org/proper/commons-imaging/)
   aka Sanselan) has been replaced with the MetaData Extractor.
 
-&dagger; These items are included in the GitHub clone/fork.
+&dagger; These will be auto-fetched if you build with Gradle.
 
-The system can compile with Make.  Do in this order:
-
-1. make clean
-2. make compile
-3. make
+The system is built with Gradle: `gradle fatJar`
 
 That will build the Burp plug-in and it can manually be loaded into
-Burp.  Version 0.2 of the ZAP plug-in is in ZAP's GitHub repo and
-included with ZAP.  To build, use Eclipse.  Version 0.3 is not fully
-integrated with ZAP just yet.
+Burp.  Version 0.2 of the plug-in is included in ZAP's GitHub repo and
+included with ZAP.  To build, use Eclipse.  Version 0.4 is not fully
+integrated with ZAP just yet.  It will work with ZAP, just needs to be
+properly included into the alpha/beta channels; someone can help with
+that please.
 
 # Version History
 
@@ -184,6 +180,14 @@ integrated with ZAP just yet.
 	* Added display of camera owner name for Canon
 	* Added support for HTML formatting in the Burp output
 	* Command line version output in text or HTML formats
+* 0.4 -
+	* New official name: *Image Location & Privacy Scanner*
+	* Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10.
+	* Some XMP support removed via MDE; XMP tags weren't correct in some
+	  cases.  Those tags will be introduced again in a future MDE.
+	* Removed legacy jar dependencies.
+	* Build process is now Gradle only, Makefile is dead.
+	* Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
 
 # Random Future Todos
 
@@ -195,10 +199,6 @@ integrated with ZAP just yet.
      what ever MetaData Extractor finds.
    * Donate any new test images to MetaData Extractor project for
      better cataloging.
-* Currently, `make` is used to the build the system or a manual compile
-  inside of Eclipse.  Use of Maven, Ant, Grails, or anything else would
-  be better.  Advice needed here.  Since ZAP now builds in a more
-  modern way, should migrate to that.
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
@@ -219,7 +219,7 @@ integrated with ZAP just yet.
   or similar.  Just in case, otherwise, a jpg could do HTML injection
   into Burp or Zap.  
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC, PII
 
 <!--
 vim: sw=4 tw=72 spell
