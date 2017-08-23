@@ -70,17 +70,18 @@ instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:
 
 * Sample Exif Site: [ReadExifData.com](http://readexifdata.com/)
-* MetaData Extractor has tons of examples:
-[MDE examples](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg).
-To view the "raw" URLs below, you will need to first go to the GitHub
-URL above to get a session cookie:
-  - https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput
-  - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
-  - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
-  - [IPTC data](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Issue%20122.jpg)
-  - [Canon Powershot A2500](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Canon%20Powershot%20A2500.JPG)
-  - [Canon EOS Rebel T3i](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Canon%20EOS%20REBEL%20T3i.jpg)
-  - Proprietary Panasonic tags with embedded location example: [MDE Panasonic example](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg)
+* MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
+contains some good images.  But first, in order to view the URLs
+below, you may need to obtain a GitHub session cookie first by going to 
+[MDE on GitHub](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg).
+    - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
+    shows GPS data.
+    - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
+    has embedded IPTC locations and keywords.
+    - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg)
+    shows proprietary Panasonic tags including city, state, country along
+    with facial recognition information, like the name and age of the person in
+    the picture.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
 The ILS jar file contains a `main()` function,  so it is possible to
@@ -100,13 +101,18 @@ Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
 java -classpath image_location_scanner-all.jar com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff
 
 # Command line output
-Processing ../Panasonic DMC-TZ10.jpg : Location Exif_GPS: 53° 8' 49.65", 8° 10' 45.1" 
+Processing ../Panasonic DMC-TZ10.jpg :
+Location Exif_GPS: 53° 8' 49.65", 8° 10' 45.1" 
 Location Panasonic: City = OLDENBURG (OLDB.)
 Location Panasonic: Country = GERMANY
 Location Panasonic: State = OLDENBURG (OLDB.)
+
+Privacy:: Panasonic: Face Recognition Info = Face 1: x: 142 y: 120 width: 76 height: 76 name: NIELS age: 31 years 7 months 15 days
 Privacy Panasonic: Internal Serial Number = F541005110191
 
-Processing ../Panasonic Lumix DMC-LX7.jpg : Privacy Panasonic: Internal Serial Number = F111311090158
+Processing ../Panasonic Lumix DMC-LX7.jpg :
+
+Privacy Panasonic: Internal Serial Number = F111311090158
 
 Processing ../j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85" 
 ```
@@ -132,6 +138,9 @@ Note the names of the jar files could be different, please confirm them.
 	- If you have images disabled in Global Exclude URL, then the
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
+* When I use Burp, nothing shows up
+	- You probably have the display filter set to hide images, uncheck
+	the box on the filter in the Targets tab.
 
 
 # Build Requirements
@@ -182,12 +191,13 @@ that please.
 	* Command line version output in text or HTML formats
 * 0.4 -
 	* New official name: *Image Location & Privacy Scanner*
-	* Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10.
+	* Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10
 	* Some XMP support removed via MDE; XMP tags weren't correct in some
-	  cases.  Those tags will be introduced again in a future MDE.
+	  cases.  Those tags will be introduced again in a future MDE
 	* Removed legacy jar dependencies.
 	* Build process is now Gradle only, Makefile is dead.
 	* Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
+	* Now shows name and age of facial recognition in Panasonic cameras
 
 # Random Future Todos
 

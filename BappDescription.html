@@ -14,10 +14,20 @@
 
 <h1 id="sample-run">Sample Run</h1>
 
-<p>Configure the web browser to proxy through Burp and then browse to a few sample sites:</p>
+<p>Configure the web browser to proxy through Burp and browse to a few
+sample sites.  Then, look at Target &rarr; Issues to view alerts being raised.
+You may need to enable "show images" in the filtering.</p>
+
 <ul>
 <li>Sample Exif Site: <a href="http://readexifdata.com/">ReadExifData.com</a></li>
-<li>MetaData Extractor has tons of examples: <a href="https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg">MDE examples</a></li>
+<li>MetaData Extractor's <a href="https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput">SampleOutput page</a> contains some good images. But first, in order to view the URLs below, you may need to obtain a GitHub session cookie first by going to <a href="https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg">MDE on GitHub</a>.
+<ul>
+<li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg">iPhone 4</a> shows GPS data.</li>
+<li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg">FujiFilm FinePix S1 Pro</a> has embedded IPTC locations and keywords.</li>
+<li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg">Panasonic DMC-TZ10</a> shows proprietary Panasonic tags including city, state, country along with facial recognition information, like the name and age of the person in the picture.</li>
+</ul>
+</li>
+<li>This professional photographer leaves Exif in many photos: <a href="http://raia.com/">Raia.com</a></li>
 </ul>
 
 <p>Keywords: Information Exposure, GPS, Exif, XMP, IPTC, PII</p>

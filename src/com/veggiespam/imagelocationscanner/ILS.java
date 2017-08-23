@@ -129,6 +129,7 @@ public class ILS {
 			results = scanForPrivacy(md);
 
 			if (tmp[0].length() > 0) {
+				// minor formatting if we have both.
 				results[0] = tmp[0] + "\n\n" + results[0];
 				results[1] = "<ul>"  +  tmp[1] + results[1] + "</ul>";
 
@@ -190,6 +191,13 @@ public class ILS {
 	}
 
 
+	/** Appends a new finding to the finding output. 
+	 *  @param current The current set of findings, text and HTML.
+	 *  @param bigtype the major category of exposure type, be it "Privacy" or "Location"
+	 *  @param subtype place where exposure lives in the file, such as Exif, IPTC, or proprietary camera Makernote, like "Panasonic".
+	 *  @param expsure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
+	 *  @return Two strings as an array, first string is formattied text, second is HTML.
+	 */
     private static String[] appendResults(String current[], String bigtype, String subtype, ArrayList<String> exposure)   {
 		String[] tmp = formatResults(bigtype, subtype, exposure);
 
@@ -200,6 +208,12 @@ public class ILS {
 		return current;
 	}
 
+	/** Formats the findings in both text and HTML.  
+	 *  @param bigtype the major category of exposure type, be it "Privacy" or "Location"
+	 *  @param subtype place where exposure lives in the file, such as Exif, IPTC, or proprietary camera Makernote, like "Panasonic".
+	 *  @param expsure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
+	 *  @return Two strings as an array, first string is formattied text, second is HTML.
+	 */
     private static String[] formatResults(String bigtype, String subtype, ArrayList<String> exposure)   {
 		StringBuffer ret = new StringBuffer(200);
 		StringBuffer retHTML = new StringBuffer(200);
@@ -224,7 +238,6 @@ public class ILS {
 
 
     public static String[] scanForLocation(Metadata md)   {
-    	ArrayList<String> retarr = new ArrayList<String>();
     	//ArrayList<String> retHTML = new ArrayList<String>();
 		ArrayList<String> exposure = new ArrayList<String>();
 
@@ -277,8 +290,6 @@ public class ILS {
 					String tag = iptcDesc.getDescription(iptc_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
 						exposure.add( iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag );
-						String element = bigtype + subtype + iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
@@ -296,7 +307,7 @@ public class ILS {
 			PanasonicMakernoteDirectory.TAG_COUNTRY,
 			PanasonicMakernoteDirectory.TAG_LANDMARK,
 			PanasonicMakernoteDirectory.TAG_LOCATION,
-			PanasonicMakernoteDirectory.TAG_STATE,
+			PanasonicMakernoteDirectory.TAG_STATE
 		};
 
 		if (panasonicDirColl != null) {
@@ -309,8 +320,6 @@ public class ILS {
 					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
-						String element = bigtype + subtype + panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
@@ -328,13 +337,11 @@ public class ILS {
     }
 
     public static String[] scanForPrivacy(Metadata md)   {
-    	ArrayList<String> retarr = new ArrayList<String>();
 		String bigtype = "Privacy";  // Overall category type.
 		String subtype = EmptyString;
 		ArrayList<String> exposure = new ArrayList<String>();
 
 		String[] results = { EmptyString, EmptyString };
-
 
 		/*  See https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7
 			for the reasons why this was disabled.
@@ -356,8 +363,7 @@ public class ILS {
 				for (int i=0; i< xmp_tag_list.length; i++) {
 					String tag = xmpDesc.getDescription(xmp_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + xmpDir.getTagName(xmp_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add( xmpDir.getTagName(xmp_tag_list[i]) + " = " + tag );
 					}
 				}
 				results = appendResults(results, bigtype, subtype, exposure);
@@ -384,8 +390,6 @@ public class ILS {
 					String tag = iptcDesc.getDescription(iptc_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
 						exposure.add( iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag );
-						String element = bigtype + subtype + iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
@@ -401,6 +405,7 @@ public class ILS {
 			PanasonicMakernoteDirectory.TAG_BABY_AGE,
 			PanasonicMakernoteDirectory.TAG_BABY_AGE_1,
 			PanasonicMakernoteDirectory.TAG_BABY_NAME,
+			PanasonicMakernoteDirectory.TAG_FACE_RECOGNITION_INFO,
 			PanasonicMakernoteDirectory.TAG_INTERNAL_SERIAL_NUMBER,
 			PanasonicMakernoteDirectory.TAG_LENS_SERIAL_NUMBER 
 			// What about   TAG_TEXT_STAMP_*  TAG_TITLE 
@@ -409,14 +414,13 @@ public class ILS {
 		if (panasonicDirColl != null) {
 			exposure.clear();
 
-			for (PanasonicMakernoteDirectory panasonicDir: panasonicDirColl) {
+			for (PanasonicMakernoteDirectory panasonicDir : panasonicDirColl) {
 				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
 				for (int i=0; i< panasonic_tag_list.length; i++) {
 					String tag = descriptor.getDescription(panasonic_tag_list[i]);
 					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -442,11 +446,11 @@ public class ILS {
 					// Leica occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						exposure.add(leicaDir.getTagName(leica_tag_list[i]) + " = " + tag);
-						String element = bigtype + subtype + leicaDir.getTagName(leica_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
 
@@ -468,11 +472,11 @@ public class ILS {
 					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						exposure.add(reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag);
-						String element = bigtype + subtype + reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
 
@@ -494,11 +498,11 @@ public class ILS {
 					// ReconyxUltraFire occasionally uses "---" when it cannot find info, we choose to strip it out.
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
 						exposure.add(reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag);
-						String element = bigtype + subtype + reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag;
-						retarr.add(element);
 					}
 				}
 			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
 
@@ -518,8 +522,7 @@ public class ILS {
 				for (int i=0; i< olympus_tag_list.length; i++) {
 					String tag = descriptor.getDescription(olympus_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + olympusDir.getTagName(olympus_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(olympusDir.getTagName(olympus_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -547,8 +550,7 @@ public class ILS {
 				for (int i=0; i< olympusEquipment_tag_list.length; i++) {
 					String tag = descriptor.getDescription(olympusEquipment_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + olympusEquipmentDir.getTagName(olympusEquipment_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(olympusEquipmentDir.getTagName(olympusEquipment_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -574,8 +576,7 @@ public class ILS {
 				for (int i=0; i< canon_tag_list.length; i++) {
 					String tag = descriptor.getDescription(canon_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + canonDir.getTagName(canon_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(canonDir.getTagName(canon_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -602,8 +603,7 @@ public class ILS {
 				for (int i=0; i< sigma_tag_list.length; i++) {
 					String tag = descriptor.getDescription(sigma_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + sigmaDir.getTagName(sigma_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(sigmaDir.getTagName(sigma_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -631,8 +631,7 @@ public class ILS {
 				for (int i=0; i< nikon_tag_list.length; i++) {
 					String tag = descriptor.getDescription(nikon_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + nikonDir.getTagName(nikon_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(nikonDir.getTagName(nikon_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -657,8 +656,7 @@ public class ILS {
 				for (int i=0; i< fujifilm_tag_list.length; i++) {
 					String tag = descriptor.getDescription(fujifilm_tag_list[i]);
 					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						String element = bigtype + subtype + fujifilmDir.getTagName(fujifilm_tag_list[i]) + " = " + tag;
-						retarr.add(element);
+						exposure.add(fujifilmDir.getTagName(fujifilm_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
