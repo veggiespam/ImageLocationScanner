@@ -9,7 +9,7 @@ children's chatroom.
 More information on this topic, including a whitepaper 
 based on a real-world site audit given as a presentation at the New
 Jersey chapter of the OWASP organization, can be found at
-[www.veggiespam.com/ils/](http://www.veggiespam.com/ils/) .
+[www.veggiespam.com/ils/](https://www.veggiespam.com/ils/) .
 
 This software finds the GPS information inside of Exif tags, IPTC codes,
 and proprietary camera codes. Then, the Image Location & Privacy Scanner flags the
@@ -33,10 +33,9 @@ The Image Location & Privacy Scanner runs as both a Burp and ZAP plug-in.
 Requires:
 
 * Burp Pro, 1.4 or newer
-  [http://portswigger.net/burp/](ProtSwigger Burp web site)
+  [PortSwigger Burp web site](http://portswigger.net/burp/)
 * ZAP, 2.4.x or newer
-  [https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project](OWASP
-  ZAP web site)
+  [OWASP ZAP web site](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 
 ## Burp Installation
 
