@@ -77,11 +77,14 @@ below, you may need to obtain a GitHub session cookie first by going to
     shows GPS data.
     - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
     has embedded IPTC locations and keywords.
-    - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg)
+    - [Panasonic
+	DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) <img width="50%" height="50%" src="example-DMC-TZ10.png" align="right"/>
     shows proprietary Panasonic tags including city, state, country along
     with facial recognition information, like the name and age of the person in
-    the picture.
+    the picture.  Burp screen shot of this shown to the right.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
+
+<br clear="all">
 
 <p><img width="50%" height="50%" src="example-DMC-TZ10.png"
 align="right"/>Burp screenshot of location and privacy exposure found
