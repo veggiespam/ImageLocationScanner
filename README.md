@@ -84,7 +84,7 @@ below, you may need to obtain a GitHub session cookie first by going to
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
 <p><img width="50%" height="50%" src="example-DMC-TZ10.png"
-align="center"/>Burp screenshot of location and privacy exposure found
+align="right"/>Burp screenshot of location and privacy exposure found
 in the Panasonic_DMC-TZ10.jpg image.</p>
 
 The ILS jar file contains a `main()` function,  so it is possible to
