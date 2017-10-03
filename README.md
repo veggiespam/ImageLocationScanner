@@ -85,7 +85,7 @@ below, you may need to obtain a GitHub session cookie first by going to
 
 Burp Screenshot of the Panasonic_DMC-TZ10.jpg image:
 
-<img src="example-DMC-TZ10.png" />
+<img width="644" height="608" src="example-DMC-TZ10.png" />
 
 The ILS jar file contains a `main()` function,  so it is possible to
 directly run the scanner from the command line on local files.  The
