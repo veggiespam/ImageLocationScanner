@@ -83,6 +83,10 @@ below, you may need to obtain a GitHub session cookie first by going to
     the picture.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
+Burp Screenshot of the Panasonic_DMC-TZ10.jpg image:
+
+<img src="example-DMC-TZ10.png" />
+
 The ILS jar file contains a `main()` function,  so it is possible to
 directly run the scanner from the command line on local files.  The
 classpath must contain the ILS jar file along with the supporting jars
