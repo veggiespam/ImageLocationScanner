@@ -86,9 +86,9 @@ below, you may need to obtain a GitHub session cookie first by going to
 
 <br clear="all">
 
-<p><img width="50%" height="50%" src="example-DMC-TZ10.png"
+<!-- <p><img width="50%" height="50%" src="example-DMC-TZ10.png"
 align="right"/>Burp screenshot of location and privacy exposure found
-in the Panasonic_DMC-TZ10.jpg image.<br clear="all"></p>
+in the Panasonic_DMC-TZ10.jpg image.<br clear="all"></p> -->
 
 The ILS jar file contains a `main()` function,  so it is possible to
 directly run the scanner from the command line on local files.  The
