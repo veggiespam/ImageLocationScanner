@@ -93,7 +93,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
             byte[] body = Arrays.copyOfRange(resp,responseOffset, resp.length);
           
             //db("Parsing image file " + fileName);
-            String hasGPS = ILS.scanForLocationInImage(body);
+            String hasGPS = ILS.scanForLocationInImageHTML(body);
             if (! hasGPS.isEmpty()) {
 				// TODO: Future, print to burp stdio logs if the config option is enabled.
             	// db(fileName + ": found location: " + hasGPS);
