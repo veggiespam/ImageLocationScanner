@@ -83,9 +83,9 @@ below, you may need to obtain a GitHub session cookie first by going to
     the picture.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
-Burp Screenshot of location and privacy exposure found in the Panasonic_DMC-TZ10.jpg image:
-
-<img width="50%" height="50%" src="example-DMC-TZ10.png" align="center"/>
+<p>Burp screenshot of location and privacy exposure found in the
+Panasonic_DMC-TZ10.jpg image: <img width="50%" height="50%"
+src="example-DMC-TZ10.png" align="center"/></p>
 
 The ILS jar file contains a `main()` function,  so it is possible to
 directly run the scanner from the command line on local files.  The
