@@ -64,9 +64,10 @@ available in the future.  ZAP code is also mirrored in the ZAP source tree.
 
 ## Sample Run
 
+<p><img width="50%" height="50%" src="example-DMC-TZ10.png" align="right"/>
 Configure the web browser to proxy through Burp or ZAP per the
 instructions of those products.  Then, browse to a few sample sites to
-see Alerts being raised:
+see Alerts being raised:</p>
 
 * Sample Exif Site: [ReadExifData.com](http://readexifdata.com/)
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
@@ -78,8 +79,7 @@ below, you may need to obtain a GitHub session cookie first by going to
     - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
     has embedded IPTC locations and keywords.
     - [Panasonic
-	DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) <img width="50%" height="50%" src="example-DMC-TZ10.png" align="right"/>
-    shows proprietary Panasonic tags including city, state, country along
+	DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) shows proprietary Panasonic tags including city, state, country along
     with facial recognition information, like the name and age of the person in
     the picture.  Burp screen shot of this shown to the right.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
