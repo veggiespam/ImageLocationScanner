@@ -1,7 +1,7 @@
 # Here be dragons.  Best to just ignore this.
 
-BURPJAR=image_location_scanner.jar
-JARPATH=build/libs/image-location-scanner-all.jar
+FATJAR=image-location-scanner-all.jar
+JARPATH=build/libs/$(FATJAR)
 
 # If we let eclipse build for me.  Probably a better way.
 BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
@@ -9,11 +9,14 @@ BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
 $(JARPATH): src/com/veggiespam/imagelocationscanner/ILS.java
 	gradle fatJar
 
+run: $(JARPATH)
+	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS
+
 clean:
-	rm -rf $(BURPJAR)
+	rm -f $(JARPATH)
 
 distclean:
 	rm -rf build
 
-run:
-	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS
+gradleclean: distclean
+	rm -rf $(HOME)/.gradle/caches
