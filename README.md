@@ -58,9 +58,10 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 
 The Image Location & Privacy Scanner is available as part of the alpha channel
 passive scanners
-in the ZAP Marketplace.  It also can be downloaded and compiled directly
-into ZAP.  At this time, v0.2 is in the alpha channel and v0.4 will be
-available in the future.  ZAP code is also mirrored in the ZAP source tree.
+in the ZAP Marketplace.  Currently, version 0.4 (plus patches) is present
+in the channel and in the ZAP source code tree.
+Image Location & Privacy Scanner also can be downloaded and compiled directly
+into ZAP.
 
 ## Sample Run
 
@@ -93,16 +94,16 @@ command line, just do:
 
 ```
 $ java ...
-Java Image Location Scanner
+Java Image Location & Privacy Scanner
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-	-h : optional specifer to output results in HTML format
-	-t : optional specifer to output results in plain text format
+	-h : output results in HTML format
+	-t : output results in plain text format (default)
 
 # Call using the jar file from the Burp packaging
-java -classpath image_location_scanner-all.jar com.veggiespam.imagelocationscanner.ILS  file1.jpg file2.png file3.tiff
+java -classpath image-location-scanner-all.jar com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
 
-# Command line output
-Processing ../Panasonic DMC-TZ10.jpg :
+# Example command line output
+Processing Panasonic DMC-TZ10.jpg :
 Location Exif_GPS: 53° 8' 49.65", 8° 10' 45.1" 
 Location Panasonic: City = OLDENBURG (OLDB.)
 Location Panasonic: Country = GERMANY
@@ -111,11 +112,11 @@ Location Panasonic: State = OLDENBURG (OLDB.)
 Privacy:: Panasonic: Face Recognition Info = Face 1: x: 142 y: 120 width: 76 height: 76 name: NIELS age: 31 years 7 months 15 days
 Privacy Panasonic: Internal Serial Number = F541005110191
 
-Processing ../Panasonic Lumix DMC-LX7.jpg :
+Processing Panasonic Lumix DMC-LX7.jpg :
 
 Privacy Panasonic: Internal Serial Number = F111311090158
 
-Processing ../j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85" 
+Processing j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
 ```
 
 Note the names of the jar files could be different, please confirm them.
@@ -202,6 +203,8 @@ that please.
 * git-tip
 	* Gradle build automatically downloads the Burp API jar, so need
 	  need to include code in Git repo any longer.
+	* Fixed mixed spaces-and-tabs, thanks @kingthorn.
+	* Fixed a tiny chance of XSS inside of Burp.
 
 # Random Future Todos
 
@@ -229,12 +232,9 @@ that please.
   like dating or children-only social networking sites.  How pervasive
   is the issue on sensitive websites?
 * White paper with better examples of "how to fix". 
-* Fix HTML encoding with org.apache.commons.lang.StringEscapeUtils.escapeHTML()
-  or similar.  Just in case, otherwise, a jpg could do HTML injection
-  into Burp or Zap.  
 
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC, PII
 
 <!--
-vim: sw=4 tw=72 spell
+vim: sw=4 tw=72 spell noexpandtab
 -->

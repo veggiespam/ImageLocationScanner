@@ -1,7 +1,7 @@
 
 
 BURPJAR=image_location_scanner.jar
-
+JARPATH=build/libs/image-location-scanner-all.jar
 
 # If we let eclipse build for me.  Probably a better way.
 BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
@@ -43,4 +43,4 @@ clean:
 
 
 run:
-	java -classpath $(BURPJAR) com.veggiespam.imagelocationscanner.ILS
+	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS

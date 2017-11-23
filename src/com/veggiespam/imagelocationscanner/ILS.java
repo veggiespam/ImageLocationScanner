@@ -116,7 +116,7 @@ public class ILS {
 		t[1] = t[0];
 		// return t;   /*   --- if you use this line, remember to comment out rest of function.
 		*/	
- 
+
 		try {
 			BufferedInputStream is = new BufferedInputStream(new ByteArrayInputStream(data, 0, data.length));
 			Metadata md = ImageMetadataReader.readMetadata(is);
@@ -206,6 +206,16 @@ public class ILS {
 		return current;
 	}
 
+	/** Tiny chance of XSS inside of Burp/ZAP, return properly escaped HTML. */
+	private static String escapeHTML(String s) {
+		return s.replace("&","&amp;").replace("<","&gt;");
+	}
+
+	/** Do this for completeness, even if a no-op for now. */
+	private static String escapeTEXT(String s) {
+		return s;  // might want to do more here someday, like binary data as hex codes, etc...
+	}
+
 	/** Formats the findings in both text and HTML.  
 	 *  @param bigtype the major category of exposure type, be it "Privacy" or "Location"
 	 *  @param subtype place where exposure lives in the file, such as Exif, IPTC, or proprietary camera Makernote, like "Panasonic".
@@ -220,8 +230,8 @@ public class ILS {
 		if (exposure.size() > 0) {
 			retHTML.append(HTML_subtype_begin).append(bigtype).append(" / ").append(subtype).append(HTML_subtype_title_end);
 			for (String finding : exposure) {
-				ret.append(subtype).append(TextSubtypeEnd).append(finding).append("\n");
-				retHTML.append(HTML_finding_begin).append(finding).append(HTML_finding_end);
+				ret.append(subtype).append(TextSubtypeEnd).append(escapeTEXT(finding)).append("\n");
+				retHTML.append(HTML_finding_begin).append(escapeHTML(finding)).append(HTML_finding_end);
 			}
 			retHTML.append(HTML_subtype_end);
 		}
@@ -669,10 +679,10 @@ public class ILS {
 	public static void main(String[] args) throws Exception {
 		boolean html = false;
 		if (args.length == 0){
-			System.out.println("Java Image Location Scanner");
+			System.out.println("Java Image Location & Privacy Scanner");
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("\t-h : optional specifer to output results in HTML format");
-			System.out.println("\t-t : optional specifer to output results in plain text format (default)");
+			System.out.println("\t-h : output results in HTML format");
+			System.out.println("\t-t : output results in plain text format (default)");
 			return;
 		}
 
@@ -710,5 +720,4 @@ public class ILS {
 	}
 }
 
-// set autoindent noexpandtab tabstop=4 shiftwidth=4
-
+// vim: autoindent noexpandtab tabstop=4 shiftwidth=4
