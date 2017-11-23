@@ -13,8 +13,9 @@ import com.veggiespam.imagelocationscanner.ILS;
 
 /**
  * The Burp Pro plug-in wrapper for Veggiespam's Image
- * Location Scanner class. Passively scans a data stream containing 
- * a jpeg and reports if the data contains embedded Exif GPS location. 
+ * Location & Privacy Scanner class. Passively scans a data stream containing
+ * an image and reports if the data contains embedded Exif GPS location or
+ * other leaked privacy data.
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
@@ -49,8 +50,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	
         stdout = callbacks.getStdout();
 
-    	db("plug-in version " + ILS.pluginVersion);
-        db("registerExtenderCallbacks() is complete");
+        db("loaded plug-in, version " + ILS.pluginVersion);
     }
     
     /** Passive only, so this is a blank implementation. */
@@ -243,3 +243,5 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	}
     }
 }
+// Burp Interface API expample used spaces, so try to be consistent for this file.
+// vim: autoindent expandtab tabstop=4 shiftwidth=4
