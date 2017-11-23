@@ -148,9 +148,9 @@ Note the names of the jar files could be different, please confirm them.
 # Build Requirements
 
 * Java 1.6 or newer
-* Eclipse or Gradle to build
-* [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip) 
-  1.7.13; included in the GitHub clone/fork.
+* Gradle to build
+* &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip) 
+  1.7.13; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
   version 2.10.1; uses Apache License v2.0
 * &dagger; [XMP Library for Java](http://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/5.1.2)
@@ -204,10 +204,18 @@ that please.
 	* Gradle build automatically downloads the Burp API jar, so need
 	  need to include code in Git repo any longer.
 	* Fixed mixed spaces-and-tabs, thanks @kingthorn.
-	* Fixed a tiny chance of XSS inside of Burp.
+	* Fixed a chance of an image causing HTML-injection inside of Burp;
+	  I theorized it existed (maybe a non-Burp app calling ILS would
+	  result in full-blown XSS against the infosec tester), but
+	  @pajswigger actually exploited this type of injection in the form
+	  of `<i>` tags, since Burp rejects `<script>` tags
+	* Nicer Makefile (i'm sorry, i still use make)
 
 # Random Future Todos
-
+* Idea from Burp's @pajwigger:  It's quite common that servers return
+  304 not modified. It might be a good trick, if you see a request for
+  an image, and there's only 304s in the site map – that in an active
+  scan you fetch the image.
 * Need better testing and examples.
    * Get more IPTC test images with both location names and GPS
      positions.  ILS tests for names, but it is unknown if IPTC
@@ -232,6 +240,8 @@ that please.
   like dating or children-only social networking sites.  How pervasive
   is the issue on sensitive websites?
 * White paper with better examples of "how to fix". 
+* Get a Eclipse + ZAP environment working so I can test those updates
+  easier.
 
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC, PII
 
