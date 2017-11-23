@@ -199,6 +199,9 @@ that please.
 	* Build process is now Gradle only, Makefile is dead.
 	* Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
 	* Now shows name and age of facial recognition in Panasonic cameras
+* git-tip
+	* Gradle build automatically downloads the Burp API jar, so need
+	  need to include code in Git repo any longer.
 
 # Random Future Todos
 

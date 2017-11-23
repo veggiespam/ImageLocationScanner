@@ -1,3 +1,6 @@
 burp-build
 .DS_Store
 *.class
+.*.swp
+.gradle
+build

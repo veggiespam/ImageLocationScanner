@@ -6,8 +6,10 @@ BURPJAR=image_location_scanner.jar
 # If we let eclipse build for me.  Probably a better way.
 BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
 
+$(BURPJAR): src/com/veggiespam/imagelocationscanner/ILS.java
+	gradle fatJar
 
-$(BURPJAR): compile
+$(BURPJAR)x: compile
 	mkdir -p burp-build
 	cd burp-build ; unzip -q ../lib/metadata-extractor-2.9.1.jar ; cd ..
 	cd burp-build ; unzip -q ../lib/xmpcore-5.1.2.jar ; cd ..
