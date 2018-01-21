@@ -85,7 +85,8 @@ below, you may need to obtain a GitHub session cookie first by going to
 	shown below.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
-<img width="50%" height="50%" src="screenshot-1-zap.png" align="center"/>
+<p align="center"><img width="50%" height="50%"
+src="screenshot-1-zap.png" align="center"/></p>
 
 <br clear="all" />
 
@@ -216,6 +217,7 @@ that please.
 	  @pajswigger actually exploited this type of injection in the form
 	  of `<i>` tags, since Burp rejects `<script>` tags
 	* Nicer Makefile (i'm sorry, i still use make)
+	* Enhanced readmes, faqs, screenshots, etc.
 
 # Random Future Todos
 * Idea from Burp's @pajwigger:  It's quite common that servers return
