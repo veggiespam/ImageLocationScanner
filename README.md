@@ -61,11 +61,11 @@ passive scanners
 in the ZAP Marketplace.  Currently, version 0.4 (plus patches) is present
 in the channel and in the ZAP source code tree.
 Image Location & Privacy Scanner also can be downloaded and compiled directly
-into ZAP.
+into ZAP.  By default, ZAP does not process images; see the [FAQ](#faq) below.
 
 ## Sample Run
 
-<p><img width="50%" height="50%" src="example-DMC-TZ10.png" align="right"/>
+<p><img width="50%" height="50%" src="screenshot-1-zap.png" align="right"/>
 Configure the web browser to proxy through Burp or ZAP per the
 instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
@@ -81,8 +81,11 @@ below, you may need to obtain a GitHub session cookie first by going to
     has embedded IPTC locations and keywords.
     - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) shows proprietary Panasonic tags including city, state, country along
     with facial recognition information, like the name and age of the person in
-    the picture.  Burp screen shot of this shown to the right.
+    the picture.  Burp screen shot of this shown to the right and ZAP is
+	shown below.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
+
+<p><img width="50%" height="50%" src="screenshot-1-burp.png" align="right"/>
 
 <br clear="all" />
 
@@ -121,7 +124,7 @@ Processing j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
 
 Note the names of the jar files could be different, please confirm them.
 
-# FAQ
+# FAQ <a name="faq">
 
 * Why do I see two sets of Exif_GPS coordinates  (or other tag)
 	- This means the image has been embedded with multiple Exif tags of
@@ -137,6 +140,9 @@ Note the names of the jar files could be different, please confirm them.
 	In newer versions ILS, we simply filter out strings that start with
 	a null character.  We assume someone isn't hiding data there.
 * When I use ZAP, nothing shows up
+	- By default, images are not processed in ZAP, you must manually
+	enabled them with: Tools &rarr; Options &rarr; Display &rarr;
+	Process images in HTTP requests/responses
 	- If you have images disabled in Global Exclude URL, then the
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
