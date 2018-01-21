@@ -65,7 +65,7 @@ into ZAP.  By default, ZAP does not process images; see the [FAQ](#faq) below.
 
 ## Sample Run
 
-<p><img width="50%" height="50%" src="screenshot-1-zap.png" align="right"/>
+<p><img width="50%" height="50%" src="screenshot-1-burp.png" align="right"/>
 Configure the web browser to proxy through Burp or ZAP per the
 instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
@@ -85,7 +85,7 @@ below, you may need to obtain a GitHub session cookie first by going to
 	shown below.
 * This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
 
-<p><img width="50%" height="50%" src="screenshot-1-burp.png" align="right"/>
+<img width="50%" height="50%" src="screenshot-1-zap.png" align="center"/>
 
 <br clear="all" />
 
