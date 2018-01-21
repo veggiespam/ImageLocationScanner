@@ -201,9 +201,9 @@ that please.
 	* Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
 	* Now shows name and age of facial recognition in Panasonic cameras
 * git-tip
-	* Gradle build automatically downloads the Burp API jar, so need
-	  need to include code in Git repo any longer.
-	* Fixed mixed spaces-and-tabs, thanks @kingthorn.
+	* Gradle build automatically downloads the Burp API jar, so no
+	  need to include code in Git repo any longer
+	* Fixed mixed spaces-and-tabs, thanks @kingthorn
 	* Fixed a chance of an image causing HTML-injection inside of Burp;
 	  I theorized it existed (maybe a non-Burp app calling ILS would
 	  result in full-blown XSS against the infosec tester), but

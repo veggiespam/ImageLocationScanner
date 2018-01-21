@@ -87,7 +87,10 @@ public class ILS {
 		super();
 	}
 	
-	
+	public String getAuthor() {
+		return pluginAuthor;
+	}
+
 	/** Tests a data blob for Location or GPS information and returns the image location
 	 * information as a string.  If no location is present or there is an error,
 	 * the function will return an empty string of "".
