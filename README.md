@@ -48,7 +48,7 @@ Manual Install: Go to Extender &rarr; Extensions &rarr; Add.  Choose the
 type as Java, choose the Image Location & Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location & Privacy Scanner:
-plug-in version 0.4" if successful or display errors on the Error tab.
+plug-in version 1.0" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
@@ -59,9 +59,12 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 The Image Location & Privacy Scanner is available as part of the alpha channel
 passive scanners
 in the ZAP Marketplace.  Currently, version 0.4 (plus patches) is present
-in the channel and in the ZAP source code tree.
+in the channel and in the ZAP source code tree.  A pull request has been
+made to elevate version 1.0 into the production channel.
 Image Location & Privacy Scanner also can be downloaded and compiled directly
 into ZAP.  By default, ZAP does not process images; see the [FAQ](#faq) below.
+
+
 
 ## Sample Run
 
@@ -123,8 +126,7 @@ Processing j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
 
 Note the names of the jar files could be different, please confirm them.
 
-# FAQ <a name="faq">
-
+# <a name="faq"> FAQ 
 * Why do I see two sets of Exif_GPS coordinates  (or other tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS
@@ -202,22 +204,22 @@ that please.
 	* Some XMP support removed via MDE; XMP tags weren't correct in some
 	  cases.  Those tags will be introduced again in a future MDE
 	* Removed legacy jar dependencies.
-	* Build process is now Gradle only, Makefile is dead.
+	* Build process is now Gradle only, Makefile is dead
 	* Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
 	* Now shows name and age of facial recognition in Panasonic cameras
-* git-tip
+* 1.0 - 
 	* Gradle build automatically downloads the Burp API jar, so no
 	  need to include code in Git repo any longer
 	* Fixed mixed spaces-and-tabs, thanks to ZAP's
-	  [@kingthorn](https://github.com/kingthorn).
+	  [@kingthorn](https://github.com/kingthorn)
 	* Fixed a chance of an image causing HTML-injection inside of Burp;
 	  I theorized it existed (maybe a non-Burp app calling ILS would
 	  result in full-blown XSS against the infosec tester), but
 	  [@pajswigger](https://github.com/pajswigger) from Burp/Portswigger
 	  actually exploited this type of injection in the form
-	  of `<i>` tags, since Burp rejects `<script>` tags.
+	  of `<i>` tags, since Burp rejects `<script>` tags
 	* Nicer Makefile (sigh, yes, I still use make)
-	* Enhanced READMEs, FAQs, screenshots, etc.
+	* Enhanced READMEs, FAQs, screenshots, etc
 
 # Random Future Todos
 * Idea from Burp's @pajwigger:  It's quite common that servers return
@@ -225,21 +227,21 @@ that please.
   an image, and there's only 304s in the site map – that in an active
   scan you fetch the image.
 * Need better testing and examples.
-   * Get more IPTC test images with both location names and GPS
-     positions.  ILS tests for names, but it is unknown if IPTC
-     GPS works as no real world images have been provided for testing.
-   * More testing with PNG & TIFF file types.  Burp and ZAP will flag
-     what ever MetaData Extractor finds.
-   * Donate any new test images to MetaData Extractor project for
-     better cataloging.
+	* Get more IPTC test images with both location names and GPS
+	  positions.  ILS tests for names, but it is unknown if IPTC
+	  GPS works as no real world images have been provided for testing.
+	* More testing with PNG & TIFF file types.  Burp and ZAP will flag
+	  what ever MetaData Extractor finds.
+	* Donate any new test images to MetaData Extractor project for
+	  better cataloging.
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
 * Get the ZAP version into the mainline build; at alpha now, we need:
-   1. Add i18n support, including a few translations.
-   2. Custom wiki page on ZAP website.
-   3. Dynamic Load() and Unload() -- is this required for passive scanners.
-   4. Help file integration.
+	1. Add i18n support, including a few translations.
+	2. Custom wiki page on ZAP website.
+	3. Dynamic Load() and Unload() -- is this required for passive scanners.
+	4. Help file integration.
 * More generalized research.  Images with embedded locations were found
   in a real-world situation with high privacy implications; thus a
   severe audit finding and the impetus for this project.  This images

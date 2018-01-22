@@ -48,14 +48,14 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 0.4
+ * @version 1.0
  * @see https://www.veggiespam.com/ils/
  */
 public class ILS {
 
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
 	public static final String pluginName = "Image Location and Privacy Scanner";
-	public static final String pluginVersion = "0.4";
+	public static final String pluginVersion = "1.0";
 	public static final String alertTitle = "Image Exposes Location or Privacy Data";
 	public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
 	public static final String alertBackground 
@@ -86,7 +86,7 @@ public class ILS {
 		// blank constructor
 		super();
 	}
-	
+
 	public String getAuthor() {
 		return pluginAuthor;
 	}
@@ -677,15 +677,13 @@ public class ILS {
 		return results;
 	}
 
-
-	
 	public static void main(String[] args) throws Exception {
 		boolean html = false;
 		if (args.length == 0){
 			System.out.println("Java Image Location & Privacy Scanner");
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("\t-h : output results in HTML format");
-			System.out.println("\t-t : output results in plain text format (default)");
+			System.out.println("\t-h : optional specifer to output results in HTML format");
+			System.out.println("\t-t : optional specifer to output results in plain text format (default)");
 			return;
 		}
 

@@ -10,7 +10,8 @@ $(JARPATH): src/com/veggiespam/imagelocationscanner/ILS.java
 	gradle fatJar
 
 run: $(JARPATH)
-	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS
+	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS ../*.jpg
+	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS -h ../*.jpg
 
 clean:
 	rm -f $(JARPATH)
