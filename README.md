@@ -211,7 +211,7 @@ that please.
 	* Gradle build automatically downloads the Burp API jar, so no
 	  need to include code in Git repo any longer
 	* Fixed mixed spaces-and-tabs, thanks to ZAP's
-	  [@kingthorn](https://github.com/kingthorn)
+	  [@kingthorin](https://github.com/kingthorin)
 	* Fixed a chance of an image causing HTML-injection inside of Burp;
 	  I theorized it existed (maybe a non-Burp app calling ILS would
 	  result in full-blown XSS against the infosec tester), but
