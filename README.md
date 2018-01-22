@@ -59,7 +59,8 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 The Image Location & Privacy Scanner is available as part of the alpha channel
 passive scanners
 in the ZAP Marketplace.  Currently, version 0.4 (plus patches) is present
-in the channel and in the ZAP source code tree.  A pull request has been
+in the channel and in the ZAP source code tree.  A
+[pull request](https://github.com/zaproxy/zaproxy/issues/4295) has been
 made to elevate version 1.0 into the production channel.
 Image Location & Privacy Scanner also can be downloaded and compiled directly
 into ZAP.  By default, ZAP does not process images; see the [FAQ](#faq) below.
