@@ -208,14 +208,16 @@ that please.
 * git-tip
 	* Gradle build automatically downloads the Burp API jar, so no
 	  need to include code in Git repo any longer
-	* Fixed mixed spaces-and-tabs, thanks @kingthorn
+	* Fixed mixed spaces-and-tabs, thanks to ZAP's
+	  [@kingthorn](https://github.com/kingthorn).
 	* Fixed a chance of an image causing HTML-injection inside of Burp;
 	  I theorized it existed (maybe a non-Burp app calling ILS would
 	  result in full-blown XSS against the infosec tester), but
-	  @pajswigger actually exploited this type of injection in the form
-	  of `<i>` tags, since Burp rejects `<script>` tags
-	* Nicer Makefile (i'm sorry, i still use make)
-	* Enhanced readmes, faqs, screenshots, etc.
+	  [@pajswigger](https://github.com/pajswigger) from Burp/Portswigger
+	  actually exploited this type of injection in the form
+	  of `<i>` tags, since Burp rejects `<script>` tags.
+	* Nicer Makefile (sigh, yes, I still use make)
+	* Enhanced READMEs, FAQs, screenshots, etc.
 
 # Random Future Todos
 * Idea from Burp's @pajwigger:  It's quite common that servers return
@@ -252,5 +254,5 @@ that please.
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC, PII
 
 <!--
-vim: sw=4 tw=72 spell noexpandtab
+vim: sw=4 ts=4 sts=4 tw=72 spell noexpandtab
 -->
