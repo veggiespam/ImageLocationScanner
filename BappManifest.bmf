@@ -3,7 +3,7 @@ ExtensionType: 1
 Name: Image Location & Privacy Scanner
 RepoName: image-location-scanner
 ScreenVersion: 1.0
-SerialVersion: 5
+SerialVersion: 6
 MinPlatformVersion: 0
 ProOnly: True
 Author: Jay Ball @veggiespam 
