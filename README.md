@@ -102,8 +102,8 @@ command line, just do:
 $ java ...
 Java Image Location & Privacy Scanner
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-	-h : output results in HTML format
-	-t : output results in plain text format (default)
+	-h : optional specifer to output results in HTML format
+	-t : optional specifer to output results in plain text format (default)
 
 # Call using the jar file from the Burp packaging
 java -classpath image-location-scanner-all.jar com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
@@ -221,6 +221,8 @@ that please.
 	  of `<i>` tags, since Burp rejects `<script>` tags
 	* Nicer Makefile (sigh, yes, I still use make)
 	* Enhanced READMEs, FAQs, screenshots, etc
+	* ZAP now auto-scans images without the need to "un-hide" images
+	* Lots of unit tests via junit inside of ZAP, [@kingthorin](https://github.com/kingthorin) helped a bit
 
 # Random Future Todos
 * Idea from Burp's @pajwigger:  It's quite common that servers return
