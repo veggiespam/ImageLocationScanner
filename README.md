@@ -34,7 +34,7 @@ Requires:
 
 * Burp Pro, 1.4 or newer
   [PortSwigger Burp web site](http://portswigger.net/burp/)
-* ZAP, 2.4.x or newer
+* ZAP, 2.7.x or newer
   [OWASP ZAP web site](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 
 ## Burp Installation
@@ -56,15 +56,13 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 
 ## ZAP Installation
 
-The Image Location & Privacy Scanner is available as part of the alpha channel
-passive scanners
-in the ZAP Marketplace.  Currently, version 0.4 (plus patches) is present
-in the channel and in the ZAP source code tree.  A
-[pull request](https://github.com/zaproxy/zaproxy/issues/4295) has been
-made to elevate version 1.0 into the production channel.
+The Image Location & Privacy Scanner is available as part of the beta channel
+in the ZAP Marketplace.  Currently, version 1.0 is present
+in the channel and in the ZAP source code tree.  An 
+[issue](https://github.com/zaproxy/zaproxy/issues/4295) has been
+made to elevate version 1.0 into the release channel.
 Image Location & Privacy Scanner also can be downloaded and compiled directly
-into ZAP.  By default, ZAP does not process images; see the [FAQ](#faq) below.
-
+into ZAP.
 
 
 ## Sample Run
@@ -142,12 +140,12 @@ Note the names of the jar files could be different, please confirm them.
 	In newer versions ILS, we simply filter out strings that start with
 	a null character.  We assume someone isn't hiding data there.
 * When I use ZAP, nothing shows up
-	- By default, images are not processed in ZAP, you must manually
-	enabled them with: Tools &rarr; Options &rarr; Display &rarr;
-	Process images in HTTP requests/responses
 	- If you have images disabled in Global Exclude URL, then the
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
+	- Note: As of promotion to beta and rollout of 1.0 ILS/ZAP will
+	passively scan images without additional setting changes (as were
+	previously required for 0.4 in alpha).
 * When I use Burp, nothing shows up
 	- You probably have the display filter set to hide images, uncheck
 	the box on the filter in the Targets tab.
