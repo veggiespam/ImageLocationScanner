@@ -169,11 +169,8 @@ Note the names of the jar files could be different, please confirm them.
 The system is built with Gradle: `gradle fatJar`
 
 That will build the Burp plug-in and it can manually be loaded into
-Burp.  Version 0.2 of the plug-in is included in ZAP's GitHub repo and
-included with ZAP.  To build, use Eclipse.  Version 0.4 is not fully
-integrated with ZAP just yet.  It will work with ZAP, just needs to be
-properly included into the alpha/beta channels; someone can help with
-that please.
+Burp.  Version 1.0 of the plug-in is included in ZAP's GitHub repo and
+included with ZAP.  To build, use Eclipse.
 
 # Version History
 
@@ -236,11 +233,7 @@ that please.
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
-* Get the ZAP version into the mainline build; at alpha now, we need:
-	1. Add i18n support, including a few translations.
-	2. Custom wiki page on ZAP website.
-	3. Dynamic Load() and Unload() -- is this required for passive scanners.
-	4. Help file integration.
+* Get the ZAP version into the mainline build; at beta now.
 * More generalized research.  Images with embedded locations were found
   in a real-world situation with high privacy implications; thus a
   severe audit finding and the impetus for this project.  This images
