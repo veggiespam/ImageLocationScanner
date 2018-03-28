@@ -18,6 +18,8 @@ sourceSets {
     }
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_6
+
 task fatJar(type: Jar) {
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
