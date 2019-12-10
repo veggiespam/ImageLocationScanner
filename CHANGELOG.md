@@ -3,6 +3,8 @@
 * git-tip -
 	* Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code; of course
 	* Break out README.md into a CONTRIBTORS.md and CHANGELOG.md
+	* New IPTC privacy tags
+	* Updated libs to Metadata Extractor 2.12.0 & XMP 6.0.6
 * 1.0 / 2018-01-22 -
 	* Gradle build automatically downloads the Burp API jar, so no need to include code in Git repo any longer
 	* Fixed mixed spaces-and-tabs, thanks to ZAP's [@kingthorin](https://github.com/kingthorin)
