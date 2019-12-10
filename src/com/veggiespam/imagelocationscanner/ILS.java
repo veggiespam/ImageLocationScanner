@@ -280,6 +280,8 @@ public class ILS {
 
 		int iptc_tag_list[] = {
 			IptcDirectory.TAG_CITY,
+			IptcDirectory.TAG_SUB_LOCATION,
+			IptcDirectory.TAG_PROVINCE_OR_STATE,
 			IptcDirectory.TAG_CONTENT_LOCATION_CODE,
 			IptcDirectory.TAG_CONTENT_LOCATION_NAME,
 			IptcDirectory.TAG_COUNTRY_OR_PRIMARY_LOCATION_CODE,
