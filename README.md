@@ -156,7 +156,7 @@ into ZAP.
   1.7.13; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
   version 2.12.0; uses Apache License v2.0
-* &dagger; [XMP Library for Java](http://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/5.1.2)
+* &dagger; [XMP Library for Java](https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/6.0.6)
   version 6.0.6; uses BSD License
 
 &dagger; These will be auto-fetched if you build with Gradle.
