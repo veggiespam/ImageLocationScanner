@@ -52,24 +52,24 @@ for the MetaData Extractor and the Adobe XMP library.  To from the
 command line, just do:
 
 ```
-$ java ...
+$ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
 Java Image Location & Privacy Scanner
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-	-h : optional specifer to output results in HTML format
-	-t : optional specifer to output results in plain text format (default)
+	-h : optional specifier to output results in HTML format
+	-t : optional specifier to output results in plain text format (default)
 
 # Run main() directly from the Burp jar packaging
-java -classpath image-location-scanner-all.jar com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
+$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
 
-# Example command line output
-Processing Panasonic DMC-TZ10.jpg :
-Location Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
-Location Panasonic: City = OLDENBURG (OLDB.)
-Location Panasonic: Country = GERMANY
-Location Panasonic: State = OLDENBURG (OLDB.)
+# Example command line output:
+Processing Panasonic DMC-TZ10.jpg : Location:: Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
+Panasonic: City = OLDENBURG (OLDB.)
+Panasonic: Country = GERMANY
+Panasonic: State = OLDENBURG (OLDB.)
+
 
 Privacy:: Panasonic: Face Recognition Info = Face 1: x: 142 y: 120 width: 76 height: 76 name: NIELS age: 31 years 7 months 15 days
-Privacy Panasonic: Internal Serial Number = F541005110191
+Panasonic: Internal Serial Number = F541005110191
 
 Processing Panasonic Lumix DMC-LX7.jpg :
 
