@@ -19,8 +19,8 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 0.4
- * @see http://www.veggiespam.com/ils/
+ * @version 1.1
+ * @see https://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck
 {
@@ -40,6 +40,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     /** Used in some debug statements. */
     private static final String SEP = " | ";
 
+    private ArrayList<String> mimeList = null;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
     	this.callbacks = callbacks;
@@ -49,6 +50,10 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	callbacks.registerScannerCheck(this);
     	
         stdout = callbacks.getStdout();
+
+        /*  The mimeList is an array of all mimetypes that this plug-in will be scan.  They must be valid 
+            "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere). */
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "png", "tiff"));
 
         db("loaded plug-in, version " + ILS.pluginVersion);
     }
@@ -64,14 +69,14 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	//db("doPassiveScan()");
     	
         URL url = helpers.analyzeRequest(baseRequestResponse).getUrl();
-        String mimeInferred = helpers.analyzeResponse(baseRequestResponse.getResponse()).getInferredMimeType();
+        String mimeInferred = helpers.analyzeResponse(baseRequestResponse.getResponse()).getInferredMimeType().toLowerCase();
         
         // inferred seems to work, no need for additional checking on stated types
         // String mimeStated = helpers.analyzeResponse(baseRequestResponse.getResponse()).getStatedMimeType();
         
-        String fileName = url.getFile();
+        // String fileName = url.getFile();  // debugging only now.  burp's inferred mime works, no need to look at filename.
         
-        /* The extension was online needed for stated processing, but we don't
+        /* The file's extension was only needed for stated processing, but we don't
          * need to do that.  So, ignore unless there is a need for it later if
          * a new condition is discovered
          */
@@ -84,9 +89,9 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         */
         
         // If body type is png / jpg / tiff, then we call the scanner on the response body
-		if ((mimeInferred.equalsIgnoreCase("JPEG")) 
-		   ||  (mimeInferred.equalsIgnoreCase("PNG")) 
-		   ||  (mimeInferred.equalsIgnoreCase("TIFF")) ) {
+        // We search a set of Burp's inferred mimetypes, this mimeList will be user configurable in the future.
+
+		if ( mimeList.contains(mimeInferred) ) {
             byte[] resp = baseRequestResponse.getResponse();
             int responseOffset = helpers.analyzeResponse(resp).getBodyOffset();
             //String responseBody = new String(baseRequestResponse.getResponse()).substring(responseOffset);
@@ -243,5 +248,5 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	}
     }
 }
-// Burp Interface API expample used spaces, so try to be consistent for this file.
+// Burp Interface API example used spaces, so try to be consistent for this file.
 // vim: autoindent expandtab tabstop=4 shiftwidth=4

@@ -9,7 +9,7 @@ children's chatroom.
 More information on this topic, including a white paper
 based on a real-world site audit given as a presentation at the New
 Jersey chapter of the OWASP organization, can be found at
-[www.veggiespam.com/ils/](https://www.veggiespam.com/ils/) .
+[www.veggiespam.com/ils/](https://www.veggiespam.com/ils/).
 
 This software finds the GPS information inside of Exif tags, IPTC codes,
 and proprietary camera codes. Then, the Image Location & Privacy Scanner flags the
@@ -19,17 +19,15 @@ up to the auditor to determine if location exposure is truly a security
 risk based on context.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
-
-Full version history can be found in the [changelog.md](CHANGELOG.md).
+Full version history can be found in the [CHANGELOG.md](CHANGELOG.md).
 
 ## Sample Run
 
-<p><img width="50%" height="50%" src="screenshot-1-burp.png" align="right"/>
+<p><img width="50%" height="50%" src="img/screenshot-1-burp.png" align="right"/>
 Configure the web browser to proxy through Burp or ZAP per the
 instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
 
-* Sample Exif Site: [ReadExifData.com](http://readexifdata.com/)
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
 contains some good images.  But first, in order to view the URLs
 below, you may need to obtain a GitHub session cookie first by going to
@@ -42,12 +40,12 @@ below, you may need to obtain a GitHub session cookie first by going to
     with facial recognition information, like the name and age of the person in
     the picture.  Burp screen shot of this shown to the right and ZAP is
 	shown below.
-* This professional photographer leaves Exif in many photos: [Raia.com](http://raia.com/)
+* This professional photographer leaves Exif & IPTC data in many photos: [Raia.com](https://raia.com/)
 
 <p align="center"><img width="65%" height="65%"
-src="screenshot-1-zap.png" align="center"/></p>
+src="img/screenshot-1-zap.png" align="center"/></p>
 
-The ILS jar file contains a `main()` function,  so it is possible to
+The ILS jar file contains a `main()` function, so it is possible to
 directly run the scanner from the command line on local files.  The
 classpath must contain the ILS jar file along with the supporting jars
 for the MetaData Extractor and the Adobe XMP library.  To from the
@@ -131,7 +129,7 @@ into ZAP.
 	- Could be true.  This information exposure list was built by
 	scanning all tags available as part of MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
-	on github.
+	on GitHub.
 * Why does it say "City = " with no city listed
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
 	In newer versions ILS, we simply filter out strings that start with

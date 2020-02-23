@@ -46,13 +46,13 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 1.0
+ * @version 1.1
  * @see https://www.veggiespam.com/ils/
  */
 public class ILS {
 
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
-	public static final String pluginName = "Image Location and Privacy Scanner";
+	public static final String pluginName = "Image Location & Privacy Scanner";
 	public static final String pluginVersion = "1.0";
 	public static final String alertTitle = "Image Exposes Location or Privacy Data";
 	public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
@@ -99,9 +99,9 @@ public class ILS {
 	public static String[] scanForLocationInImageBoth(byte[] data)   {
 		String[] results = { EmptyString, EmptyString };
 		
-		/*  // Extreme debugging code for making sure data from Burp/ZAP/newproxy gets into 
+		/*  // Extreme debugging code for making sure data from Burp/ZAP/new-proxy gets into 
 			// ILS.  This code is very slow and not to be compiled in, even with if(debug)
-			// types of contrusts.  This code this will save the image file to disk for binary
+			// types of constructs.  This code this will save the image file to disk for binary
 			// import debugging.  
 		String t[] = new String[2];
 		try{
@@ -175,7 +175,7 @@ public class ILS {
 		return scanForLocationInImageHTML(data);
 	}
 
-	/** Returns ILS informtion in Text or HTML depending on usehtml flag.
+	/** Returns ILS information in Text or HTML depending on usehtml flag.
 	 * 
 	 * @param data is a byte array that is an image file to test, such as entire jpeg file.
 	 * @param usehtml output as html (true) or plain txt (false)
@@ -195,8 +195,8 @@ public class ILS {
 	 *  @param current The current set of findings, text and HTML.
 	 *  @param bigtype the major category of exposure type, be it "Privacy" or "Location"
 	 *  @param subtype place where exposure lives in the file, such as Exif, IPTC, or proprietary camera Makernote, like "Panasonic".
-	 *  @param expsure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
-	 *  @return Two strings as an array, first string is formattied text, second is HTML.
+	 *  @param exposure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
+	 *  @return Two strings as an array, first string is formatted text, second is HTML.
 	 */
 	private static String[] appendResults(String current[], String bigtype, String subtype, ArrayList<String> exposure)   {
 		String[] tmp = formatResults(bigtype, subtype, exposure);
@@ -208,7 +208,7 @@ public class ILS {
 		return current;
 	}
 
-	/** Tiny chance of XSS inside of Burp/ZAP, return properly escaped HTML. */
+	/** Theoretical chance of XSS inside of Burp/ZAP, so return properly escaped HTML. */
 	private static String escapeHTML(String s) {
 		return s.replace("&","&amp;").replace("<","&gt;");
 	}
@@ -221,8 +221,8 @@ public class ILS {
 	/** Formats the findings in both text and HTML.  
 	 *  @param bigtype the major category of exposure type, be it "Privacy" or "Location"
 	 *  @param subtype place where exposure lives in the file, such as Exif, IPTC, or proprietary camera Makernote, like "Panasonic".
-	 *  @param expsure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
-	 *  @return Two strings as an array, first string is formattied text, second is HTML.
+	 *  @param exposure a list of of strings that describe the exposure; each string is considered a single point of exposure in that one file.
+	 *  @return Two strings as an array, first string is formatted text, second is HTML.
 	 */
 	private static String[] formatResults(String bigtype, String subtype, ArrayList<String> exposure)   {
 		StringBuffer ret = new StringBuffer(200);
@@ -683,8 +683,8 @@ public class ILS {
 		if (args.length == 0){
 			System.out.println("Java Image Location & Privacy Scanner");
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("\t-h : optional specifer to output results in HTML format");
-			System.out.println("\t-t : optional specifer to output results in plain text format (default)");
+			System.out.println("\t-h : optional specifier to output results in HTML format");
+			System.out.println("\t-t : optional specifier to output results in plain text format (default)");
 			return;
 		}
 

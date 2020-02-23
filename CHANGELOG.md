@@ -2,9 +2,9 @@
 
 * git-tip -
 	* Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code; of course
-	* Break out README.md into a CONTRIBTORS.md and CHANGELOG.md
-	* New IPTC privacy tags
-	* Updated libs to Metadata Extractor 2.12.0 & XMP 6.0.6
+	* Break out README.md into CONTRIBUTORS.md and CHANGELOG.md - readme was too long
+	* New IPTC privacy tags leaks detected
+	* Updated libs to Metadata Extractor 2.12.0 & XMP Core 6.0.6 (aka bug fixes and speed ups)
 * 1.0 / 2018-01-22 -
 	* Gradle build automatically downloads the Burp API jar, so no need to include code in Git repo any longer
 	* Fixed mixed spaces-and-tabs, thanks to ZAP's [@kingthorin](https://github.com/kingthorin)
@@ -34,7 +34,7 @@
 * 0.2 -
 	* Added location scanning inside IPTC tags and proprietary Panasonic codes
 	* Added scanning of png and tiff files
-	* Replaced Sanselan with MetaData Extractor and Adobe XMP libraries
+	* Replaced Apache Sanselan with MetaData Extractor and Adobe XMP libraries
 * 0.1 -
 	* Initial release
 	* It works
