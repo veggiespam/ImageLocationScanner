@@ -55,8 +55,8 @@ command line, just do:
 $ java ...
 Java Image Location & Privacy Scanner
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-	-h : output results in HTML format
-	-t : output results in plain text format (default)
+	-h : optional specifer to output results in HTML format
+	-t : optional specifer to output results in plain text format (default)
 
 # Run main() directly from the Burp jar packaging
 java -classpath image-location-scanner-all.jar com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
@@ -161,12 +161,13 @@ into ZAP.
 
 The system is built with Gradle: `gradle fatJar`
 
-That will build the Burp plug-in and it can manually be loaded into
+This will build the Burp plug-in and it can manually be loaded into
 Burp.  Version 0.2 of the plug-in is included in ZAP's GitHub repo and
 included with ZAP.  To build, use Eclipse.  Version 0.4 is not fully
 integrated with ZAP just yet.  It will work with ZAP, just needs to be
 properly included into the alpha/beta channels; someone can help with
 that please.
+
 
 # Random Future Todos
 * Idea from Burp's @pajwigger:  It's quite common that servers return
