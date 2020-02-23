@@ -1,18 +1,19 @@
 # Version History for Image Location & Privacy Scanner
 
-* git-tip -
-	* Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code; of course
+* 1.1 / 2019-02-21 -
+	* Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code
 	* Break out README.md into CONTRIBUTORS.md and CHANGELOG.md - readme was too long
 	* New IPTC privacy tags leaks detected
-	* Updated libs to Metadata Extractor 2.12.0 & XMP Core 6.0.6 (aka bug fixes and speed ups)
+	* Updated depencies to Metadata Extractor 2.13.0 & XMP Core 6.0.6 & Burp Extender API v2.1
+	* Minor speedup in critical path.
 * 1.0 / 2018-01-22 -
 	* Gradle build automatically downloads the Burp API jar, so no need to include code in Git repo any longer
 	* Fixed mixed spaces-and-tabs, thanks to ZAP's [@kingthorin](https://github.com/kingthorin)
 	* Fixed a chance of an image causing HTML-injection inside of Burp; I theorized it existed (maybe a non-Burp app calling ILS would result in full-blown XSS against the infosec tester), but [@pajswigger](https://github.com/pajswigger) from Burp/Portswigger actually exploited this type of injection in the form of `<i>` tags, since Burp rejects `<script>` tags
 	* Nicer Makefile (sigh, yes, I still use make)
 	* Enhanced READMEs, FAQs, screenshots, etc
-    * ZAP now auto-scans images without the need to "un-hide" images
-    * Lots of unit tests via junit inside of ZAP, [@kingthorin](https://github.com/kingthorin) helped a bit
+	* ZAP now auto-scans images without the need to "un-hide" images
+	* Lots of unit tests via junit inside of ZAP, [@kingthorin](https://github.com/kingthorin) helped a bit
 * 0.4 -
 	* New official name: *Image Location & Privacy Scanner*
 	* Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10
