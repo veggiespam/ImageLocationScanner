@@ -3,4 +3,5 @@ burp-build
 *.class
 .*.swp
 .gradle
+.vscode
 build
