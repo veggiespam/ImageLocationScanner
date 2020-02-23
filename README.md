@@ -151,9 +151,9 @@ into ZAP.
 * Java 1.6 or newer
 * Gradle to build
 * &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip)
-  1.7.13; uses proprietary license
+  2.1; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
-  version 2.12.0; uses Apache License v2.0
+  version 2.13.0; uses Apache License v2.0
 * &dagger; [XMP Library for Java](https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/6.0.6)
   version 6.0.6; uses BSD License
 
