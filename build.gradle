@@ -19,7 +19,7 @@ sourceSets {
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_6
+//sourceCompatibility = JavaVersion.VERSION_1_6
 
 task fatJar(type: Jar) {
     baseName = project.name + '-all'
