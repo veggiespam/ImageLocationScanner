@@ -18,6 +18,8 @@ Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
 risk based on context.
 
+There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the report.  The master branch has tags for some relased versions.
+
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
 Full version history can be found in the [CHANGELOG.md](CHANGELOG.md).
 
@@ -86,9 +88,9 @@ The Image Location & Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
 * Burp Pro, 1.4 or newer from
-  [PortSwigger Burp web site](http://portswigger.net/burp/)
+  [PortSwigger Burp web site](https://portswigger.net/burp/Pro)
 * ZAP, 2.7.x or newer from
-  [OWASP ZAP web site](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+  [OWASP ZAP web site](https://www.zaproxy.org)
 
 ## Burp Installation
 
@@ -121,35 +123,35 @@ into ZAP.
 
 
 # <a name="faq"> FAQ
+* When I use Burp, no issues are displayed
+	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location &amp; Privacy Scanner plug-in.
+	- Most likely, images are being hidden by Burp's defaults which also removes any issues detected.  To view, Go to the *Targets* tab and view the Filters.  Then, In the *"Filter by MIME type"*, make sure the **Images** checkbox is enabled.
 * Why do I see two sets of Exif_GPS coordinates  (or other tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
 * You missed the serial number for Camera Type X
 	- Could be true.  This information exposure list was built by
-	scanning all tags available as part of MDE.  If something new was
+	mannually scanning all tags available as part of MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
-	on GitHub.
+	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues) and I'll update in a future release.
 * Why does it say "City = " with no city listed
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
 	In newer versions ILS, we simply filter out strings that start with
 	a null character.  We assume someone isn't hiding data there.
 * When I use ZAP, nothing shows up
 	- Before ZAP 2.7.x, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
-	- If you have images disabled in Global Exclude URL, then the
+	- If you have images disabled in Global Exclude URL, then any
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
 	- Note: As of promotion to beta and rollout of 1.0 ILS, ZAP will
     passively scan images without additional setting changes (as were
     previously required for 0.4 in ILS/alpha).
-* When I use Burp, nothing shows up
-	- You probably have the display filter set to hide images, uncheck
-	the box on the filter in the Targets tab.
 
 ## Build Requirements
 
-* Java 1.6 or newer
-* Gradle to build
+* Java 1.9 or newer
+* Gradle 1.6 or newer to build
 * &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip)
   2.1; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
@@ -159,7 +161,7 @@ into ZAP.
 
 &dagger; These will be auto-fetched if you build with Gradle.
 
-The system is built with Gradle: `gradle fatJar`
+The system is built with Gradle: `gradle fatJar` (or be lazy and use `make`).
 
 This will build the Burp plug-in and it can manually be loaded into
 Burp.  Version 0.2 of the plug-in is included in ZAP's GitHub repo and
