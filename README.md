@@ -18,7 +18,7 @@ Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
 risk based on context.
 
-There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the report.  The master branch has tags for some relased versions.
+There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the report.  The master branch has tags for some released versions.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
 Full version history can be found in the [CHANGELOG.md](CHANGELOG.md).
@@ -103,7 +103,7 @@ Manual Install: Go to Extender &rarr; Extensions &rarr; Add.  Choose the
 type as Java, choose the Image Location and Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location and Privacy Scanner:
-plug-in version 1.0" if successful or display errors on the Error tab.
+plug-in version 1.1" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
@@ -115,7 +115,7 @@ The Image Location and Privacy Scanner is available as part of the beta channel
 in the ZAP Marketplace.  Currently, version 1.0 is present
 in the channel and in the ZAP source code tree.  An
 [issue](https://github.com/zaproxy/zaproxy/issues/4295) has been
-made to elevate version 1.0 into the release channel.
+made to elevate into the release channel.
 
 Image Location and Privacy Scanner also can be downloaded and compiled directly
 into ZAP.
@@ -124,14 +124,14 @@ into ZAP.
 
 # <a name="faq"> FAQ
 * When I use Burp, no issues are displayed
-	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location andamp; Privacy Scanner plug-in.
+	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
 * Why do I see two sets of Exif_GPS coordinates  (or other tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
 * You missed the serial number for Camera Type X
 	- Could be true.  This information exposure list was built by
-	mannually scanning all tags available as part of MDE.  If something new was
+	manually scanning all tags available as part of MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues) and I'll update in a future release.
 * Why does it say "City = " with no city listed
@@ -143,9 +143,6 @@ into ZAP.
 	- If you have images disabled in Global Exclude URL, then any
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
-	- Note: As of promotion to beta and rollout of 1.0 ILS, ZAP will
-    passively scan images without additional setting changes (as were
-    previously required for 0.4 in ILS/alpha).
 
 ## Build Requirements
 
@@ -160,14 +157,9 @@ into ZAP.
 
 &dagger; These will be auto-fetched if you build with Gradle.
 
-The system is built with Gradle: `gradle fatJar` (or be lazy and use `make`).
+The Burp plug-in is built with Gradle: `gradle fatJar` (or be lazy and type `make`). After building, the plug-in can manually be loaded into Burp.  
 
-This will build the Burp plug-in and it can manually be loaded into
-Burp.  Version 0.2 of the plug-in is included in ZAP's GitHub repo and
-included with ZAP.  To build, use Eclipse.  Version 0.4 is not fully
-integrated with ZAP just yet.  It will work with ZAP, just needs to be
-properly included into the alpha/beta channels; someone can help with
-that please.
+To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github.com/zaproxy/zap-extensions) or [my outdated repo](https://github.com/veggiespam/zap-extensions).  Then, overwrite your repo's ILS.java with the updated version.  Compile with `./gradlew :addOns:imagelocationscanner:build` and install *imagelocationscanner-{id}.zap* add-on file into ZAP.
 
 
 # Random Future Todos
