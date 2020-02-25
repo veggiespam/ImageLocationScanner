@@ -13,7 +13,7 @@ import com.veggiespam.imagelocationscanner.ILS;
 
 /**
  * The Burp Pro plug-in wrapper for Veggiespam's Image
- * Location & Privacy Scanner class. Passively scans a data stream containing
+ * Location and Privacy Scanner class. Passively scans a data stream containing
  * an image and reports if the data contains embedded Exif GPS location or
  * other leaked privacy data.
  * 

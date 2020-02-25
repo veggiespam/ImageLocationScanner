@@ -1,8 +1,8 @@
-# Image Location & Privacy Scanner
+# Image Location and Privacy Scanner
 
 Passively scans for GPS location and other privacy-related exposures in images during normal
 security assessments of websites via plug-ins for both Burp & ZAP.  Image
-Location & Privacy Scanner (ILS) assists in situations where end users may post profile
+Location and Privacy Scanner (ILS) assists in situations where end users may post profile
 images and possibly give away their home location, e.g. a dating site or
 children's chatroom.
 
@@ -12,7 +12,7 @@ Jersey chapter of the OWASP organization, can be found at
 [www.veggiespam.com/ils/](https://www.veggiespam.com/ils/).
 
 This software finds the GPS information inside of Exif tags, IPTC codes,
-and proprietary camera codes. Then, the Image Location & Privacy Scanner flags the
+and proprietary camera codes. Then, the Image Location and Privacy Scanner flags the
 findings in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
@@ -55,7 +55,7 @@ command line, just do:
 
 ```bash
 $ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
-Java Image Location & Privacy Scanner v1.1
+Java Image Location and Privacy Scanner v1.1
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
     -h : optional specifier to output results in semi-HTML format
     -t : optional specifier to output results in plain text format (default)
@@ -84,7 +84,7 @@ Note the names of the jar files could be different, please confirm them.
 
 
 # Usage Requirements
-The Image Location & Privacy Scanner runs as both a Burp and ZAP plug-in.
+The Image Location and Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
 * Burp Pro, 1.4 or newer from
@@ -95,14 +95,14 @@ The required versions of those packages are:
 ## Burp Installation
 
 Burp Application Store: Launch Burp and click Extender tab &rarr;
-Bapp Store &rarr; left pane &rarr; Image Location & Privacy Scanner.  In the right window pane, the
+Bapp Store &rarr; left pane &rarr; Image Location and Privacy Scanner.  In the right window pane, the
 version and description of the plug-in will be shown; click the Install
 button to download and activate.
 
 Manual Install: Go to Extender &rarr; Extensions &rarr; Add.  Choose the
-type as Java, choose the Image Location & Privacy Scanner jar file (you built or
+type as Java, choose the Image Location and Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
-click Next.  The next screen will show the "Image Location & Privacy Scanner:
+click Next.  The next screen will show the "Image Location and Privacy Scanner:
 plug-in version 1.0" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
@@ -111,21 +111,20 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 
 ## ZAP Installation
 
-The Image Location & Privacy Scanner is available as part of the beta channel
+The Image Location and Privacy Scanner is available as part of the beta channel
 in the ZAP Marketplace.  Currently, version 1.0 is present
 in the channel and in the ZAP source code tree.  An
 [issue](https://github.com/zaproxy/zaproxy/issues/4295) has been
 made to elevate version 1.0 into the release channel.
 
-Image Location & Privacy Scanner also can be downloaded and compiled directly
+Image Location and Privacy Scanner also can be downloaded and compiled directly
 into ZAP.
 
 
 
 # <a name="faq"> FAQ
 * When I use Burp, no issues are displayed
-	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location &amp; Privacy Scanner plug-in.
-	- Most likely, images are being hidden by Burp's defaults which also removes any issues detected.  To view, Go to the *Targets* tab and view the Filters.  Then, In the *"Filter by MIME type"*, make sure the **Images** checkbox is enabled.
+	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location andamp; Privacy Scanner plug-in.
 * Why do I see two sets of Exif_GPS coordinates  (or other tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS

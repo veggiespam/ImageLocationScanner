@@ -52,7 +52,7 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
 public class ILS {
 
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
-	public static final String pluginName = "Image Location & Privacy Scanner";
+	public static final String pluginName = "Image Location and Privacy Scanner";
 	public static final String pluginVersion = "1.1";
 	public static final String alertTitle = "Image Exposes Location or Privacy Data";
 	public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
@@ -682,7 +682,7 @@ public class ILS {
 	public static void main(String[] args) throws Exception {
 		boolean html = false;
 		if (args.length == 0){
-			System.out.println("Java Image Location & Privacy Scanner v" + pluginVersion);
+			System.out.println("Java Image Location and Privacy Scanner v" + pluginVersion);
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
 			System.out.println("    -h : optional specifier to output results in semi-HTML format");
 			System.out.println("    -t : optional specifier to output results in plain text format (default)");

@@ -1,4 +1,4 @@
-# Version History for Image Location & Privacy Scanner
+# Version History for Image Location and Privacy Scanner
 
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
@@ -23,7 +23,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Lots of unit tests via junit inside of ZAP, [@kingthorin](https://github.com/kingthorin) helped a bit
 
 ## 0.4 - 2017-08-22
-- New official name: ***Image Location & Privacy Scanner***
+- New official name: ***Image Location and Privacy Scanner***
 - Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10
 - Some XMP support removed via MDE; XMP tags weren't correct in some cases.  Those tags will be introduced again in a future MDE
 - Removed legacy jar dependencies
