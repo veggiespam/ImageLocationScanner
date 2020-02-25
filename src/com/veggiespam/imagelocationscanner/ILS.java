@@ -52,7 +52,8 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
 public class ILS {
 
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
-	public static final String pluginName = "Image Location & Privacy Scanner";
+	public static final String pluginName = "Image Location and Privacy Scanner";
+
 	public static final String pluginVersion = "1.1";
 	public static final String alertTitle = "Image Exposes Location or Privacy Data";
 	public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
@@ -129,7 +130,7 @@ public class ILS {
 
 			if (tmp[0].length() > 0) {
 				// minor formatting if we have both.
-				results[0] = tmp[0] + "\n\n" + results[0];
+				results[0] = tmp[0] + "" + results[0];
 				results[1] = "<ul>"  +  tmp[1] + results[1] + "</ul>";
 
 				// AGAIN: this is for extreme debugging
@@ -232,7 +233,7 @@ public class ILS {
 		if (exposure.size() > 0) {
 			retHTML.append(HTML_subtype_begin).append(bigtype).append(" / ").append(subtype).append(HTML_subtype_title_end);
 			for (String finding : exposure) {
-				ret.append(subtype).append(TextSubtypeEnd).append(escapeTEXT(finding)).append("\n");
+				ret.append("\n    ").append(subtype).append(TextSubtypeEnd).append(escapeTEXT(finding));
 				retHTML.append(HTML_finding_begin).append(escapeHTML(finding)).append(HTML_finding_end);
 			}
 			retHTML.append(HTML_subtype_end);
@@ -336,9 +337,9 @@ public class ILS {
 		}
 
 
-		// For Text, add the big type in the final entry
+		// For Text, add the big type in the initial entry
 		if (results[0].length() > 0) {
-			results[0] = bigtype + ":: " + results[0];
+			results[0] = "\n  " + bigtype + ":: " + results[0];
 		}
 
 		return results;
@@ -672,8 +673,9 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 		
+		// For Text, add the big type in the initial entry
 		if (results[0].length() > 0) {
-			results[0] = bigtype + ":: " + results[0];
+			results[0] = "\n  " + bigtype + ":: " + results[0];
 		}
 		return results;
 	}
@@ -681,10 +683,10 @@ public class ILS {
 	public static void main(String[] args) throws Exception {
 		boolean html = false;
 		if (args.length == 0){
-			System.out.println("Java Image Location & Privacy Scanner");
+			System.out.println("Java Image Location and Privacy Scanner v" + pluginVersion);
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("\t-h : optional specifier to output results in HTML format");
-			System.out.println("\t-t : optional specifier to output results in plain text format (default)");
+			System.out.println("    -h : optional specifier to output results in semi-HTML format");
+			System.out.println("    -t : optional specifier to output results in plain text format (default)");
 			return;
 		}
 
