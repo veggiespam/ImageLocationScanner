@@ -53,31 +53,31 @@ classpath must contain the ILS jar file along with the supporting jars
 for the MetaData Extractor and the Adobe XMP library.  To from the
 command line, just do:
 
-```
+```bash
 $ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
-Java Image Location & Privacy Scanner
+Java Image Location & Privacy Scanner v1.1
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-	-h : optional specifier to output results in HTML format
-	-t : optional specifier to output results in plain text format (default)
+    -h : optional specifier to output results in semi-HTML format
+    -t : optional specifier to output results in plain text format (default)
 
 # Run main() directly from the Burp jar packaging
-$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS file1.jpg file2.png file3.tiff
-
-# Example command line output:
-Processing Panasonic DMC-TZ10.jpg : Location:: Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
-Panasonic: City = OLDENBURG (OLDB.)
-Panasonic: Country = GERMANY
-Panasonic: State = OLDENBURG (OLDB.)
-
-
-Privacy:: Panasonic: Face Recognition Info = Face 1: x: 142 y: 120 width: 76 height: 76 name: NIELS age: 31 years 7 months 15 days
-Panasonic: Internal Serial Number = F541005110191
-
+$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
+Processing Panasonic DMC-TZ10.jpg :
+  Location::
+    Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
+    Panasonic: City = OLDENBURG (OLDB.)
+    Panasonic: Country = GERMANY
+    Panasonic: State = OLDENBURG (OLDB.)
+  Privacy::
+    Panasonic: Face Recognition Info = Face 1: x: 142 y: 120 width: 76 height: 76 name: NIELS age: 31 years 7 months 15 days
+    Panasonic: Internal Serial Number = F541005110191
 Processing Panasonic Lumix DMC-LX7.jpg :
-
-Privacy Panasonic: Internal Serial Number = F111311090158
-
-Processing j2.jpg : Location Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
+  Privacy::
+    Panasonic: Internal Serial Number = F111311090158
+Processing j2.jpg :
+  Location::
+    Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
+Processing README.md : None
 ```
 
 Note the names of the jar files could be different, please confirm them.
