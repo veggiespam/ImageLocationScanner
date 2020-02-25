@@ -45,7 +45,7 @@ below, you may need to obtain a GitHub session cookie first by going to
 * This professional photographer leaves Exif & IPTC data in many photos: [Raia.com](https://raia.com/)
 
 <p align="center"><img width="65%" height="65%"
-src="img/screenshot-1-zap.png" align="center"/></p>
+src="img/screenshot-2-zap.png" align="center"/></p>
 
 The ILS jar file contains a `main()` function, so it is possible to
 directly run the scanner from the command line on local files.  The
