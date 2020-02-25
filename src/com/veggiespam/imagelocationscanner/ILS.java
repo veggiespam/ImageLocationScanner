@@ -682,10 +682,10 @@ public class ILS {
 	public static void main(String[] args) throws Exception {
 		boolean html = false;
 		if (args.length == 0){
-			System.out.println("Java Image Location & Privacy Scanner");
+			System.out.println("Java Image Location & Privacy Scanner v" + pluginVersion);
 			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("\t-h : optional specifier to output results in semi-HTML format");
-			System.out.println("\t-t : optional specifier to output results in plain text format (default)");
+			System.out.println("    -h : optional specifier to output results in semi-HTML format");
+			System.out.println("    -t : optional specifier to output results in plain text format (default)");
 			return;
 		}
 
