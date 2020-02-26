@@ -18,7 +18,7 @@ Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
 risk based on context.
 
-There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the report.  The master branch has tags for some released versions.
+There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the repo.  The master branch has tags for some released versions.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
 Full version history can be found in the [CHANGELOG.md](CHANGELOG.md).
@@ -178,7 +178,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
-* Get the ZAP version into the mainline build; at alpha now, we need:
+* Get the ZAP version into the mainline build; at beta now, we need:
 	1. Add i18n support, including a few translations.
 	2. Custom wiki page on ZAP website.
 	3. Dynamic Load() and Unload() -- is this required for passive scanners.
