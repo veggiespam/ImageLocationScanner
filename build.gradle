@@ -1,13 +1,14 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
-    compile 'com.drewnoakes:metadata-extractor:2.10.1'
-    compile group: 'com.adobe.xmp', name: 'xmpcore', version: '5.1.3'
+    compile group: 'net.portswigger.burp.extender', name: 'burp-extender-api', version: '2.1'
+    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.13.0'
+    // disabled xmp, see ILS.java for details.
+    //compile group: 'com.adobe.xmp', name: 'xmpcore', version: '6.0.6'
 }
 
 sourceSets {
@@ -17,6 +18,8 @@ sourceSets {
         }
     }
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_9
 
 task fatJar(type: Jar) {
     baseName = project.name + '-all'
