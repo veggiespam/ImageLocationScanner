@@ -700,14 +700,16 @@ public class ILS {
 				continue;
 			}
 
-			try {
+			File f = new File(s);
+			try (FileInputStream fis = new FileInputStream(f)) {
 				System.out.print("Processing " + s + " : ");
 
-				File f = new File(s);
-				FileInputStream fis = new FileInputStream(f);
 				long size = f.length();
 				byte[] data = new byte[(int) size];
-				fis.read(data);
+				long read = fis.read(data);
+				if (read != size) {
+				    System.out.println("There was a problem reading the file");
+				}
 				fis.close();
 				
 				String res = scanForLocationInImage(data, html);
