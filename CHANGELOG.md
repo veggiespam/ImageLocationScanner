@@ -4,12 +4,15 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 
 ## Unreleased
 - Moved changelog to KeepAChangelog pretty formats
+- Updated build to Metadata Extractor 2.15.0
+- Added support for scanning HEIF image format used by modern iPhone images
+- Minor safety update to fix theoretical missed file close by @kingthorin in #22
 
 ## 1.1 - 2019-02-21
 - Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code
 - Break out README.md into CONTRIBUTORS.md and CHANGELOG.md - readme was too long
 - New IPTC privacy tags leaks detected
-- Updated depencies to Metadata Extractor 2.13.0 & XMP Core 6.0.6 & Burp Extender API v2.1
+- Updated dependencies to Metadata Extractor 2.13.0 & XMP Core 6.0.6 & Burp Extender API v2.1
 - Minor speedup in critical path
 - Gradle build now targets Java 9 API
 
