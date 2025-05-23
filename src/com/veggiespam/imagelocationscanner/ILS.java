@@ -8,11 +8,14 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.lang.GeoLocation;
+import com.drew.metadata.TagDescriptor;
 import com.drew.metadata.exif.GpsDirectory;
 import com.drew.metadata.iptc.IptcDirectory;
 import com.drew.metadata.iptc.IptcDescriptor;
@@ -21,12 +24,18 @@ import com.drew.metadata.exif.makernotes.PanasonicMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.LeicaMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.LeicaMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.ReconyxUltraFireMakernoteDirectory;
+import com.drew.metadata.exif.makernotes.SamsungType2MakernoteDescriptor;
+import com.drew.metadata.exif.makernotes.SamsungType2MakernoteDirectory;
 import com.drew.metadata.exif.makernotes.ReconyxUltraFireMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.ReconyxHyperFireMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.ReconyxHyperFireMakernoteDescriptor;
+import com.drew.metadata.exif.makernotes.ReconyxHyperFire2MakernoteDirectory;
+import com.drew.metadata.exif.makernotes.ReconyxHyperFire2MakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.CanonMakernoteDirectory;
 import com.drew.metadata.exif.makernotes.CanonMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.SigmaMakernoteDirectory;
+import com.drew.metadata.exif.makernotes.SonyTag9050bDescriptor;
+import com.drew.metadata.exif.makernotes.SonyTag9050bDirectory;
 import com.drew.metadata.exif.makernotes.SigmaMakernoteDescriptor;
 import com.drew.metadata.exif.makernotes.NikonType2MakernoteDirectory;
 import com.drew.metadata.exif.makernotes.NikonType2MakernoteDescriptor;
@@ -54,7 +63,7 @@ public class ILS {
 	/** A bunch of static strings that are used by both ZAP and Burp plug-ins. */
 	public static final String pluginName = "Image Location and Privacy Scanner";
 
-	public static final String pluginVersion = "1.1";
+	public static final String pluginVersion = "1.2";
 	public static final String alertTitle = "Image Exposes Location or Privacy Data";
 	public static final String alertDetailPrefix = "This image embeds a location or leaks privacy-related data: ";
 	public static final String alertBackground 
@@ -270,6 +279,14 @@ public class ILS {
 
 					exposure.add(finding);
 				}
+
+				String alt = gpsDir.getDescription(GpsDirectory.TAG_ALTITUDE);
+				String altref = gpsDir.getDescription(GpsDirectory.TAG_ALTITUDE_REF);
+				if (alt != null || altref != null) {
+					String finding = "Altitude: " + (alt == null ? "unknown elevation" : alt) 
+										    + " " + (altref == null ? EmptyString : altref);
+					exposure.add(finding);
+				}
 			}
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
@@ -307,7 +324,7 @@ public class ILS {
 		}
 
 
-		// ** Proprietary camera: Panasonic / Lumix
+		// ** LOCATION: Proprietary camera: Panasonic / Lumix
 		subtype = "Panasonic";
 		Collection<PanasonicMakernoteDirectory> panasonicDirColl = md.getDirectoriesOfType(PanasonicMakernoteDirectory.class);
 
@@ -316,7 +333,8 @@ public class ILS {
 			PanasonicMakernoteDirectory.TAG_COUNTRY,
 			PanasonicMakernoteDirectory.TAG_LANDMARK,
 			PanasonicMakernoteDirectory.TAG_LOCATION,
-			PanasonicMakernoteDirectory.TAG_STATE
+			PanasonicMakernoteDirectory.TAG_STATE,
+			PanasonicMakernoteDirectory.TAG_WORLD_TIME_LOCATION //not 100% sure, but this might expose timezone aka location.
 		};
 
 		if (panasonicDirColl != null) {
@@ -406,30 +424,48 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
-		// ** Proprietary camera: Panasonic / Lumix
-		subtype = "Panasonic";
-		Collection<PanasonicMakernoteDirectory> panasonicDirColl = md.getDirectoriesOfType(PanasonicMakernoteDirectory.class);
+		// ** Proprietary camera: Canon
+		subtype = "Canon";
+		Collection<CanonMakernoteDirectory> canonDirColl = md.getDirectoriesOfType(CanonMakernoteDirectory.class);
 
-		int panasonic_tag_list[] = {
-			PanasonicMakernoteDirectory.TAG_BABY_AGE,
-			PanasonicMakernoteDirectory.TAG_BABY_AGE_1,
-			PanasonicMakernoteDirectory.TAG_BABY_NAME,
-			PanasonicMakernoteDirectory.TAG_FACE_RECOGNITION_INFO,
-			PanasonicMakernoteDirectory.TAG_INTERNAL_SERIAL_NUMBER,
-			PanasonicMakernoteDirectory.TAG_LENS_SERIAL_NUMBER 
-			// What about   TAG_TEXT_STAMP_*  TAG_TITLE 
+		int canon_tag_list[] = {
+			CanonMakernoteDirectory.TAG_CANON_OWNER_NAME, 
+			CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER
 		};
 
-		if (panasonicDirColl != null) {
+		if (canonDirColl != null) {
 			exposure.clear();
 
-			for (PanasonicMakernoteDirectory panasonicDir : panasonicDirColl) {
-				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
-				for (int i=0; i< panasonic_tag_list.length; i++) {
-					String tag = descriptor.getDescription(panasonic_tag_list[i]);
-					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
-						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
+			for (CanonMakernoteDirectory canonDir: canonDirColl) {
+				CanonMakernoteDescriptor descriptor = new CanonMakernoteDescriptor(canonDir);
+				for (int i=0; i< canon_tag_list.length; i++) {
+					String tag = descriptor.getDescription(canon_tag_list[i]);
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						exposure.add(canonDir.getTagName(canon_tag_list[i]) + " = " + tag);
+					}
+				}
+			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
+		}
+
+		// ** Proprietary camera: FujiFilm
+		subtype = "FujiFilm";
+		Collection<FujifilmMakernoteDirectory> fujifilmDirColl = md.getDirectoriesOfType(FujifilmMakernoteDirectory.class);
+
+		int fujifilm_tag_list[] = {
+			FujifilmMakernoteDirectory.TAG_SERIAL_NUMBER
+		};
+
+		if (fujifilmDirColl != null) {
+			exposure.clear();
+
+			for (FujifilmMakernoteDirectory fujifilmDir: fujifilmDirColl) {
+				FujifilmMakernoteDescriptor descriptor = new FujifilmMakernoteDescriptor(fujifilmDir);
+				for (int i=0; i< fujifilm_tag_list.length; i++) {
+					String tag = descriptor.getDescription(fujifilm_tag_list[i]);
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						exposure.add(fujifilmDir.getTagName(fujifilm_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
@@ -462,65 +498,38 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
+		// ** Proprietary camera: Nikon Type 2 (type 1 has no privacy leakage)
+		subtype = "Nikon";
+		Collection<NikonType2MakernoteDirectory> nikonDirColl = md.getDirectoriesOfType(NikonType2MakernoteDirectory.class);
 
-		// ** Proprietary camera: ReconyxHyperFire
-		subtype = "ReconyxHyperFire";
-		Collection<ReconyxHyperFireMakernoteDirectory> reconyxHyperFireDirColl = md.getDirectoriesOfType(ReconyxHyperFireMakernoteDirectory.class);
-
-		int reconyxHyperFire_tag_list[] = {
-			ReconyxHyperFireMakernoteDirectory.TAG_SERIAL_NUMBER
+		int nikon_tag_list[] = {
+			NikonType2MakernoteDirectory.TAG_CAMERA_SERIAL_NUMBER,
+			NikonType2MakernoteDirectory.TAG_CAMERA_SERIAL_NUMBER_2
 		};
 
-		if (reconyxHyperFireDirColl != null) {
+		if (nikonDirColl != null) {
 			exposure.clear();
 
-			for (ReconyxHyperFireMakernoteDirectory reconyxHyperFireDir : reconyxHyperFireDirColl) {
-				ReconyxHyperFireMakernoteDescriptor descriptor = new ReconyxHyperFireMakernoteDescriptor(reconyxHyperFireDir);
-				for (int i=0; i< reconyxHyperFire_tag_list.length; i++) {
-					String tag = descriptor.getDescription(reconyxHyperFire_tag_list[i]);
-					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
-						exposure.add(reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag);
+			for (NikonType2MakernoteDirectory nikonDir: nikonDirColl) {
+				NikonType2MakernoteDescriptor descriptor = new NikonType2MakernoteDescriptor(nikonDir);
+				for (int i=0; i< nikon_tag_list.length; i++) {
+					String tag = descriptor.getDescription(nikon_tag_list[i]);
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						exposure.add(nikonDir.getTagName(nikon_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
 
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
-
-
-		// ** Proprietary camera: ReconyxUltraFire
-		subtype = "ReconyxUltraFire";
-		Collection<ReconyxUltraFireMakernoteDirectory> reconyxUltraFireDirColl = md.getDirectoriesOfType(ReconyxUltraFireMakernoteDirectory.class);
-
-		int reconyxUltraFire_tag_list[] = {
-			ReconyxUltraFireMakernoteDirectory.TAG_SERIAL_NUMBER
-		};
-
-		if (reconyxUltraFireDirColl != null) {
-			exposure.clear();
-
-			for (ReconyxUltraFireMakernoteDirectory reconyxUltraFireDir : reconyxUltraFireDirColl) {
-				ReconyxUltraFireMakernoteDescriptor descriptor = new ReconyxUltraFireMakernoteDescriptor(reconyxUltraFireDir);
-				for (int i=0; i< reconyxUltraFire_tag_list.length; i++) {
-					String tag = descriptor.getDescription(reconyxUltraFire_tag_list[i]);
-					// ReconyxUltraFire occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
-						exposure.add(reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag);
-					}
-				}
-			}
-
-			results = appendResults(results, bigtype, subtype, exposure);
-		}
-
 
 		// ** Proprietary camera: Olympus
 		subtype = "Olympus";
 		Collection<OlympusMakernoteDirectory> olympusDirColl = md.getDirectoriesOfType(OlympusMakernoteDirectory.class);
 
 		int olympus_tag_list[] = {
-			OlympusMakernoteDirectory.TAG_SERIAL_NUMBER_1
+			OlympusMakernoteDirectory.TAG_SERIAL_NUMBER_1,
+			OlympusMakernoteDirectory.TAG_SERIAL_NUMBER_2
 		};
 
 		if (olympusDirColl != null) {
@@ -567,31 +576,153 @@ public class ILS {
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
 
+				
+		// ** Proprietary camera: Panasonic / Lumix
+		subtype = "Panasonic";
+		Collection<PanasonicMakernoteDirectory> panasonicDirColl = md.getDirectoriesOfType(PanasonicMakernoteDirectory.class);
 
-		// ** Proprietary camera: Canon
-		subtype = "Canon";
-		Collection<CanonMakernoteDirectory> canonDirColl = md.getDirectoriesOfType(CanonMakernoteDirectory.class);
-
-		int canon_tag_list[] = {
-			CanonMakernoteDirectory.TAG_CANON_OWNER_NAME, 
-			CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER
+		int panasonic_tag_list[] = {
+			PanasonicMakernoteDirectory.TAG_BABY_AGE,
+			PanasonicMakernoteDirectory.TAG_BABY_AGE_1,
+			PanasonicMakernoteDirectory.TAG_BABY_NAME,
+			PanasonicMakernoteDirectory.TAG_FACE_RECOGNITION_INFO,
+			PanasonicMakernoteDirectory.TAG_INTERNAL_SERIAL_NUMBER,
+			PanasonicMakernoteDirectory.TAG_LENS_SERIAL_NUMBER,
+			PanasonicMakernoteDirectory.TAG_TEXT_STAMP,
+			PanasonicMakernoteDirectory.TAG_TEXT_STAMP_1,
+			PanasonicMakernoteDirectory.TAG_TEXT_STAMP_2,
+			PanasonicMakernoteDirectory.TAG_TEXT_STAMP_3,
+			PanasonicMakernoteDirectory.TAG_TITLE
+			// remember, all Panasonic-proprietary location tags are in the GPS scanning function.
 		};
 
-		if (canonDirColl != null) {
+		if (panasonicDirColl != null) {
 			exposure.clear();
 
-			for (CanonMakernoteDirectory canonDir: canonDirColl) {
-				CanonMakernoteDescriptor descriptor = new CanonMakernoteDescriptor(canonDir);
-				for (int i=0; i< canon_tag_list.length; i++) {
-					String tag = descriptor.getDescription(canon_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						exposure.add(canonDir.getTagName(canon_tag_list[i]) + " = " + tag);
+			for (PanasonicMakernoteDirectory panasonicDir : panasonicDirColl) {
+				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
+				for (int i=0; i< panasonic_tag_list.length; i++) {
+					String tag = descriptor.getDescription(panasonic_tag_list[i]);
+					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
 					}
 				}
 			}
 
 			results = appendResults(results, bigtype, subtype, exposure);
 		}
+
+		// ** Proprietary camera: ReconyxHyperFire2
+		subtype = "ReconyxHyperFire2";
+		Collection<ReconyxHyperFire2MakernoteDirectory> reconyxHyperFire2DirColl = md.getDirectoriesOfType(ReconyxHyperFire2MakernoteDirectory.class);
+
+		int reconyxHyperFire2_tag_list[] = {
+			ReconyxHyperFire2MakernoteDirectory.TAG_SERIAL_NUMBER,
+			ReconyxHyperFire2MakernoteDirectory.TAG_USER_LABEL
+		};
+
+		if (reconyxHyperFire2DirColl != null) {
+			exposure.clear();
+
+			for (ReconyxHyperFire2MakernoteDirectory reconyxHyperFire2Dir : reconyxHyperFire2DirColl) {
+				ReconyxHyperFire2MakernoteDescriptor descriptor = new ReconyxHyperFire2MakernoteDescriptor(reconyxHyperFireDir);
+				for (int i=0; i< reconyxHyperFire2_tag_list.length; i++) {
+					String tag = descriptor.getDescription(reconyxHyperFire2_tag_list[i]);
+					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(reconyxHyperFire2Dir.getTagName(reconyxHyperFire2_tag_list[i]) + " = " + tag);
+					}
+				}
+			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
+		}
+
+		// ** Proprietary camera: ReconyxHyperFire
+		subtype = "ReconyxHyperFire";
+		Collection<ReconyxHyperFireMakernoteDirectory> reconyxHyperFireDirColl = md.getDirectoriesOfType(ReconyxHyperFireMakernoteDirectory.class);
+
+		int reconyxHyperFire_tag_list[] = {
+			ReconyxHyperFireMakernoteDirectory.TAG_SERIAL_NUMBER,
+			ReconyxHyperFireMakernoteDirectory.TAG_USER_LABEL
+		};
+
+		if (reconyxHyperFireDirColl != null) {
+			exposure.clear();
+
+			for (ReconyxHyperFireMakernoteDirectory reconyxHyperFireDir : reconyxHyperFireDirColl) {
+				ReconyxHyperFireMakernoteDescriptor descriptor = new ReconyxHyperFireMakernoteDescriptor(reconyxHyperFireDir);
+				for (int i=0; i< reconyxHyperFire_tag_list.length; i++) {
+					String tag = descriptor.getDescription(reconyxHyperFire_tag_list[i]);
+					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag);
+					}
+				}
+			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
+		}
+
+
+		// ** Proprietary camera: ReconyxUltraFire
+		subtype = "ReconyxUltraFire";
+		Collection<ReconyxUltraFireMakernoteDirectory> reconyxUltraFireDirColl = md.getDirectoriesOfType(ReconyxUltraFireMakernoteDirectory.class);
+
+		int reconyxUltraFire_tag_list[] = {
+			ReconyxUltraFireMakernoteDirectory.TAG_SERIAL_NUMBER,
+			ReconyxUltraFireMakernoteDirectory.TAG_USER_LABEL
+		};
+
+		if (reconyxUltraFireDirColl != null) {
+			exposure.clear();
+
+			for (ReconyxUltraFireMakernoteDirectory reconyxUltraFireDir : reconyxUltraFireDirColl) {
+				ReconyxUltraFireMakernoteDescriptor descriptor = new ReconyxUltraFireMakernoteDescriptor(reconyxUltraFireDir);
+				for (int i=0; i< reconyxUltraFire_tag_list.length; i++) {
+					String tag = descriptor.getDescription(reconyxUltraFire_tag_list[i]);
+					// ReconyxUltraFire occasionally uses "---" when it cannot find info, we choose to strip it out.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+						exposure.add(reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag);
+					}
+				}
+			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
+		}
+
+
+
+	// ** Proprietary camera: Samsung (Type2)
+	{
+		subtype = "Samsung (Type2)";
+		Collection<SamsungType2MakernoteDirectory> dircoll = md.getDirectoriesOfType(SamsungType2MakernoteDirectory.class);			
+
+		final int taglist[] = {
+			SamsungType2MakernoteDirectory.TagSerialNumber,
+			SamsungType2MakernoteDirectory.TagFaceName,
+			SamsungType2MakernoteDirectory.TagInternalLensSerialNumber,
+			SamsungType2MakernoteDirectory.TagEncryptionKey
+		};
+
+		if (dircoll != null) {
+			exposure.clear();
+
+			for (SamsungType2MakernoteDirectory dir: dircoll) {
+				SamsungType2MakernoteDescriptor descriptor = new SamsungType2MakernoteDescriptor(dir);
+				for (int i=0; i< taglist.length; i++) {
+					String tag = descriptor.getDescription(taglist[i]);
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						exposure.add(dir.getTagName(taglist[i]) + " = " + tag);
+					}
+				}
+			}
+
+			results = appendResults(results, bigtype, subtype, exposure);
+		}
+	}
+
 
 
 
@@ -623,56 +754,88 @@ public class ILS {
 
 
 
-		// ** Proprietary camera: Nikon
-		subtype = "Nikon";
-		Collection<NikonType2MakernoteDirectory> nikonDirColl = md.getDirectoriesOfType(NikonType2MakernoteDirectory.class);
 
-		int nikon_tag_list[] = {
-			NikonType2MakernoteDirectory.TAG_CAMERA_SERIAL_NUMBER,
-			NikonType2MakernoteDirectory.TAG_CAMERA_SERIAL_NUMBER_2
-		};
-
-		if (nikonDirColl != null) {
-			exposure.clear();
-
-			for (NikonType2MakernoteDirectory nikonDir: nikonDirColl) {
-				NikonType2MakernoteDescriptor descriptor = new NikonType2MakernoteDescriptor(nikonDir);
-				for (int i=0; i< nikon_tag_list.length; i++) {
-					String tag = descriptor.getDescription(nikon_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						exposure.add(nikonDir.getTagName(nikon_tag_list[i]) + " = " + tag);
-					}
-				}
-			}
-
-			results = appendResults(results, bigtype, subtype, exposure);
-		}
-
-
-		// ** Proprietary camera: FujiFilm
-		subtype = "FujiFilm";
-		Collection<FujifilmMakernoteDirectory> fujifilmDirColl = md.getDirectoriesOfType(FujifilmMakernoteDirectory.class);
-
-		int fujifilm_tag_list[] = {
-			FujifilmMakernoteDirectory.TAG_SERIAL_NUMBER
-		};
-
-		if (fujifilmDirColl != null) {
-			exposure.clear();
-
-			for (FujifilmMakernoteDirectory fujifilmDir: fujifilmDirColl) {
-				FujifilmMakernoteDescriptor descriptor = new FujifilmMakernoteDescriptor(fujifilmDir);
-				for (int i=0; i< fujifilm_tag_list.length; i++) {
-					String tag = descriptor.getDescription(fujifilm_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						exposure.add(fujifilmDir.getTagName(fujifilm_tag_list[i]) + " = " + tag);
-					}
-				}
-			}
-
-			results = appendResults(results, bigtype, subtype, exposure);
-		}
 		
+		// ** Proprietary camera: Sony Tag 9050b
+		{
+			subtype = "Sony (Tag 9050b)";
+			Collection<SonyTag9050bDirectory> dircoll = md.getDirectoriesOfType(SonyTag9050bDirectory.class);			
+
+			final int taglist[] = {
+				SonyTag9050bDirectory.TAG_INTERNAL_SERIAL_NUMBER
+			};
+
+			if (dircoll != null) {
+				exposure.clear();
+
+				for (SonyTag9050bDirectory dir: dircoll) {
+					SonyTag9050bDescriptor descriptor = new SonyTag9050bDescriptor(dir);
+					for (int i=0; i< taglist.length; i++) {
+						String tag = descriptor.getDescription(taglist[i]);
+						if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+							exposure.add(dir.getTagName(taglist[i]) + " = " + tag);
+						}
+					}
+				}
+
+				results = appendResults(results, bigtype, subtype, exposure);
+			}
+		}
+
+
+
+
+/*		
+		List<Class<?>> dirs = List.of(FujifilmMakernoteDirectory.class);
+		List<Class<?>> descriptorslist = List.of(FujifilmMakernoteDescriptor.class);
+		List<String> subtypes= List.of("Fujifilm");
+		List<int[]> taglists = List.of(
+			new int[] { FujifilmMakernoteDirectory.TAG_SERIAL_NUMBER }
+		);
+		for (int i=0; i<dirs.size(); i++) {
+			subtype = subtypes.get(i);
+			int[] taglist = taglists.get(i);
+			Class<?> dirClass = dirs.get(i);
+			TagDescriptor descriptor = (TagDescriptor) descriptorslist.get(i).getConstructor(Directory.class).newInstance();
+			@SuppressWarnings("unchecked")
+			Collection<Directory> dirColl = (Collection<Directory>) md.getDirectoriesOfType((Class<Directory>) dirClass);
+
+			if (dirColl != null) {
+				exposure.clear();
+
+				for (Directory d : dirColl) {
+					for (int j=0; j< taglist.length; j++) {
+						String tag = descriptor.getDescription(taglist[j]);
+						if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+							exposure.add(d.getTagName(taglist[j]) + " = " + tag);
+						}
+					}
+				}
+				results = appendResults(results, bigtype, subtype, exposure);
+			}
+		}
+
+		*/
+
+
+		/* 
+		for (Class<?> dir : dirs) {
+			@SuppressWarnings("unchecked")
+			Collection<Directory> dirColl = md.getDirectoriesOfType((Class<Directory>) dir);
+			if (dirColl != null) {
+				exposure.clear();
+
+				for (Directory d : dirColl) {
+					String tag = d.getDescription(0);
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						exposure.add(d.getTagName(0) + " = " + tag);
+					}
+				}
+				results = appendResults(results, bigtype, subtype, exposure);
+			}
+		}
+		*/
+
 		// For Text, add the big type in the initial entry
 		if (results[0].length() > 0) {
 			results[0] = "\n  " + bigtype + ":: " + results[0];
