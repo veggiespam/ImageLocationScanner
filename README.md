@@ -12,7 +12,7 @@ Jersey chapter of the OWASP organization, can be found at
 [www.veggiespam.com/ils/](https://www.veggiespam.com/ils/).
 
 This software scans images to find the GPS information inside of Exif tags, IPTC codes,
-and proprietary camera tags. Then, the *Image Location and Privacy Scanner* flags the
+and proprietary camera tags. Then, ILS flags the
 findings in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
@@ -31,7 +31,7 @@ instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
 
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
-contains some good images.  But first, in order to view the URLs
+contains some good images.  To view the URLs
 below, you may need to obtain a GitHub session cookie first by going to
 [MDE on GitHub](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg).
     - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
@@ -55,7 +55,7 @@ command line, just do:
 
 ```bash
 $ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
-Java Image Location and Privacy Scanner v1.1
+Java Image Location and Privacy Scanner v1.2
 Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
     -h : optional specifier to output results in semi-HTML format
     -t : optional specifier to output results in plain text format (default)
@@ -87,23 +87,23 @@ Note the names of the jar files could be different, please confirm them.
 The Image Location and Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
-* Burp Pro, 1.4 or newer from
+* Burp Pro, any recent version from
   [PortSwigger Burp web site](https://portswigger.net/burp/Pro)
 * ZAP, 2.7.x or newer from
   [OWASP ZAP web site](https://www.zaproxy.org)
 
 ## Burp Installation
 
-Burp Application Store: Launch Burp and click Extender tab &rarr;
+**Burp Application Store:** Launch Burp and click Extender tab &rarr;
 Bapp Store &rarr; left pane &rarr; Image Location and Privacy Scanner.  In the right window pane, the
 version and description of the plug-in will be shown; click the Install
 button to download and activate.
 
-Manual Install: Go to Extender &rarr; Extensions &rarr; Add.  Choose the
+**Manual Install:** Go to Extender &rarr; Extensions &rarr; Add.  Choose the
 type as Java, choose the Image Location and Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location and Privacy Scanner:
-plug-in version 1.1" if successful or display errors on the Error tab.
+plug-in version 1.2" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
