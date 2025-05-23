@@ -3,13 +3,13 @@
 FATJAR=image-location-scanner-all.jar
 JARPATH=build/libs/$(FATJAR)
 
+# as of now, Burp supports only up to v22 of Java, this is the latest brew LTS version.
+JAVA_HOME=/opt/homebrew/opt/openjdk@21
+
 GRADLE_OPTS=--warning-mode all
 
-# If we let eclipse build for me.  Probably a better way.
-BIN=$(HOME)/proj/eclipse-workspace/burp_image_scan/bin
-
 $(JARPATH): src/com/veggiespam/imagelocationscanner/ILS.java src/burp/BurpExtender.java
-	gradle   $(GRADLE_OPTS)  fatJar
+	gradle   $(GRADLE_OPTS)  jar
 
 run: $(JARPATH)
 	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS
