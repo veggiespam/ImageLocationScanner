@@ -19,7 +19,7 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 1.1
+ * @version 1.2
  * @see https://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck
@@ -40,6 +40,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     /** Used in some debug statements. */
     private static final String SEP = " | ";
 
+    /** List of Burp's inferred mimetypes we will scan, configured in registerExtenderCallbacks(). */
     private ArrayList<String> mimeList = null;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
@@ -53,7 +54,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
 
         /*  The mimeList is an array of all mimetypes that this plug-in will be scan.  They must be valid 
             "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere). */
-        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "png", "tiff"));
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "png", "tiff", "heif"));
 
         db("loaded plug-in, version " + ILS.pluginVersion);
     }
@@ -88,7 +89,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         //db(mimeStated + SEP + mimeInferred + SEP + extension);
         */
         
-        // If body type is png / jpg / tiff, then we call the scanner on the response body
+        // If body type is png / jpg / etc, then we call the scanner on the response body
         // We search a set of Burp's inferred mimetypes, this mimeList will be user configurable in the future.
 
 		if ( mimeList.contains(mimeInferred) ) {
