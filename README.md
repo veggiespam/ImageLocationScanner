@@ -163,7 +163,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 
 
 # Random Future Todos
-* Idea from Burp's @pajwigger:  It's quite common that servers return
+* Idea from Burp's @pajswigger:  It's quite common that servers return
   304 not modified. It might be a good trick, if you see a request for
   an image, and there's only 304s in the site map – that in an active
   scan you fetch the image.
