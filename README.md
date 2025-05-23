@@ -11,8 +11,8 @@ based on a real-world site audit given as a presentation at the New
 Jersey chapter of the OWASP organization, can be found at
 [www.veggiespam.com/ils/](https://www.veggiespam.com/ils/).
 
-This software finds the GPS information inside of Exif tags, IPTC codes,
-and proprietary camera codes. Then, the Image Location and Privacy Scanner flags the
+This software scans images to find the GPS information inside of Exif tags, IPTC codes,
+and proprietary camera tags. Then, the *Image Location and Privacy Scanner* flags the
 findings in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
@@ -50,7 +50,7 @@ src="img/screenshot-2-zap.png" align="center"/></p>
 The ILS jar file contains a `main()` function, so it is possible to
 directly run the scanner from the command line on local files.  The
 classpath must contain the ILS jar file along with the supporting jars
-for the MetaData Extractor and the Adobe XMP library.  To from the
+for the MetaData Extractor.  To run from the
 command line, just do:
 
 ```bash
@@ -125,19 +125,25 @@ into ZAP.
 # <a name="faq"> FAQ
 * When I use Burp, no issues are displayed
 	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
-* Why do I see two sets of Exif_GPS coordinates  (or other tag)
+* Why do I see two sets of Exif_GPS coordinates (or another tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
+* I see GPS location and altitude, but where is the speed, bearing, reference data, etc
+  - We decided to not display all the GPS data, simply the location and altitude.
 * You missed the serial number for Camera Type X
 	- Could be true.  This information exposure list was built by
-	manually scanning all tags available as part of MDE.  If something new was
+	manually looking through all Exif tags available in MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues) and I'll update in a future release.
-* Why does it say "City = " with no city listed
+* Why does it say `City = ` with no city listed
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
 	In newer versions ILS, we simply filter out strings that start with
 	a null character.  We assume someone isn't hiding data there.
+* Another Exif scanner says `City = ---` but ILS does not show this value.
+  - Some cameras and devices, like Panasonic, place "---" into fields 
+    where there is no value or the value is unknown.  
+    ILS just filters this data out.
 * When I use ZAP, nothing shows up
 	- Before ZAP 2.7.x, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
 	- If you have images disabled in Global Exclude URL, then any
@@ -149,9 +155,9 @@ into ZAP.
 * Java 1.9 or newer
 * Gradle 1.6 or newer to build
 * &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip)
-  2.1; uses proprietary license
+  2.3; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
-  version 2.13.0; uses Apache License v2.0
+  version 2.19.0; uses Apache License v2.0
 * &dagger; [XMP Library for Java](https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/6.0.6)
   version 6.0.6; uses BSD License
 
@@ -163,7 +169,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 
 
 # Random Future Todos
-* Idea from Burp's @pajswigger:  It's quite common that servers return
+* Idea from Burp's @pajwigger:  It's quite common that servers return
   304 not modified. It might be a good trick, if you see a request for
   an image, and there's only 304s in the site map – that in an active
   scan you fetch the image.
@@ -175,6 +181,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 	  what ever MetaData Extractor finds.
 	* Donate any new test images to MetaData Extractor project for
 	  better cataloging.
+* XMP scanner support was removed from MDE as processing [was not reliable](https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7).  Since some drones embedded GPS information tags via XMP, it would be good to add support back once MDE adds it.  There is an XMP tag for TAG_CAMERA_SERIAL_NUMBER too.
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
@@ -198,7 +205,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 * For unit tests inside of the ZAP integration, create a test which uses
   different content types.
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, XMP, IPTC, PII
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, IPTC, PII, OpSec
 
 <!--
 vim: sw=4 ts=4 sts=4 spell noexpandtab
