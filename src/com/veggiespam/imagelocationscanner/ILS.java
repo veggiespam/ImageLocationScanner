@@ -626,7 +626,7 @@ public class ILS {
 			exposure.clear();
 
 			for (ReconyxHyperFire2MakernoteDirectory reconyxHyperFire2Dir : reconyxHyperFire2DirColl) {
-				ReconyxHyperFire2MakernoteDescriptor descriptor = new ReconyxHyperFire2MakernoteDescriptor(reconyxHyperFireDir);
+				ReconyxHyperFire2MakernoteDescriptor descriptor = new ReconyxHyperFire2MakernoteDescriptor(reconyxHyperFire2Dir);
 				for (int i=0; i< reconyxHyperFire2_tag_list.length; i++) {
 					String tag = descriptor.getDescription(reconyxHyperFire2_tag_list[i]);
 					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
