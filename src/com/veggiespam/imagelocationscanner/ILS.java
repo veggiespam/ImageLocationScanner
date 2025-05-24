@@ -90,6 +90,13 @@ public class ILS {
 	private static final String HTML_finding_begin = "\t<li>";
 	private static final String HTML_finding_end = "</li>\n";
 
+	// Used in the results array and elsewhere, values are an index.
+	public enum OutputFormat { 
+		out_text,				// == 0
+		out_html, 				// == 1
+		out_md  				// == 2
+	};
+
 	public ILS() {
 		// blank constructor
 		super();
@@ -107,7 +114,7 @@ public class ILS {
 	 * @return String containing the Location data or an empty String indicating no GPS data found.
 	 */
 	public static String[] scanForLocationInImageBoth(byte[] data)   {
-		String[] results = { EmptyString, EmptyString };
+		String[] results = { EmptyString, EmptyString, EmptyString };
 		
 		/*  // Extreme debugging code for making sure data from Burp/ZAP/new-proxy gets into 
 			// ILS.  This code is very slow and not to be compiled in, even with if(debug)
@@ -132,7 +139,7 @@ public class ILS {
 			BufferedInputStream is = new BufferedInputStream(new ByteArrayInputStream(data, 0, data.length));
 			Metadata md = ImageMetadataReader.readMetadata(is);
 
-			String[] tmp = { EmptyString, EmptyString };
+			String[] tmp = { EmptyString, EmptyString, EmptyString };
 
 			tmp = scanForLocation(md);
 			results = scanForPrivacy(md);
@@ -141,10 +148,12 @@ public class ILS {
 				// minor formatting if we have both.
 				results[0] = tmp[0] + "" + results[0];
 				results[1] = "<ul>"  +  tmp[1] + results[1] + "</ul>";
+				results[2] = "    "  +  tmp[2] + results[2];
 
 				// AGAIN: this is for extreme debugging
 				// results[0] = "DBG: " + t[0] + "\n\n" + results[0];
 				// results[1] = "DBG: " + t[1] + "\n\n" + results[1]; 
+				// results[2] = "DBG: " + t[2] + "\n\n" + results[2]; 
 			}
 
 
@@ -176,13 +185,12 @@ public class ILS {
 		return scanForLocationInImageBoth(data)[0];
 	}
 
-
-	/** 
-	 * @deprecated Use the HTML / Text calls directly or use boolean construct.
+	/** Returns ILS information as Markdown formatting string.
+	 * 
+	 * @see scanForLocationInImageBoth
 	 */
-	@Deprecated
-	public static String scanForLocationInImage(byte[] data)   {
-		return scanForLocationInImageHTML(data);
+	public static String scanForLocationInImageMD(byte[] data)   {
+		return scanForLocationInImageBoth(data)[2];
 	}
 
 	/** Returns ILS information in Text or HTML depending on usehtml flag.
@@ -191,12 +199,34 @@ public class ILS {
 	 * @param usehtml output as html (true) or plain txt (false)
 	 * @return String containing the Location data or an empty String indicating no GPS data found.
 	 * @see scanForLocationInImageBoth
+	 * @deprecated "Use scanForLocationInImage(byte[] data, OutputFormat outputtype) instead. - removal in ILS v2.0"
 	 */
+	@Deprecated
 	public static String scanForLocationInImage(byte[] data, boolean usehtml)   {
 		if (usehtml) {
 			return scanForLocationInImageHTML(data);
 		} else {
 			return scanForLocationInImageText(data);
+		}
+	}
+
+	/** Returns ILS information in Text or HTML or Markdown depending on outputtype flag.
+	 * 
+	 * @param data is a byte array that is an image file to test, such as entire jpeg file.
+	 * @param outputtype output as html (true) or plain txt (false)
+	 * @return String containing the Location data or an empty String indicating no GPS data found.
+	 * @see scanForLocationInImageBoth
+	 */
+	public static String scanForLocationInImage(byte[] data, OutputFormat outputtype)   {
+		switch (outputtype) {
+			case out_text:
+				return scanForLocationInImageText(data);
+			case out_html:
+				return scanForLocationInImageHTML(data);
+			case out_md:
+				return scanForLocationInImageMD(data);
+			default:
+				return scanForLocationInImageText(data);
 		}
 	}
 
@@ -214,6 +244,7 @@ public class ILS {
 		if (tmp[0].length() > 0) {
 			current[0] = current[0] + tmp[0];
 			current[1] = current[1] + tmp[1];
+			current[2] = current[2] + tmp[2];
 		}
 		return current;
 	}
@@ -223,6 +254,11 @@ public class ILS {
 		return s.replace("&","&amp;").replace("<","&gt;");
 	}
 
+	/** Since MD allows HTML directly, escape as HTML.  Probalby needs more work. */
+	private static String escapeMD(String s) {
+		return escapeHTML(s);
+	}
+	
 	/** Do this for completeness, even if a no-op for now. */
 	private static String escapeTEXT(String s) {
 		return s;  // might want to do more here someday, like binary data as hex codes, etc...
@@ -237,19 +273,22 @@ public class ILS {
 	private static String[] formatResults(String bigtype, String subtype, ArrayList<String> exposure)   {
 		StringBuffer ret = new StringBuffer(200);
 		StringBuffer retHTML = new StringBuffer(200);
-		String[] retarr = { EmptyString, EmptyString };
+		StringBuffer retMD = new StringBuffer(200);
+		String[] retarr = { EmptyString, EmptyString, EmptyString };
 
 		if (exposure.size() > 0) {
 			retHTML.append(HTML_subtype_begin).append(bigtype).append(" / ").append(subtype).append(HTML_subtype_title_end);
 			for (String finding : exposure) {
 				ret.append("\n    ").append(subtype).append(TextSubtypeEnd).append(escapeTEXT(finding));
 				retHTML.append(HTML_finding_begin).append(escapeHTML(finding)).append(HTML_finding_end);
+				retMD.append("\n    * ").append(subtype).append(TextSubtypeEnd).append(escapeMD(finding));
 			}
 			retHTML.append(HTML_subtype_end);
 		}
 
 		retarr[0] = ret.toString();
 		retarr[1] = retHTML.toString();
+		retarr[2] = retMD.toString();
 
 		return retarr;
 	}
@@ -260,7 +299,7 @@ public class ILS {
 	public static String[] scanForLocation(Metadata md)   {
 		ArrayList<String> exposure = new ArrayList<String>();
 
-		String[] results = { EmptyString, EmptyString };
+		String[] results = { EmptyString, EmptyString, EmptyString };
 
 		String bigtype = "Location";  // Overall category type.  Location or Privacy
 		String subtype = EmptyString;
@@ -360,6 +399,11 @@ public class ILS {
 			results[0] = "\n  " + bigtype + ":: " + results[0];
 		}
 
+		// For MD, add the big type in the initial entry
+		if (results[2].length() > 0) {
+			results[2] = "\n* " + bigtype + ":: " + results[2];
+		}
+
 		return results;
 	}
 
@@ -368,7 +412,7 @@ public class ILS {
 		String subtype = EmptyString;
 		ArrayList<String> exposure = new ArrayList<String>();
 
-		String[] results = { EmptyString, EmptyString };
+		String[] results = { EmptyString, EmptyString, EmptyString };
 
 		/*  See https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7
 			for the reasons why this was disabled.
@@ -696,7 +740,7 @@ public class ILS {
 
 	// ** Proprietary camera: Samsung (Type2)
 	{
-		subtype = "Samsung (Type2)";
+		subtype = "Samsung-Type2";
 		Collection<SamsungType2MakernoteDirectory> dircoll = md.getDirectoriesOfType(SamsungType2MakernoteDirectory.class);			
 
 		final int taglist[] = {
@@ -758,7 +802,7 @@ public class ILS {
 		
 		// ** Proprietary camera: Sony Tag 9050b
 		{
-			subtype = "Sony (Tag 9050b)";
+			subtype = "Sony-Tag9050b";
 			Collection<SonyTag9050bDirectory> dircoll = md.getDirectoriesOfType(SonyTag9050bDirectory.class);			
 
 			final int taglist[] = {
@@ -840,32 +884,85 @@ public class ILS {
 		if (results[0].length() > 0) {
 			results[0] = "\n  " + bigtype + ":: " + results[0];
 		}
+		// For MD, add the big type in the initial entry
+		if (results[2].length() > 0) {
+			results[2] = "\n* " + bigtype + ":: " + results[2];
+		}
 		return results;
 	}
 
+	// Each paragraph is an array entry
+	public static final String CommandLineHelp[] = {
+		"Copyright Jay Ball (@veggiespam), See github.com/veggiespam/"
+		,
+		"Passively scans for GPS location and other privacy-related exposures in images during normal security " +
+		"assessments of websites; this jar is also a plug-in for both Burp & ZAP.  Image Location and Privacy Scanner (ILS) assists " +
+		"in situations where end users may post profile images and possibly give away their home location, e.g. a dating site or children's chatroom."
+		,
+		"More information on this topic, including a white paper based on a real-world site audit given as a " +
+		"presentation at the New Jersey chapter of the OWASP organization, can be found at https://www.veggiespam.com/ils/"
+		,
+		"This software scans images to find the GPS information inside of Exif tags, IPTC codes, " +
+		"and proprietary camera tags. Then, it outputs the findings to the console " 
+	};
+
 	public static void main(String[] args) throws Exception {
-		boolean html = false;
+		OutputFormat outputtype = OutputFormat.out_text;
 		if (args.length == 0){
-			System.out.println("Java Image Location and Privacy Scanner v" + pluginVersion);
-			System.out.println("Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("    -h : optional specifier to output results in semi-HTML format");
-			System.out.println("    -t : optional specifier to output results in plain text format (default)");
+			System.out.println("Image Location and Privacy Scanner v" + pluginVersion);
+			System.out.println("Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]");
+			System.out.println("    -h : output results in semi-HTML format");
+			System.out.println("    -m : output results in Markdown format");
+			System.out.println("    -t : output results in plain text format (default)");
+			System.out.println("    --help : detailed help");
 			return;
 		}
 
 		for (String s: args) {
-			if (s.equals("-h")) {
-				html=true;
-				continue;
-			}
 			if (s.equals("-t")) {
-				html=false;
+				outputtype = OutputFormat.out_text;
+				continue;
+			}			
+			if (s.equals("-h")) {
+				outputtype = OutputFormat.out_html;
+				continue;
+			}	
+			if (s.equals("-m")) {
+				outputtype = OutputFormat.out_md;
 				continue;
 			}
+			if (s.equals("--help")) {
+				System.out.println("Image Location and Privacy Scanner v" + pluginVersion + "\n");
+				for (String para : CommandLineHelp) {
+					// by vitaut from https://stackoverflow.com/questions/4212675/wrap-the-string-after-a-number-of-characters-word-wise-in-java
+					// this code does not work on multi-paragraph string, thus the array usage. 
+					StringBuilder sb = new StringBuilder(para);
+					int i = 0;
+					int width = 80;
+					while (i + width < sb.length() && (i = sb.lastIndexOf(" ", i + width)) != -1) {
+						sb.replace(i, i + 1, "\n");
+					}
+					sb.append("\n");
+					System.out.println(sb.toString());
+				}
+				System.exit(0);
+			}
+
+
 
 			File f = new File(s);
 			try (FileInputStream fis = new FileInputStream(f)) {
-				System.out.print("Processing " + s + " : ");
+				switch (outputtype) {
+					case out_text:
+						System.out.print("Processing " + s + " : ");
+						break;
+					case out_html:
+						System.out.println("<h3>" + s + "</h3>");
+						break;
+					case out_md:
+						System.out.print("# " + s);
+						break;
+				}
 
 				long size = f.length();
 				byte[] data = new byte[(int) size];
@@ -875,7 +972,7 @@ public class ILS {
 				}
 				fis.close();
 				
-				String res = scanForLocationInImage(data, html);
+				String res = scanForLocationInImage(data, outputtype);
 				if (0 == res.length())  {
 					res = "None";
 				}
