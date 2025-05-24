@@ -55,10 +55,12 @@ command line, just do:
 
 ```bash
 $ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
-Java Image Location and Privacy Scanner v1.2
-Usage: java ILS.class [-h|-t] file1.jpg file2.png file3.txt [...]
-    -h : optional specifier to output results in semi-HTML format
-    -t : optional specifier to output results in plain text format (default)
+Image Location and Privacy Scanner v1.2
+Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]
+    -h : output results in semi-HTML
+    -m : output results in Markdown
+    -t : output results in plain text (default)
+    --help : detailed help
 
 # Run main() directly from the Burp jar packaging
 $ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
@@ -136,14 +138,16 @@ into ZAP.
 	manually looking through all Exif tags available in MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues) and I'll update in a future release.
-* Why does it say `City = ` with no city listed
+* Another Exif scanner says `City = ` with no city listed
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
 	In newer versions ILS, we simply filter out strings that start with
-	a null character.  We assume someone isn't hiding data there.
+	a null character.  We assume someone isn't hiding data after the first null.
 * Another Exif scanner says `City = ---` but ILS does not show this value.
   - Some cameras and devices, like Panasonic, place "---" into fields 
-    where there is no value or the value is unknown.  
-    ILS just filters this data out.
+    where there is no value or the value is unknown.  Other examples observed are
+    "Off" when there is no data entered into the text field or a feature is
+    inactive or a single space for a name.
+    ILS just filters these fields from the display since there is no location or privacy leakage.
 * When I use ZAP, nothing shows up
 	- Before ZAP 2.7.x, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
 	- If you have images disabled in Global Exclude URL, then any

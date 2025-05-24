@@ -353,8 +353,9 @@ public class ILS {
 				IptcDescriptor iptcDesc = new IptcDescriptor(iptcDir);
 				for (int i=0; i< iptc_tag_list.length; i++) {
 					String tag = iptcDesc.getDescription(iptc_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
-						exposure.add( iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag );
+					// Sometimes, a space is used in fields
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals(" ") || tag.charAt(0) == '\0' )) {
+						exposure.add( iptcDir.getTagName(iptc_tag_list[i]) + " = '" + tag +"'");
 					}
 				}
 			}
@@ -383,8 +384,8 @@ public class ILS {
 				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
 				for (int i=0; i< panasonic_tag_list.length; i++) {
 					String tag = descriptor.getDescription(panasonic_tag_list[i]);
-					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					// Panasonic occasionally uses "---" when it cannot complete a field or "Off" when no data is present, we choose to ignore these fields.
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off")|| tag.charAt(0) == '\0' )) {
 						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -459,7 +460,7 @@ public class ILS {
 				IptcDescriptor iptcDesc = new IptcDescriptor(iptcDir);
 				for (int i=0; i< iptc_tag_list.length; i++) {
 					String tag = iptcDesc.getDescription(iptc_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add( iptcDir.getTagName(iptc_tag_list[i]) + " = " + tag );
 					}
 				}
@@ -484,7 +485,7 @@ public class ILS {
 				CanonMakernoteDescriptor descriptor = new CanonMakernoteDescriptor(canonDir);
 				for (int i=0; i< canon_tag_list.length; i++) {
 					String tag = descriptor.getDescription(canon_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(canonDir.getTagName(canon_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -508,7 +509,7 @@ public class ILS {
 				FujifilmMakernoteDescriptor descriptor = new FujifilmMakernoteDescriptor(fujifilmDir);
 				for (int i=0; i< fujifilm_tag_list.length; i++) {
 					String tag = descriptor.getDescription(fujifilm_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(fujifilmDir.getTagName(fujifilm_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -532,8 +533,7 @@ public class ILS {
 				LeicaMakernoteDescriptor descriptor = new LeicaMakernoteDescriptor(leicaDir);
 				for (int i=0; i< leica_tag_list.length; i++) {
 					String tag = descriptor.getDescription(leica_tag_list[i]);
-					// Leica occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(leicaDir.getTagName(leica_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -558,7 +558,7 @@ public class ILS {
 				NikonType2MakernoteDescriptor descriptor = new NikonType2MakernoteDescriptor(nikonDir);
 				for (int i=0; i< nikon_tag_list.length; i++) {
 					String tag = descriptor.getDescription(nikon_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(nikonDir.getTagName(nikon_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -583,7 +583,7 @@ public class ILS {
 				OlympusMakernoteDescriptor descriptor = new OlympusMakernoteDescriptor(olympusDir);
 				for (int i=0; i< olympus_tag_list.length; i++) {
 					String tag = descriptor.getDescription(olympus_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(olympusDir.getTagName(olympus_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -611,7 +611,7 @@ public class ILS {
 				OlympusEquipmentMakernoteDescriptor descriptor = new OlympusEquipmentMakernoteDescriptor(olympusEquipmentDir);
 				for (int i=0; i< olympusEquipment_tag_list.length; i++) {
 					String tag = descriptor.getDescription(olympusEquipment_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(olympusEquipmentDir.getTagName(olympusEquipment_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -647,8 +647,7 @@ public class ILS {
 				PanasonicMakernoteDescriptor descriptor = new PanasonicMakernoteDescriptor(panasonicDir);
 				for (int i=0; i< panasonic_tag_list.length; i++) {
 					String tag = descriptor.getDescription(panasonic_tag_list[i]);
-					// Panasonic occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(panasonicDir.getTagName(panasonic_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -673,8 +672,7 @@ public class ILS {
 				ReconyxHyperFire2MakernoteDescriptor descriptor = new ReconyxHyperFire2MakernoteDescriptor(reconyxHyperFire2Dir);
 				for (int i=0; i< reconyxHyperFire2_tag_list.length; i++) {
 					String tag = descriptor.getDescription(reconyxHyperFire2_tag_list[i]);
-					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(reconyxHyperFire2Dir.getTagName(reconyxHyperFire2_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -699,8 +697,7 @@ public class ILS {
 				ReconyxHyperFireMakernoteDescriptor descriptor = new ReconyxHyperFireMakernoteDescriptor(reconyxHyperFireDir);
 				for (int i=0; i< reconyxHyperFire_tag_list.length; i++) {
 					String tag = descriptor.getDescription(reconyxHyperFire_tag_list[i]);
-					// ReconyxHyperFire occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(reconyxHyperFireDir.getTagName(reconyxHyperFire_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -726,8 +723,7 @@ public class ILS {
 				ReconyxUltraFireMakernoteDescriptor descriptor = new ReconyxUltraFireMakernoteDescriptor(reconyxUltraFireDir);
 				for (int i=0; i< reconyxUltraFire_tag_list.length; i++) {
 					String tag = descriptor.getDescription(reconyxUltraFire_tag_list[i]);
-					// ReconyxUltraFire occasionally uses "---" when it cannot find info, we choose to strip it out.
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(reconyxUltraFireDir.getTagName(reconyxUltraFire_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -757,7 +753,7 @@ public class ILS {
 				SamsungType2MakernoteDescriptor descriptor = new SamsungType2MakernoteDescriptor(dir);
 				for (int i=0; i< taglist.length; i++) {
 					String tag = descriptor.getDescription(taglist[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(dir.getTagName(taglist[i]) + " = " + tag);
 					}
 				}
@@ -786,7 +782,7 @@ public class ILS {
 				SigmaMakernoteDescriptor descriptor = new SigmaMakernoteDescriptor(sigmaDir);
 				for (int i=0; i< sigma_tag_list.length; i++) {
 					String tag = descriptor.getDescription(sigma_tag_list[i]);
-					if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+					if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 						exposure.add(sigmaDir.getTagName(sigma_tag_list[i]) + " = " + tag);
 					}
 				}
@@ -816,7 +812,7 @@ public class ILS {
 					SonyTag9050bDescriptor descriptor = new SonyTag9050bDescriptor(dir);
 					for (int i=0; i< taglist.length; i++) {
 						String tag = descriptor.getDescription(taglist[i]);
-						if ( ! ( null == tag || tag.equals(EmptyString) || tag.charAt(0) == '\0' )) {
+						if ( ! ( null == tag || tag.equals(EmptyString) || tag.equals("---") || tag.equals("Off") || tag.equals(" ") || tag.charAt(0) == '\0' )) {
 							exposure.add(dir.getTagName(taglist[i]) + " = " + tag);
 						}
 					}
@@ -911,9 +907,9 @@ public class ILS {
 		if (args.length == 0){
 			System.out.println("Image Location and Privacy Scanner v" + pluginVersion);
 			System.out.println("Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]");
-			System.out.println("    -h : output results in semi-HTML format");
-			System.out.println("    -m : output results in Markdown format");
-			System.out.println("    -t : output results in plain text format (default)");
+			System.out.println("    -h : output results in semi-HTML");
+			System.out.println("    -m : output results in Markdown");
+			System.out.println("    -t : output results in plain text (default)");
 			System.out.println("    --help : detailed help");
 			return;
 		}
