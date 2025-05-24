@@ -1,6 +1,6 @@
 # Here be dragons.  Best to just ignore this.
 
-FATJAR=image-location-scanner-all.jar
+FATJAR=image-location-scanner.jar
 JARPATH=build/libs/$(FATJAR)
 
 # as of now, Burp supports only up to v22 of Java, this is the latest brew LTS version.
