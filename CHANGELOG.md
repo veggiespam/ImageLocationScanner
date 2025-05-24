@@ -11,6 +11,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Modernized Gradle build to something supported in last decade
 - New leaked data detected in Samsung, Reconyx, Sony images
 - Added GPS elevation detection
+- Added Markdown output support for #24
 
 ## 1.1 - 2019-02-21
 - Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code
