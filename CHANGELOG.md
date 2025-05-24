@@ -1,6 +1,6 @@
 # Version History for Image Location and Privacy Scanner
 
-Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  See also [Contributors](CONTRIBUTORS.md).
 
 ## Unreleased
 - Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
