@@ -374,7 +374,7 @@ public class ILS {
 			PanasonicMakernoteDirectory.TAG_LANDMARK,
 			PanasonicMakernoteDirectory.TAG_LOCATION,
 			PanasonicMakernoteDirectory.TAG_STATE,
-			PanasonicMakernoteDirectory.TAG_WORLD_TIME_LOCATION //not 100% sure, but this might expose timezone aka location.
+			//PanasonicMakernoteDirectory.TAG_WORLD_TIME_LOCATION  //not 100% sure, but this might expose timezone aka location - I only see value "HOME".
 		};
 
 		if (panasonicDirColl != null) {
