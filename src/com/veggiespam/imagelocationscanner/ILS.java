@@ -78,7 +78,7 @@ public class ILS {
 		+ "component.  Other data, like serial numbers, should also be removed.";
 	public static final String remediationDetail = null;
 	public static final String referenceURL = "https://www.veggiespam.com/ils/"; 
-	public static final String pluginAuthor = "Jay Ball (veggiespam)"; 
+	public static final String pluginAuthor = "Jay Ball (@veggiespam) www.veggiespam.com"; 
 
 	private static final String EmptyString = "";
 	private static final String TextSubtypeEnd = ": "; // colon space for plain text results
@@ -111,7 +111,7 @@ public class ILS {
 	 * the function will return an empty string of "".
 	 * 
 	 * @param data is a byte array that is an image file to test, such as entire jpeg file.
-	 * @return String containing the Location data or an empty String indicating no GPS data found.
+	 * @return String Array containing the Location data or an empty String indicating no GPS data found.
 	 */
 	public static String[] scanForLocationInImageBoth(byte[] data)   {
 		String[] results = { EmptyString, EmptyString, EmptyString };
@@ -120,7 +120,7 @@ public class ILS {
 			// ILS.  This code is very slow and not to be compiled in, even with if(debug)
 			// types of constructs.  This code this will save the image file to disk for binary
 			// import debugging.  
-		String t[] = new String[2];
+		String t[] = new String[3];
 		try{
 	   		FileOutputStream o = new FileOutputStream(new File("/tmp/output.jpg"));
 			o.write(data);
@@ -128,10 +128,12 @@ public class ILS {
 		} catch (IOException e) {
 			t[0] = "IOException Exception " + e.toString();
 			t[1] = t[0];
+			t[2] = t[0];
 			return t;
 		}
 		t[0] = "Scanning " + data.length + "\n\n";
 		t[1] = t[0];
+		t[2] = t[0];
 		// return t;   /*   --- if you use this line, remember to comment out rest of function.
 		*/	
 
@@ -249,19 +251,19 @@ public class ILS {
 		return current;
 	}
 
+	/** Do this for completeness, even if a no-op for now. */
+	private static String escapeTEXT(String s) {
+		return s;  // might want to do more here someday, like binary data as hex codes, etc...
+	}
+
 	/** Theoretical chance of XSS inside of Burp/ZAP, so return properly escaped HTML. */
 	private static String escapeHTML(String s) {
 		return s.replace("&","&amp;").replace("<","&gt;");
 	}
 
-	/** Since MD allows HTML directly, escape as HTML.  Probalby needs more work. */
+	/** Since MD allows HTML directly, escape as HTML.  Probably needs more work. */
 	private static String escapeMD(String s) {
 		return escapeHTML(s);
-	}
-	
-	/** Do this for completeness, even if a no-op for now. */
-	private static String escapeTEXT(String s) {
-		return s;  // might want to do more here someday, like binary data as hex codes, etc...
 	}
 
 	/** Formats the findings in both text and HTML.  
