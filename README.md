@@ -51,10 +51,10 @@ The ILS jar file contains a `main()` function, so it is possible to
 directly run the scanner from the command line on local files.  The
 classpath must contain the ILS jar file along with the supporting jars
 for the MetaData Extractor.  To run from the
-command line, just do:
+command line:
 
 ```bash
-$ java -classpath build/libs/image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
+$ java -classpath image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
 Image Location and Privacy Scanner v1.2
 Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]
     -h : output results in semi-HTML
@@ -63,7 +63,7 @@ Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]
     --help : detailed help
 
 # Run main() directly from the Burp jar packaging
-$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
+$ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
 Processing Panasonic DMC-TZ10.jpg :
   Location::
     Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
@@ -82,7 +82,7 @@ Processing j2.jpg :
 Processing README.md : None
 
 # With Markdown output:
-$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS -m [...files...]
+$ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS -m [...files...]
 # ../images/Panasonic Lumix DMC-LX7.jpg
 * Privacy:: 
     * Panasonic: Internal Serial Number = F111311090158
@@ -97,7 +97,7 @@ $ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imag
     * IPTC: Keywords = Communications
 ```
 
-Note the names of the jar files could be different, please confirm them.
+Jar filenames could be different, please confirm classpath.  Yes, "Ubited" is spelled that way in the jpg.
 
 
 # Usage Requirements
@@ -111,12 +111,12 @@ The required versions of those packages are:
 
 ## Burp Installation
 
-**Burp Application Store:** Launch Burp and click Extender tab &rarr;
+***Burp Application Store:*** Launch Burp and click Extender tab &rarr;
 Bapp Store &rarr; left pane &rarr; Image Location and Privacy Scanner.  In the right window pane, the
 version and description of the plug-in will be shown; click the Install
 button to download and activate.
 
-**Manual Install:** Go to Extender &rarr; Extensions &rarr; Add.  Choose the
+***Manual Install:*** Go to Extender &rarr; Extensions &rarr; Add.  Choose the
 type as Java, choose the Image Location and Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location and Privacy Scanner:
@@ -152,7 +152,8 @@ into ZAP.
 	- Could be true.  This information exposure list was built by
 	manually looking through all Exif tags available in MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
-	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues) and I'll update in a future release.
+	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues)
+  and we will update in a future release.
 * Another Exif scanner says `City = ` with no city listed
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
 	In newer versions ILS, we simply filter out strings that start with
@@ -164,7 +165,7 @@ into ZAP.
     inactive or a single space for a name.
     ILS just filters these fields from the display since there is no location or privacy leakage.
 * When I use ZAP, nothing shows up
-	- Before ZAP 2.7.x, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
+	- You must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
 	- If you have images disabled in Global Exclude URL, then any
 	passive image scanner, like ILS, will be unable to see the images
 	and report on privacy issues.
@@ -177,9 +178,6 @@ into ZAP.
   2.3; uses proprietary license
 * &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
   version 2.19.0; uses Apache License v2.0
-* &dagger; [XMP Library for Java](https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore/6.0.6)
-  version 6.0.6; uses BSD License
-
 &dagger; These will be auto-fetched if you build with Gradle.
 
 The Burp plug-in is built with Gradle: `gradle fatJar` (or be lazy and type `make`). After building, the plug-in can manually be loaded into Burp.  
@@ -204,6 +202,7 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
+* Migrate ILS to the new Burp Montoya API from current Burp legacy API
 * Get the ZAP version into the mainline build; at beta now, we need:
 	1. Add i18n support, including a few translations.
 	2. Custom wiki page on ZAP website.
@@ -217,8 +216,6 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
   like dating or children-only social networking sites.  How pervasive
   is the issue on sensitive websites?
 * White paper with better examples of "how to fix".
-* Get a Eclipse + ZAP environment working so I can test those updates
-  easier.
 * For unit tests inside of the ZAP integration, add more test images for
   various cameras and location exposure, maybe a loop checking for this.
 * For unit tests inside of the ZAP integration, create a test which uses
