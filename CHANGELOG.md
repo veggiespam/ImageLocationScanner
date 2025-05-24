@@ -10,7 +10,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Modernized Gradle build to something supported in last decade
 - Added support for Samsung, more Reconyxs, & Sony camera proprietary privacy leakage 
 - Added GPS elevation detection
-- Added Markdown output support for #24 (*\*sponsored feature\**)
+- Added Markdown output support for [#24](https://github.com/veggiespam/ImageLocationScanner/issues/24) (*\*sponsored feature\**)
 - Moved changelog to KeepAChangelog pretty format
 - Tons of typo updates and better English
 
