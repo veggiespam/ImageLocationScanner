@@ -47,6 +47,8 @@ below, you may need to obtain a GitHub session cookie first by going to
 <p align="center"><img width="65%" height="65%"
 src="img/screenshot-2-zap.png" align="center"/></p>
 
+## Command Line Options
+
 The ILS jar file contains a `main()` function, so it is possible to
 directly run the scanner from the command line on local files.  The
 classpath must contain the ILS jar file along with the supporting jars
@@ -186,10 +188,12 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 
 
 # Random Future Todos
+## Functionality, Features, & Code
 * Idea from Burp's @pajwigger:  It's quite common that servers return
   304 not modified. It might be a good trick, if you see a request for
   an image, and there's only 304s in the site map – that in an active
   scan you fetch the image.
+* Have a configuration option to only show alerts if the Exif or other location is in a selective area, like a certain country or range of GPS coordinates. Otherwise, ignore the image. [enhancement suggestion #10](https://github.com/veggiespam/ImageLocationScanner/issues/10)
 * Need better testing and examples.
 	* Get more IPTC test images with both location names and GPS
 	  positions.  ILS tests for names, but it is unknown if IPTC
@@ -202,12 +206,8 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 * There is much repeated code.  It would be better to use function
   pointers.  String of subtype, Class type, int[] of TAGS.  One of
   these days, I'll do that.
-* Migrate ILS to the new Burp Montoya API from current Burp legacy API
-* Get the ZAP version into the mainline build; at beta now, we need:
-	1. Add i18n support, including a few translations.
-	2. Custom wiki page on ZAP website.
-	3. Dynamic Load() and Unload() -- is this required for passive scanners.
-	4. Help file integration.
+
+## Research & Help
 * More generalized research.  Images with embedded locations were found
   in a real-world situation with high privacy implications; thus a
   severe audit finding and the impetus for this project.  This images
@@ -216,12 +216,20 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
   like dating or children-only social networking sites.  How pervasive
   is the issue on sensitive websites?
 * White paper with better examples of "how to fix".
+
+## ZAP and Burp
+* Migrate ILS to the new Burp Montoya API from current Burp legacy API
+* Get the ZAP version into the mainline build; at beta now, we need:
+	1. Add i18n support, including a few translations.
+	2. Custom wiki page on ZAP website.
+	3. Dynamic Load() and Unload() -- is this required for passive scanners.
+	4. Help file integration.
 * For unit tests inside of the ZAP integration, add more test images for
   various cameras and location exposure, maybe a loop checking for this.
 * For unit tests inside of the ZAP integration, create a test which uses
   different content types.
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, IPTC, PII, OpSec
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
 
 <!--
 vim: sw=4 ts=4 sts=4 spell noexpandtab
