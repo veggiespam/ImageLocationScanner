@@ -80,6 +80,21 @@ Processing j2.jpg :
   Location::
     Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
 Processing README.md : None
+
+# With Markdown output:
+$ java -classpath build/libs/image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS -m [...files...]
+# ../images/Panasonic Lumix DMC-LX7.jpg
+* Privacy:: 
+    * Panasonic: Internal Serial Number = F111311090158
+# ../images/Sony ILCE-7M4 (A7M4).JPG
+* Privacy:: 
+    * Sony-Tag9050b: Internal Serial Number = 42ff00002009
+# ../images/FujiFilm FinePixS1Pro (1).jpg    
+* Location:: 
+    * Exif_GPS: 54° 59' 22.8", -1° 54' 51"
+    * IPTC: Country/Primary Location Name = 'Ubited Kingdom'
+* Privacy:: 
+    * IPTC: Keywords = Communications
 ```
 
 Note the names of the jar files could be different, please confirm them.
