@@ -3,15 +3,16 @@
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-- Moved changelog to KeepAChangelog pretty formats
 - Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
     * Burp Extender is legacy API, need to migrate to Burp's Montoya API in future
 - Added support for scanning HEIF image format used by modern iPhone images
 - Minor safety update to fix theoretical missed file close by @kingthorin in #22
 - Modernized Gradle build to something supported in last decade
-- New leaked data detected in Samsung, Reconyx, Sony images
+- Added support for Samsung, more Reconyxs, & Sony camera proprietary privacy leakage 
 - Added GPS elevation detection
 - Added Markdown output support for #24
+- Moved changelog to KeepAChangelog pretty format (*sponsored feature*)
+- Tons of typo updates and better English
 
 ## 1.1 - 2019-02-21
 - Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code
