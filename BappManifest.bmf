@@ -8,5 +8,5 @@ MinPlatformVersion: 0
 ProOnly: True
 Author: Jay Ball @veggiespam www.veggiespam.com
 ShortDescription: Passively scans jpeg / png / etc for embedded GPS, IPTC, and camera-proprietary location & privacy exposures. 
-EntryPoint: build/libs/image-location-scanner-all.jar
+EntryPoint: build/libs/image-location-scanner.jar
 BuildCommand: gradle fatJar
