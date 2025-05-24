@@ -204,8 +204,8 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 	  better cataloging.
 * XMP scanner support was removed from MDE as processing [was not reliable](https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7).  Since some drones embedded GPS information tags via XMP, it would be good to add support back once MDE adds it.  There is an XMP tag for TAG_CAMERA_SERIAL_NUMBER too.
 * There is much repeated code.  It would be better to use function
-  pointers.  String of subtype, Class type, int[] of TAGS.  One of
-  these days, I'll do that.
+  pointers.  String of subtype, Class of camera type, int[] of TAGS.  One of
+  these days, I'll do that.  There is some non-working commented out code that experiments with this.
 
 ## Research & Help
 * More generalized research.  Images with embedded locations were found
