@@ -6,7 +6,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
     + Burp Extender is legacy API, need to migrate to Burp's Montoya API in future
 - Added support for scanning HEIF image format used by modern iPhone images
-- Minor safety update to fix theoretical missed file close by @kingthorin in #22
+- Minor safety update to fix theoretical missed file close by @kingthorin in [#22](https://github.com/veggiespam/ImageLocationScanner/issues/22) 
 - Modernized Gradle build to something supported in last decade
 - Added support for Samsung, more Reconyxs, & Sony camera proprietary privacy leakage 
 - Added GPS elevation detection
