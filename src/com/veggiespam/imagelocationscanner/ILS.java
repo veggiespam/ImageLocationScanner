@@ -891,17 +891,15 @@ public class ILS {
 
 	// Each paragraph is an array entry
 	public static final String CommandLineHelp[] = {
-		"Copyright Jay Ball (@veggiespam), See github.com/veggiespam/"
+		"Copyright © Jay Ball (@veggiespam)"
 		,
-		"Passively scans for GPS location and other privacy-related exposures in images during normal security " +
-		"assessments of websites; this jar is also a plug-in for both Burp & ZAP.  Image Location and Privacy Scanner (ILS) assists " +
-		"in situations where end users may post profile images and possibly give away their home location, e.g. a dating site or children's chatroom."
+		"See github.com/veggiespam/ImageLocationScanner - license Apache 2.0"
 		,
-		"More information on this topic, including a white paper based on a real-world site audit given as a " +
-		"presentation at the New Jersey chapter of the OWASP organization, can be found at https://www.veggiespam.com/ils/"
+		"Passively scans for GPS location and other privacy-related exposures in images during normal security  assessments of websites; this jar is also a plug-in for both Burp & ZAP.  Image Location and Privacy Scanner (ILS) assists in situations where end users may post profile images and possibly give away their home location, e.g. a dating site or children's chatroom."
 		,
-		"This software scans images to find the GPS information inside of Exif tags, IPTC codes, " +
-		"and proprietary camera tags. Then, it outputs the findings to the console " 
+		"More information on this topic, including a white paper based on a real-world site audit given as a presentation at the New Jersey chapter of the OWASP organization, can be found at https://www.veggiespam.com/ils/"
+		,
+		"This software scans images to find the GPS information inside of Exif tags, IPTC codes, and proprietary camera tags. Then, it outputs the findings to the console " 
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -912,7 +910,7 @@ public class ILS {
 			System.out.println("    -h : output results in semi-HTML");
 			System.out.println("    -m : output results in Markdown");
 			System.out.println("    -t : output results in plain text (default)");
-			System.out.println("    --help : detailed help");
+			System.out.println("    --help : detailed description");
 			return;
 		}
 
@@ -930,10 +928,10 @@ public class ILS {
 				continue;
 			}
 			if (s.equals("--help")) {
-				System.out.println("Image Location and Privacy Scanner v" + pluginVersion + "\n");
+				System.out.println("Image Location and Privacy Scanner v" + pluginVersion);
 				for (String para : CommandLineHelp) {
 					// by vitaut from https://stackoverflow.com/questions/4212675/wrap-the-string-after-a-number-of-characters-word-wise-in-java
-					// this code does not work on multi-paragraph string, thus the array usage. 
+					// this code does not work on multi-paragraph \n'd string, thus added the array hack. 
 					StringBuilder sb = new StringBuilder(para);
 					int i = 0;
 					int width = 80;
