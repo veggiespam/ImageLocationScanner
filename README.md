@@ -21,7 +21,7 @@ risk based on context.
 There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the repo.  The master branch has tags for some released versions.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
-Full version history can be found in the [CHANGELOG.md](CHANGELOG.md).
+Full version history can be found in the [CHANGELOG.md](CHANGELOG.md) and future ideas for implementation can be found in the [TODO](TODO.md).
 
 ## Sample Run
 
@@ -124,6 +124,9 @@ downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location and Privacy Scanner:
 plug-in version 1.2" if successful or display errors on the Error tab.
 Click close to return to Burp.
+
+By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
+
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
 Free version.  So, the plug-in will only function inside of Burp Pro.
