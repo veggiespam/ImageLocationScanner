@@ -2,13 +2,17 @@ package com.veggiespam.imagelocationscanner;
 
 import java.io.File;
 import java.io.FileInputStream;
-//import java.io.FileOutputStream;	// Only needed when debugging the code
+import java.io.FileOutputStream;		// for debugging only
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -116,27 +120,35 @@ public class ILS {
 	public static String[] scanForLocationInImageBoth(byte[] data)   {
 		String[] results = { EmptyString, EmptyString, EmptyString };
 		
-		/*  // Extreme debugging code for making sure data from Burp/ZAP/new-proxy gets into 
-			// ILS.  This code is very slow and not to be compiled in, even with if(debug)
-			// types of constructs.  This code this will save the image file to disk for binary
-			// import debugging.  
-		String t[] = new String[3];
-		try{
-	   		FileOutputStream o = new FileOutputStream(new File("/tmp/output.jpg"));
-			o.write(data);
-			o.close();
-		} catch (IOException e) {
-			t[0] = "IOException Exception " + e.toString();
+		// Extreme debugging code for making sure data from Burp/ZAP/new-proxy gets into 
+		// ILS.  This code is very slow and not to be compiled in, even with if(debug)
+		// types of constructs.  This code this will save the image file to disk for binary
+		// import debugging.
+		/*
+		if (false) {
+			String t[] = { EmptyString, EmptyString, EmptyString };
+			try{
+				TimeZone tz = TimeZone.getTimeZone("UTC");
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+				df.setTimeZone(tz);
+				String nowAsISO = df.format(new Date());
+				FileOutputStream o = new FileOutputStream(new File("/tmp/ILS-debug-" + nowAsISO + ".jpg"));
+				o.write(data);
+				o.close();
+			} catch (IOException e) {
+				t[0] = "IOException Exception " + e.toString();
+				t[1] = t[0];
+				t[2] = t[0];
+				return t;
+			}
+			t[0] = "Scanning " + data.length + "\n\n";
 			t[1] = t[0];
 			t[2] = t[0];
-			return t;
+			// return t;   
+			//   --- if you use this return line, remember to comment out rest of function.
 		}
-		t[0] = "Scanning " + data.length + "\n\n";
-		t[1] = t[0];
-		t[2] = t[0];
-		// return t;   /*   --- if you use this line, remember to comment out rest of function.
-		*/	
-
+		*/
+		
 		try {
 			BufferedInputStream is = new BufferedInputStream(new ByteArrayInputStream(data, 0, data.length));
 			Metadata md = ImageMetadataReader.readMetadata(is);
@@ -147,24 +159,26 @@ public class ILS {
 			results = scanForPrivacy(md);
 
 			if (tmp[0].length() > 0) {
-				// minor formatting if we have both.
+				// minor formatting update if we have both Location and Privacy.
 				results[0] = tmp[0] + "" + results[0];
 				results[1] = "<ul>"  +  tmp[1] + results[1] + "</ul>";
 				results[2] = "    "  +  tmp[2] + results[2];
 
+				/*
 				// AGAIN: this is for extreme debugging
-				// results[0] = "DBG: " + t[0] + "\n\n" + results[0];
-				// results[1] = "DBG: " + t[1] + "\n\n" + results[1]; 
-				// results[2] = "DBG: " + t[2] + "\n\n" + results[2]; 
+				results[0] = "DBG: " + t[0] + "\n\n" + results[0];
+				results[1] = "DBG: " + t[1] + "\n\n" + results[1]; 
+				results[2] = "DBG: " + t[2] + "\n\n" + results[2]; 
+				 */
 			}
 
 
 		} catch (ImageProcessingException e) {
 			// bad image, just ignore processing exceptions
-			// DEBUG: return new String("ImageProcessingException " + e.toString());
+			// DEBUG: return new String("ImageProcessingException: " + e.toString());
 		} catch (IOException e) {
 			// bad file or something, just ignore 
-			// DEBUG: return new String("IOException " + e.toString());
+			// DEBUG: return new String("IOException: " + e.toString());
 		}
 
 		return results; 
@@ -376,7 +390,7 @@ public class ILS {
 			PanasonicMakernoteDirectory.TAG_LANDMARK,
 			PanasonicMakernoteDirectory.TAG_LOCATION,
 			PanasonicMakernoteDirectory.TAG_STATE,
-			//PanasonicMakernoteDirectory.TAG_WORLD_TIME_LOCATION  //not 100% sure, but this might expose timezone aka location - I only see value "HOME".
+			//PanasonicMakernoteDirectory.TAG_WORLD_TIME_LOCATION  // might expose timezone aka location - but I only see value "HOME" in my samples.
 		};
 
 		if (panasonicDirColl != null) {
