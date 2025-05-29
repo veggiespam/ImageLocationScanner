@@ -21,7 +21,7 @@ risk based on context.
 There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the repo.  The master branch has tags for some released versions.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
-Full version history can be found in the [CHANGELOG.md](CHANGELOG.md) and future ideas for implementation can be found in the [TODO](TODO.md).
+Full version history can be found in the [CHANGELOG.md](CHANGELOG.md) and future ideas for implementation can be found in the [TODO.md](TODO.md).
 
 ## Sample Run
 
@@ -99,7 +99,7 @@ $ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationsc
     * IPTC: Keywords = Communications
 ```
 
-Jar filenames could be different, please confirm classpath.  Yes, "Ubited" is spelled that way in the jpg.
+Jar filenames could be different, please confirm classpath.  Yes, "Ubited" is misspelled in the sample jpg.
 
 
 # Usage Requirements
@@ -122,11 +122,10 @@ button to download and activate.
 type as Java, choose the Image Location and Privacy Scanner jar file (you built or
 downloaded), leave Standard Output & Error as "Show in UI" and then
 click Next.  The next screen will show the "Image Location and Privacy Scanner:
-plug-in version 1.2" if successful or display errors on the Error tab.
+plug-in version x.x" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
-By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
-
+🚨 **IMPORTANT** 🚨 By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
 Free version.  So, the plug-in will only function inside of Burp Pro.
@@ -142,15 +141,18 @@ made to elevate into the release channel.
 Image Location and Privacy Scanner also can be downloaded and compiled directly
 into ZAP.
 
-
+🚨 **IMPORTANT** 🚨 By default, ZAP hides the images.  So, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.  If you have images disabled in ZAP's Global Exclude URL feature, the ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
 
 # <a name="faq"> FAQ
-* When I use Burp, no issues are displayed
-	- By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
+* When I use Burp or ZAP, no issues are displayed
+	- By default, both hide images in general usage. As such, enable image display using the directions above.
 * Why do I see two sets of Exif_GPS coordinates (or another tag)
 	- This means the image has been embedded with multiple Exif tags of
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
+* What types of image files are scanned, why don't you scan type X
+  - Currently, ILS scans: "jpeg", "jpg", "png", "tiff", "heif", "gif" extensions and mime types
+  - ILS could possibly find leaks in "raw" or "psd" (Photoshop), but those files 1) are generally not displayed in-line on a browser and 2) can be huge and would start slowing down Burp
 * I see GPS location and altitude, but where is the speed, bearing, reference data, etc
   - We decided to not display all the GPS data, simply the location and altitude.
 * You missed the serial number for Camera Type X
@@ -167,13 +169,8 @@ into ZAP.
   - Some cameras and devices, like Panasonic, place "---" into fields 
     where there is no value or the value is unknown.  Other examples observed are
     "Off" when there is no data entered into the text field or a feature is
-    inactive or a single space for a name.
+    inactive or a single space for a name or "-".
     ILS just filters these fields from the display since there is no location or privacy leakage.
-* When I use ZAP, nothing shows up
-	- You must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.
-	- If you have images disabled in Global Exclude URL, then any
-	passive image scanner, like ILS, will be unable to see the images
-	and report on privacy issues.
 
 ## Build Requirements
 
