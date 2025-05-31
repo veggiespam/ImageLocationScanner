@@ -57,8 +57,13 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         stdout = callbacks.getStdout();
 
         /*  The mimeList is an array of all mimetypes that this plug-in will be scan.  They must be valid 
-            "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere). */
-        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "tiff", "heif", "gif"));
+            "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere).
+            
+            We support most image types, include gif, tiff, psd, etc.  But... realistically, we only 
+            need to scan for jpg, heif, and png as those are what most devices produce. 
+            
+            We should experiment with raw types too. */
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif"));
 
         db(modName + " v" + ILS.pluginVersion + " started.");
         db("Registered mimetypes to scan: " + mimeList.toString());
@@ -104,13 +109,13 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         // We search a set of Burp's inferred mimetypes, this mimeList will be user configurable in the future.
 
 		if ( mimeList.contains(mimeInferred) ||  mimeList.contains(mimeStated) || mimeList.contains(extension) ) {
-            db("Probably image file, scanning for data leakage.");
+            db("Probably image file, scanning for data leakage via ILS.scanForLocationInImageHTML().");
             byte[] resp = baseRequestResponse.getResponse();
             int responseOffset = helpers.analyzeResponse(resp).getBodyOffset();
             //String responseBody = new String(baseRequestResponse.getResponse()).substring(responseOffset);
             byte[] body = Arrays.copyOfRange(resp,responseOffset, resp.length);
           
-            db("Calling ILS.scanForLocationInImageHTML(response_body)");
+            //db("Calling ILS.scanForLocationInImageHTML(response_body)");
             String hasGPS = ILS.scanForLocationInImageHTML(body);
             if (! hasGPS.isEmpty()) {
 				// TODO: Future, print to burp stdio logs if the config option is enabled.
