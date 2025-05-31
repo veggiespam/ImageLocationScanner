@@ -2,7 +2,7 @@
 
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  See also [Contributors](CONTRIBUTORS.md) for people to thank and [TODO.md](TODO.md) for future ideas to implement. 
 
-## Unreleased
+## 1.2 - 2025-06-01
 - Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
     + Burp Extender is legacy API, need to migrate to Burp's Montoya API in future
 - Added support for scanning HEIF image format used by modern iPhone images
