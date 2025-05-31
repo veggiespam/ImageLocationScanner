@@ -41,7 +41,7 @@ below, you may need to obtain a GitHub session cookie first by going to
     - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) shows proprietary Panasonic tags including city, state, country along
     with facial recognition information, like the name and age of the person in
     the picture.  Burp screen shot of this shown to the right and ZAP is
-	shown below.
+    shown below.
 * This professional photographer leaves Exif & IPTC data in many photos: [Raia.com](https://raia.com/)
 
 <p align="center"><img width="65%" height="65%"
@@ -151,13 +151,14 @@ into ZAP.
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
 * What types of image files are scanned, why don't you scan type X
-  - Currently, ILS scans: "jpeg", "jpg", "png", "tiff", "heif", "gif" extensions and mime types
-  - ILS could possibly find leaks in "raw" or "psd" (Photoshop), but those files 1) are generally not displayed in-line on a browser and 2) can be huge and would start slowing down Burp
+  - Currently, ILS scans: "jpeg", "jpg", "png", "heif" extensions and mime types
+  - ILS could possibly find leaks in "raw" or "psd" (Photoshop), but those files 1) are generally not displayed in-line on a browser and 2) can be huge and would start slowing down Burp - but Burp is already reading them.  TBD.
+  - We generally don't see embedded leakage data in "gif", so we don't scan those.
 * I see GPS location and altitude, but where is the speed, bearing, reference data, etc
-  - We decided to not display all the GPS data, simply the location and altitude.
+  - We decided to not display all the GPS data, simply the location and altitude.  Submit a patch if you need all GPS info.
 * You missed the serial number for Camera Type X
 	- Could be true.  This information exposure list was built by
-	manually looking through all Exif tags available in MDE.  If something new was
+	manually looking through all "Makernote" tags available in MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues)
   and we will update in a future release.
@@ -189,5 +190,5 @@ To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
 
 <!--
-vim: sw=4 ts=4 sts=4 spell noexpandtab
+vim: sw=4 ts=4 sts=4 spell expandtab
 -->
