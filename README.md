@@ -42,7 +42,7 @@ below, you may need to obtain a GitHub session cookie first by going to
     with facial recognition information, like the name and age of the person in
     the picture.  Burp screen shot of this shown to the right and ZAP is
     shown below.
-* This professional photographer leaves Exif & IPTC data in many photos: [Raia.com](https://raia.com/)
+* This professional photographer utilizes Exif & IPTC data in many of the full-sized (non-thumbnail) photos: [Raia.com](https://raia.com/)
 
 <p align="center"><img width="65%" height="65%"
 src="img/screenshot-2-zap.png" align="center"/></p>
@@ -186,7 +186,7 @@ The Burp plug-in is built with Gradle: `gradle fatJar` (or be lazy and type `mak
 
 To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github.com/zaproxy/zap-extensions) or [my outdated repo](https://github.com/veggiespam/zap-extensions).  Then, overwrite your repo's ILS.java with the updated version.  Compile with `./gradlew :addOns:imagelocationscanner:build` and install *imagelocationscanner-{id}.zap* add-on file into ZAP.
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
 
 <!--
 vim: sw=4 ts=4 sts=4 spell expandtab

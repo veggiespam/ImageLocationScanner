@@ -109,7 +109,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         // We search a set of Burp's inferred mimetypes, this mimeList will be user configurable in the future.
 
 		if ( mimeList.contains(mimeInferred) ||  mimeList.contains(mimeStated) || mimeList.contains(extension) ) {
-            db("Probably image file, scanning for data leakage via ILS.scanForLocationInImageHTML().");
+            db("Probably image file, scanning for data leakage via ILS.scanForLocationInImageHTML()");
             byte[] resp = baseRequestResponse.getResponse();
             int responseOffset = helpers.analyzeResponse(resp).getBodyOffset();
             //String responseBody = new String(baseRequestResponse.getResponse()).substring(responseOffset);
