@@ -106,8 +106,7 @@ Jar filenames could be different, please confirm classpath.  Yes, "Ubited" is mi
 The Image Location and Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
-* Burp Pro, any recent version from
-  [PortSwigger Burp web site](https://portswigger.net/burp/Pro)
+* Burp Pro or Enterprise, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/Pro) - the ILS plugin does not work in the free version of Burp.
 * ZAP, 2.7.x or newer from
   [OWASP ZAP web site](https://www.zaproxy.org)
 
