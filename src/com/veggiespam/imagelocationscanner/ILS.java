@@ -59,7 +59,7 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 1.1
+ * @version 1.2
  * @see https://www.veggiespam.com/ils/
  */
 public class ILS {
