@@ -124,7 +124,7 @@ click Next.  The next screen will show the "Image Location and Privacy Scanner:
 plug-in version x.x" if successful or display errors on the Error tab.
 Click close to return to Burp.
 
-🚨 **IMPORTANT** 🚨 By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by Image Location and Privacy Scanner plug-in.
+🚨 **IMPORTANT** 🚨 By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by the Image Location and Privacy Scanner plug-in.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
 Free version.  So, the plug-in will only function inside of Burp Pro.
