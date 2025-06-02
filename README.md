@@ -31,14 +31,12 @@ instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
 
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
-contains some good images.  To view the URLs
-below, you may need to obtain a GitHub session cookie first by going to
-[MDE on GitHub](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg).
+contains some good images.  *(Note: For some URLs, you need a [GitHub session cookie](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg))*
     - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
     shows GPS data.
     - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
     has embedded IPTC locations and keywords.
-    - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) shows proprietary Panasonic tags including city, state, country along
+    - [Panasonic DMC-TZ10](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg) shows proprietary Panasonic MakerNote tags including city, state, country along
     with facial recognition information, like the name and age of the person in
     the picture.  Burp screen shot of this shown to the right and ZAP is
     shown below.
@@ -140,7 +138,7 @@ made to elevate into the release channel.
 Image Location and Privacy Scanner also can be downloaded and compiled directly
 into ZAP.
 
-🚨 **IMPORTANT** 🚨 By default, ZAP hides the images.  So, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; Process images in the HTTP requests/responses.  If you have images disabled in ZAP's Global Exclude URL feature, the ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
+🚨 **IMPORTANT** 🚨 By default, ZAP hides the images.  So, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; "Process images in the HTTP requests/responses.  If you have images disabled in ZAP's Global Exclude URL feature, the ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
 
 # <a name="faq"> FAQ
 * When I use Burp or ZAP, no issues are displayed
