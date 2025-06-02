@@ -980,7 +980,9 @@ public class ILS {
 				if (read != size) {
 				    System.out.println("There was a problem reading the file");
 				}
-				fis.close();
+				// ZAP build fail using -Werror with msg:
+				// `warning: [try] explicit call to close() on an auto-closeable resource`
+ 				//fis.close();
 				
 				String res = scanForLocationInImage(data, outputtype);
 				if (0 == res.length())  {
