@@ -15,7 +15,8 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Moved changelog to KeepAChangelog pretty format
 - Tons of typo updates and better English
 - Fixed issue [#26](https://github.com/veggiespam/ImageLocationScanner/issues/26) where newer versions Burp are not setting mimeInferred in many instances, so ILS never gets called to scan valid jpeg images.
-- Split TODO into [TODO.md](TODO.md) since [README.md](README.md) was getting long.
+- Split TODO into [TODO.md](TODO.md) since [README.md](README.md) was getting long
+- Full removed XMP support as it was unreliable (was partially removed before)
 
 ## 1.1 - 2019-02-21
 - Your basic corrections of spelling errors in comments when you finally use something besides vim for writing code
