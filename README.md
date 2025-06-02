@@ -129,7 +129,7 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 
 ## ZAP Installation
 
-The Image Location and Privacy Scanner is available in the ZAP Marketplace (beta channel).  Click the Add-On icon (<img src="img/zap-img-plugin-block.png" align="middle">), then the Marketplace tab, and filter on "image". Enable the checkbox in the "Selected" column and press "Install Selected" at the bottom.  ZAP will show ILS as "Version 6.0.0" which corresponds to ILS v1.2.  Once ILS is installed, it moves from Marketplace tab to the "Installed" tab.
+The Image Location and Privacy Scanner is available in the ZAP Marketplace (beta channel).  Click the Add-On icon (<img src="img/zap-img-plugin-block.png">), then the Marketplace tab, and filter on "image". Enable the checkbox in the "Selected" column and press "Install Selected" at the bottom.  ZAP will show ILS as "Version 6.0.0" which corresponds to ILS v1.2.  Once ILS is installed, it moves from Marketplace tab to the "Installed" tab.
 
 Image Location and Privacy Scanner also can be built locally and installed via File &rarr; "Load Add-On File".
 
