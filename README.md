@@ -133,7 +133,7 @@ The Image Location and Privacy Scanner is available in the ZAP Marketplace (beta
 
 Image Location and Privacy Scanner also can be built locally and installed via File &rarr; "Load Add-On File".
 
-🚨 **IMPORTANT** 🚨 By default, ZAP hides the images.  So, you must manually enabled image scanning with: Tools &rarr; Options &rarr; Display &rarr; "Process images in the HTTP requests/responses".  If you have images disabled in ZAP's Global Exclude URL feature, the ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
+🚨 **IMPORTANT** 🚨 By default, ZAP hides images in the history, but ILS will still scan these images for findings.  If an alert is triggered, then the image and its alerts will appear in the Alerts tab but not in the History tab.  To show images in the history, both with alerts and without, click Tools &rarr; Options &rarr; Display &rarr; "Process images in the HTTP requests/responses".  If you have image processing completely disabled in ZAP's Options &rarr; Network &rarr; Global Exclusions &rarr; "Extension - Image" feature (née Global Exclude URL), then ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
 
 # <a name="faq"> FAQ
 * When I use Burp or ZAP, no issues are displayed
