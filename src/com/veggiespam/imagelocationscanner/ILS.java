@@ -217,7 +217,7 @@ public class ILS {
 	 * @see scanForLocationInImageBoth
 	 * @deprecated "Use scanForLocationInImage(byte[] data, OutputFormat outputtype) instead. - removal in ILS v2.0"
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "1.2")
 	public static String scanForLocationInImage(byte[] data, boolean usehtml)   {
 		if (usehtml) {
 			return scanForLocationInImageHTML(data);
@@ -229,7 +229,7 @@ public class ILS {
 	/** Returns ILS information in Text or HTML or Markdown depending on outputtype flag.
 	 * 
 	 * @param data is a byte array that is an image file to test, such as entire jpeg file.
-	 * @param outputtype output as html (true) or plain txt (false)
+	 * @param outputtype output results as plain text, html, or markdown.
 	 * @return String containing the Location data or an empty String indicating no GPS data found.
 	 * @see scanForLocationInImageBoth
 	 */
