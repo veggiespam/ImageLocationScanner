@@ -63,7 +63,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
             need to scan for jpg, heif, and png as those are what most devices produce. 
             
             We should experiment with raw types too. */
-        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif"));
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif", "tiff", "tif"));
 
         db(modName + " v" + ILS.pluginVersion + " started.");
         db("Registered mimetypes to scan: " + mimeList.toString());
