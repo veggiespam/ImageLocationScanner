@@ -1,9 +1,13 @@
 package burp;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.ArrayList;
-import java.net.URL;                                                                                                  
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.io.OutputStream;
 
 import com.veggiespam.imagelocationscanner.ILS;
@@ -19,7 +23,7 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 1.1
+ * @version 1.2
  * @see https://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck
@@ -40,6 +44,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     /** Used in some debug statements. */
     private static final String SEP = " | ";
 
+    /** List of Burp's inferred mimetypes we will scan, configured in registerExtenderCallbacks(). */
     private ArrayList<String> mimeList = null;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
@@ -52,10 +57,23 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
         stdout = callbacks.getStdout();
 
         /*  The mimeList is an array of all mimetypes that this plug-in will be scan.  They must be valid 
-            "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere). */
-        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "png", "tiff"));
+            "burp-style" mime types and always in lowercase (since we assume lowercase elsewhere).
+            
+            We support most image types, include gif, tiff, psd, etc.  But... realistically, we only 
+            need to scan for jpg, heif, and png as those are what most devices produce. 
+            
+            We should experiment with raw types too. */
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif", "tiff", "tif"));
 
-        db("loaded plug-in, version " + ILS.pluginVersion);
+        db(modName + " v" + ILS.pluginVersion + " started.");
+        db("Registered mimetypes to scan: " + mimeList.toString());
+        {
+    		TimeZone tz = TimeZone.getTimeZone("UTC");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+			df.setTimeZone(tz);
+			String nowAsISO = df.format(new Date());
+            db("Startup time: " + nowAsISO);
+        }
     }
     
     /** Passive only, so this is a blank implementation. */
@@ -69,39 +87,39 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     	//db("doPassiveScan()");
     	
         URL url = helpers.analyzeRequest(baseRequestResponse).getUrl();
-        String mimeInferred = helpers.analyzeResponse(baseRequestResponse.getResponse()).getInferredMimeType().toLowerCase();
-        
-        // inferred seems to work, no need for additional checking on stated types
-        // String mimeStated = helpers.analyzeResponse(baseRequestResponse.getResponse()).getStatedMimeType();
-        
-        // String fileName = url.getFile();  // debugging only now.  burp's inferred mime works, no need to look at filename.
-        
-        /* The file's extension was only needed for stated processing, but we don't
-         * need to do that.  So, ignore unless there is a need for it later if
-         * a new condition is discovered
+
+        /* We try to detect the file type three ways.
+         * 1.  Burp's inferred mime type, which used to work perfectly in 2019 and broke in 2025.
+         * 2.  The HTTP Header mime type, which is what the server tells us the file is.
+         * 3.  The file extension.
          */
-        /* String extension = "";
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) {
-            extension = fileName.substring(i+1);
+        String mimeInferred = helpers.analyzeResponse(baseRequestResponse.getResponse()).getInferredMimeType().toLowerCase();
+        String mimeStated = helpers.analyzeResponse(baseRequestResponse.getResponse()).getStatedMimeType().toLowerCase();
+        String fileName = url.getFile();       
+        String extension = "";
+        if (!fileName.isEmpty()) {
+            int i = fileName.lastIndexOf('.');
+            if (i > 0) {
+                extension = fileName.substring(i+1).toLowerCase();
+            }        
         }
-        //db(mimeStated + SEP + mimeInferred + SEP + extension);
-        */
+        db("mimeStated: " + mimeStated + SEP + "mimeInferred: " + mimeInferred + SEP + "ext: " + extension + SEP + fileName);
         
-        // If body type is png / jpg / tiff, then we call the scanner on the response body
+        // If body type is png / jpg / etc, then we call the scanner on the response body
         // We search a set of Burp's inferred mimetypes, this mimeList will be user configurable in the future.
 
-		if ( mimeList.contains(mimeInferred) ) {
+		if ( mimeList.contains(mimeInferred) ||  mimeList.contains(mimeStated) || mimeList.contains(extension) ) {
+            db("Probably image file, scanning for data leakage via ILS.scanForLocationInImageHTML()");
             byte[] resp = baseRequestResponse.getResponse();
             int responseOffset = helpers.analyzeResponse(resp).getBodyOffset();
             //String responseBody = new String(baseRequestResponse.getResponse()).substring(responseOffset);
             byte[] body = Arrays.copyOfRange(resp,responseOffset, resp.length);
           
-            //db("Parsing image file " + fileName);
+            //db("Calling ILS.scanForLocationInImageHTML(response_body)");
             String hasGPS = ILS.scanForLocationInImageHTML(body);
             if (! hasGPS.isEmpty()) {
 				// TODO: Future, print to burp stdio logs if the config option is enabled.
-            	// db(fileName + ": found location: " + hasGPS);
+            	db(fileName + ": found data leakage: " + hasGPS);
                 List<IScanIssue> alert = new ArrayList<IScanIssue>();
                 IHttpRequestResponse[] x = new IHttpRequestResponse[1];
                 x[0] = baseRequestResponse;
@@ -121,7 +139,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
  
             } else {
             	; // no-op.  ignore it (or log it for debugging)
-            	//db(fileName + ": No GPS");
+            	//db(fileName + ": No Data leakage found.");
             }
         }
         
@@ -240,7 +258,8 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
     
     /** Poor man's println to Burp's stdout, db means debug. */
     private void db(String d) {
-    	d = modName.concat(": ").concat(d).concat("\n");
+    	//d = modName.concat(": ").concat(d).concat("\n");
+    	d = d.concat("\n");
     	try { 
     		stdout.write(d.getBytes());
     	} catch(Exception e) {

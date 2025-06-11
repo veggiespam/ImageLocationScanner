@@ -1,14 +1,25 @@
-apply plugin: 'java-library'
+plugins {
+    id 'java'
+}
+
+// Burp on the Mac ships with Java v22 (aka binary version 66).  Thus, set 22 or earlier to compile.
+// I have OpenJDK 21 LTS. 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(21))
+  }
+}
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    compile group: 'net.portswigger.burp.extender', name: 'burp-extender-api', version: '2.1'
-    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.13.0'
-    // disabled xmp, see ILS.java for details.
-    //compile group: 'com.adobe.xmp', name: 'xmpcore', version: '6.0.6'
+    compileOnly 'net.portswigger.burp.extender:burp-extender-api:2.3'
+    compileOnly 'com.drewnoakes:metadata-extractor:2.19.0'
+    implementation 'com.drewnoakes:metadata-extractor:2.19.0'
+    implementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
 }
 
 sourceSets {
@@ -19,10 +30,18 @@ sourceSets {
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_9
-
 task fatJar(type: Jar) {
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+    //baseName = project.name + '-all'
+    //baseName = 'ils-all'
+    //from { configurations.implementation.collect { it.isDirectory() ? it : zipTree(it) } }
+    //with jar
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

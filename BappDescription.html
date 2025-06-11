@@ -1,8 +1,12 @@
 <h1 id="image-location-scanner">Image Location and Privacy Scanner</h1>
 
-<p>Passively scans for GPS locations or embedded privacy related exposure (like camera serial numbers) in images during normal security assessments of websites via a Burp plug-in. Image Location and Privacy Scanner assists in situations where end users may post profile images and possibly give away their home's location, e.g. a dating site or children's chatroom.</p>
+<p>Passively scans for GPS location and other privacy-related exposures in images during normal
+security assessments of websites via plug-ins for both Burp & ZAP.  Image
+Location and Privacy Scanner (ILS) assists in situations where end users may post profile
+images and possibly give away their home location, e.g. a dating site or
+children's chatroom.</p>
 
-<p>More information on this topic, including a whitepaper based on a real-world site audit given as a presentation at the New Jersey chapter of the OWASP organization, can be found at <a href="https://www.veggiespam.com/ils">https://www.veggiespam.com/ils</a>.</p>
+<p>More information on this topic, including a white paper based on a real-world site audit given as a presentation at the New Jersey chapter of the OWASP organization, can be found at <a href="https://www.veggiespam.com/ils">https://www.veggiespam.com/ils</a>.</p>
 
 <p>This software finds the GPS information inside of Exif tags, IPTC codes, and proprietary camera codes. Then, this scanner flags the findings in the Burp Scanner as an information message. It would be up to the auditor to determine if location exposure is truly a security risk based on context.</p>
 
@@ -15,19 +19,20 @@
 
 <h1 id="sample-run">Sample Run</h1>
 
-<p>By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable <b>"Show Images"</b> in the filtering on the Target tab before you begin your sample testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts being raised by the Image Location and Privacy Scanner plug-in. </p>
+<p>🚨 **IMPORTANT** 🚨 By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable <b>"Show Images"</b> in the filtering on the Target tab before you begin your testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by the Image Location and Privacy Scanner plug-in. </p>
 
 <p>After performing the above set-up, configure the web browser to proxy through Burp and browse to a few sample sites: </p>
 
 <ul>
-<li>MetaData Extractor's <a href="https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput">SampleOutput page</a> contains some good images. But first, in order to view the URLs below, you may need to obtain a GitHub session cookie first by going to <a href="https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg">MDE on GitHub</a>.
+<li>MetaData Extractor's <a href="https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput">SampleOutput page</a> contains some good images. To view the URLs below, you may need to obtain a GitHub session cookie first by going to <a href="https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg">MDE on GitHub</a>.
 <ul>
 <li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg">iPhone 4</a> shows GPS data.</li>
 <li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg">FujiFilm FinePix S1 Pro</a> has embedded IPTC locations and keywords.</li>
 <li><a href="https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Panasonic%20DMC-TZ10.jpg">Panasonic DMC-TZ10</a> shows proprietary Panasonic tags including city, state, country along with facial recognition information, like the name and age of the person in the picture.</li>
 </ul>
 </li>
-<li>This professional photographer leaves Exif in many photos: <a href="http://raia.com/">Raia.com</a></li>
+<li>This professional photographer utilizes Exif & IPTC data in many of the full-sized (non-thumbnail) photos: <a href="https://raia.com/">Raia.com</a></li>
 </ul>
 
-<p>Keywords: Information Exposure, GPS, Exif, XMP, IPTC, PII</p>
+<p>Keywords: Infosec, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
+</p>
