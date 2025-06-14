@@ -12,8 +12,7 @@ Jersey chapter of the OWASP organization, can be found at
 [www.veggiespam.com/ils/](https://www.veggiespam.com/ils/).
 
 This software scans images to find the GPS information inside of Exif tags, IPTC codes,
-and proprietary camera tags. Then, ILS flags the
-findings in the
+and proprietary camera tags (aka "Makernotes"). Then, ILS flags the findings in the
 Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
 risk based on context.
@@ -31,7 +30,7 @@ instructions of those products.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
 
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
-contains some good images.  *(Note: For some URLs, you need a [GitHub session cookie](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg))*
+contains some good images.  *(Note: You may need a [GitHub session cookie](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg))*
     - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
     shows GPS data.
     - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
@@ -97,7 +96,7 @@ $ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationsc
     * IPTC: Keywords = Communications
 ```
 
-Jar filenames could be different, please confirm classpath.  Yes, "Ubited" is misspelled in the sample jpg.
+Of course, confirm Jar filenames and classpath.  Yes, "Ubited" is misspelled in the sample jpg.
 
 
 # Usage Requirements
@@ -106,7 +105,7 @@ The required versions of those packages are:
 
 * Burp Pro or Enterprise, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/Pro) - the ILS plugin does not work in the free version of Burp.
 * ZAP, 2.7.x or newer from
-  [OWASP ZAP web site](https://www.zaproxy.org)
+  [ZAP web site](https://www.zaproxy.org)
 
 ## Burp Installation
 
@@ -133,7 +132,7 @@ The Image Location and Privacy Scanner is available in the ZAP Marketplace (beta
 
 Image Location and Privacy Scanner also can be built locally and installed via File &rarr; "Load Add-On File".
 
-🚨 **IMPORTANT** 🚨 By default, ZAP hides images in the history, but ILS will still scan these images for findings.  If an alert is triggered, then the image and its alerts will appear in the Alerts tab but not in the History tab.  To show images in the history, both with alerts and without, click Tools &rarr; Options &rarr; Display &rarr; "Process images in the HTTP requests/responses".  If you have image processing completely disabled in ZAP's Options &rarr; Network &rarr; Global Exclusions &rarr; "Extension - Image" feature (née Global Exclude URL), then ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
+🚨 **IMPORTANT** 🚨 By default, ZAP hides images in the history, but ILS still scans these images for findings.  If an alert is triggered, then the image and its alerts will appear in the Alerts tab but not in the History tab.  To show images in the history, both with alerts and without, click Tools &rarr; Options &rarr; Display &rarr; "Process images in the HTTP requests/responses".  If you have image processing completely disabled in ZAP's Options &rarr; Network &rarr; Global Exclusions &rarr; "Extension - Image" feature (née Global Exclude URL), then ILS will be unable to see the images and report on privacy issues - thus disuse this feature with images so ILS can function.
 
 # <a name="faq"> FAQ
 * When I use Burp or ZAP, no issues are displayed
@@ -143,27 +142,26 @@ Image Location and Privacy Scanner also can be built locally and installed via F
 	the same type.  Thus more than one GPS location can appear.  The ILS
 	software displays all that are detected.
 * What types of image files are scanned, why don't you scan type X
-  - Currently, ILS scans: "jpeg", "jpg", "png", "heif" extensions and mime types
+  - Currently, ILS scans: "jpeg", "jpg", "png", "heif", "tiff", "tif" extensions and mime types
   - ILS could possibly find leaks in "raw" or "psd" (Photoshop), but those files 1) are generally not displayed in-line on a browser and 2) can be huge and would start slowing down Burp - but Burp is already reading them.  TBD.
   - We generally don't see embedded leakage data in "gif", so we don't scan those.
 * I see GPS location and altitude, but where is the speed, bearing, reference data, etc
   - We decided to not display all the GPS data, simply the location and altitude.  Submit a patch if you need all GPS info.
 * You missed the serial number for Camera Type X
 	- Could be true.  This information exposure list was built by
-	manually looking through all "Makernote" tags available in MDE.  If something new was
+	manually looking through all Makernote tags available in MDE.  If something new was
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues)
   and we will update in a future release.
-* Another Exif scanner says `City = ` with no city listed
-	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls.
+* Another Exif scanner says `City = ` with no city listed or `City = ---` but ILS does not show this.
+	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls or "City = (single space)".
 	In newer versions ILS, we simply filter out strings that start with
 	a null character.  We assume someone isn't hiding data after the first null.
-* Another Exif scanner says `City = ---` but ILS does not show this value.
   - Some cameras and devices, like Panasonic, place "---" into fields 
     where there is no value or the value is unknown.  Other examples observed are
     "Off" when there is no data entered into the text field or a feature is
     inactive or a single space for a name or "-".
-    ILS just filters these fields from the display since there is no location or privacy leakage.
+    ILS does not consider these as location or privacy leaks, so they are not displayed.
 
 ## Build Requirements
 
@@ -179,7 +177,7 @@ The Burp plug-in is built with Gradle: `gradle fatJar` (or be lazy and type `mak
 
 To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github.com/zaproxy/zap-extensions) or [my outdated repo](https://github.com/veggiespam/zap-extensions).  Then, overwrite your repo's ILS.java with the updated version.  Compile with `./gradlew :addOns:imagelocationscanner:build` and install *imagelocationscanner-{id}.zap* add-on file into ZAP.
 
-Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy
+Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy, Camera Makernote
 
 <!--
 vim: sw=4 ts=4 sts=4 spell expandtab
