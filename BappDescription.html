@@ -7,7 +7,7 @@
 <ul>
   <li>Scans images in HTTP responses for embedded metadata</li>
   <li>Detects GPS coordinates in EXIF data</li>
-  <li>Flags personal metadata such as author name, device information, or timestamps</li>
+  <li>Flags personal metadata such as author name, device information, or timestamps in proprietary camera "Makernotes"</li>
   <li>Adds issues to Burp Scanner when sensitive metadata is found</li>
   <li>Provides a clear summary of detected metadata in the scan issue detail</li>
 </ul>
@@ -16,6 +16,8 @@
 <p>Once the extension is loaded, it automatically scans HTTP responses containing images and raises issues for images with embedded metadata.</p>
 
 <p><strong>Note:</strong> By default, Burp hides images. This has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable "Show Images" in the Target tab filter before you begin your testing.  Then, in the "Target &rarr; Issues" pane, you will see the privacy exposure alerts raised.</p>
+
+<p>See the <a href="https://github.com/veggiespam/ImageLocationScanner?tab=readme-ov-file#sample-run">Example Files</a> to see what types of privacy leaks this plug-in can detect.</p>
 
 <ol>
   <li>Send requests containing image responses to Burp Scanner.</li>

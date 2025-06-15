@@ -1,6 +1,7 @@
 # Random & Future Todos
 
 ## Functionality, Features, & Code
+* Depending on the browser behavior and mechanism the server uses to send data, file downloads may not be scanned; need to implement better Content-Disposition support.
 * Idea from Burp's @pajwigger:  It's quite common that servers return 304 not modified. It might be a good trick, if you see a request for an image, and there's only 304s in the site map – that in an active scan you fetch the image.
 * Have a configuration option to only show alerts if the Exif or other location is in a selective area, like a certain country or range of GPS coordinates. Otherwise, ignore the image. [enhancement suggestion #10](https://github.com/veggiespam/ImageLocationScanner/issues/10)
 * Need better testing and examples.
