@@ -5,11 +5,12 @@ JARPATH=build/libs/$(FATJAR)
 
 # as of now, Burp supports only up to v22 of Java, this is the latest brew LTS version.
 JAVA_HOME=/opt/homebrew/opt/openjdk@21
+#JAVA_HOME=/opt/homebrew/opt/openjdk@17
 
 GRADLE_OPTS=--warning-mode all
 
 $(JARPATH): src/com/veggiespam/imagelocationscanner/ILS.java src/burp/BurpExtender.java
-	gradle   $(GRADLE_OPTS)  jar
+	./gradlew   $(GRADLE_OPTS)  jar
 
 run: $(JARPATH)
 	java -classpath $(JARPATH) com.veggiespam.imagelocationscanner.ILS
