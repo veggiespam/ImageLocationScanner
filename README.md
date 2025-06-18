@@ -25,12 +25,11 @@ Full version history can be found in the [CHANGELOG.md](CHANGELOG.md) and future
 ## Sample Run
 
 <p><img width="50%" height="50%" src="img/screenshot-1-burp.png" align="right" style="max-height: 75%"/>
-Configure the web browser to proxy through Burp or ZAP per the
-instructions of those products.  Then, browse to a few sample sites to
+Configure the web browser to proxy through Burp or ZAP.  Then, browse to a few sample sites to
 see Alerts being raised:</p>
 
 * MetaData Extractor's [SampleOutput page](https://github.com/drewnoakes/metadata-extractor/wiki/SampleOutput)
-contains some good images.  *(Note: You may need a [GitHub session cookie](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg))*
+contains some good images with interesting findings.  *(Note: You may need a [GitHub session cookie](https://github.com/drewnoakes/metadata-extractor-images/tree/master/jpg))*
     - [iPhone 4](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/Apple%20iPhone%204.jpg)
     shows GPS data.
     - [FujiFilm FinePix S1 Pro](https://raw.githubusercontent.com/drewnoakes/metadata-extractor-images/master/jpg/FujiFilm%20FinePixS1Pro%20(1).jpg)
@@ -52,8 +51,8 @@ classpath must contain the ILS jar file along with the supporting jars
 for the MetaData Extractor.  To run from the
 command line:
 
-```bash
-$ java -classpath image-location-scanner-all.jar   com.veggiespam.imagelocationscanner.ILS
+```
+$ java -classpath image-location-scanner.jar   com.veggiespam.imagelocationscanner.ILS
 Image Location and Privacy Scanner v1.2
 Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]
     -h : output results in semi-HTML
@@ -61,8 +60,8 @@ Usage: java ILS.class [-h|-m|-t] file1.jpg file2.png file3.txt [...]
     -t : output results in plain text (default)
     --help : detailed help
 
-# Run main() directly from the Burp jar packaging
-$ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
+###  Run main() directly from the Burp jar packaging
+$ java -classpath image-location-scanner.jar  com.veggiespam.imagelocationscanner.ILS [...files...]
 Processing Panasonic DMC-TZ10.jpg :
   Location::
     Exif_GPS: 53° 8' 49.65", 8° 10' 45.1"
@@ -80,8 +79,8 @@ Processing j2.jpg :
     Exif_GPS: 40° 18' 54.92", -74° 39' 37.85"
 Processing README.md : None
 
-# With Markdown output:
-$ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationscanner.ILS -m [...files...]
+### With Markdown output:
+$ java -classpath image-location-scanner.jar  com.veggiespam.imagelocationscanner.ILS -m [...files...]
 # ../images/Panasonic Lumix DMC-LX7.jpg
 * Privacy:: 
     * Panasonic: Internal Serial Number = F111311090158
@@ -96,14 +95,14 @@ $ java -classpath image-location-scanner-all.jar  com.veggiespam.imagelocationsc
     * IPTC: Keywords = Communications
 ```
 
-Of course, confirm Jar filenames and classpath.  Yes, "Ubited" is misspelled in the sample jpg.
+Of course, confirm jar filenames and classpath.  Yes, "Ubited" is misspelled in the sample jpg.
 
 
 # Usage Requirements
 The Image Location and Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
-* Burp Pro or Enterprise, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/Pro) - the ILS plugin does not work in the free version of Burp.
+* Burp Pro, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/pro) - the ILS plugin does not work in the free version of Burp.
 * ZAP, 2.7.x or newer from
   [ZAP web site](https://www.zaproxy.org)
 
@@ -128,7 +127,7 @@ Free version.  So, the plug-in will only function inside of Burp Pro.
 
 ## ZAP Installation
 
-The Image Location and Privacy Scanner is available in the ZAP Marketplace (beta channel).  Click the Add-On icon (<img src="img/zap-img-plugin-block.png">), then the Marketplace tab, and filter on "image". Enable the checkbox in the "Selected" column and press "Install Selected" at the bottom.  ZAP will show ILS as "Version 6.0.0" which corresponds to ILS v1.2.  Once ILS is installed, it moves from Marketplace tab to the "Installed" tab.
+The Image Location and Privacy Scanner is available in the ZAP Marketplace.  Click the Add-On icon (<img src="img/zap-img-plugin-block.png">), then the Marketplace tab, and filter on the word *"image"*. Once found, enable the checkbox in the "Selected" column and press "Install Selected" at the bottom.  ZAP may show ILS as "Version 6.0.0" which corresponds to ILS v1.2.  Once ILS is installed, it moves from Marketplace tab into the "Installed" tab.
 
 Image Location and Privacy Scanner also can be built locally and installed via File &rarr; "Load Add-On File".
 
@@ -155,30 +154,26 @@ Image Location and Privacy Scanner also can be built locally and installed via F
   and we will update in a future release.
 * Another Exif scanner says `City = ` with no city listed or `City = ---` but ILS does not show this.
 	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls or "City = (single space)".
-	In newer versions ILS, we simply filter out strings that start with
-	a null character.  We assume someone isn't hiding data after the first null.
+	ILS simply filter out strings that start with a null character (we assume someone isn't hiding data after the first null) or empty spaces.
   - Some cameras and devices, like Panasonic, place "---" into fields 
     where there is no value or the value is unknown.  Other examples observed are
     "Off" when there is no data entered into the text field or a feature is
-    inactive or a single space for a name or "-".
+    inactive, or a single space for a name, or "-" for something.
     ILS does not consider these as location or privacy leaks, so they are not displayed.
 
 ## Build Requirements
 
 * Java 1.9 or newer
-* Gradle 1.6 or newer to build
-* &dagger; [Burp Extender API](http://portswigger.net/burp/extender/api/burp_extender_api.zip)
+* Gradle 8.x or newer to build
+* &dagger; [Legacy Burp Extender API](https://portswigger.net/burp/extender/api/)
   2.3; uses proprietary license
-* &dagger; [MetaData Extractor](https://drewnoakes.com/code/exif/)
+* &dagger; [MetaData Extractor](https://github.com/drewnoakes/metadata-extractor)
   version 2.19.0; uses Apache License v2.0
+
 &dagger; These will be auto-fetched if you build with Gradle.
 
-The Burp plug-in is built with Gradle: `gradle fatJar` (or be lazy and type `make`). After building, the plug-in can manually be loaded into Burp.  
+The Burp plug-in is built with `./gradlew jar` (or be lazy and type `make`). After building, the plug-in can manually be loaded into Burp.  
 
-To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github.com/zaproxy/zap-extensions) or [my outdated repo](https://github.com/veggiespam/zap-extensions).  Then, overwrite your repo's ILS.java with the updated version.  Compile with `./gradlew :addOns:imagelocationscanner:build` and install *imagelocationscanner-{id}.zap* add-on file into ZAP.
+To build for ZAP, it is easiest start by forking [ZAP Extensions](https://github.com/zaproxy/zap-extensions) or [my outdated repo](https://github.com/veggiespam/zap-extensions).  Then, overwrite your repo's ILS.java with the updated version.  Compile with `./gradlew :addOns:imagelocationscanner:build` and install *imagelocationscanner-{id}.zap* add-on file into ZAP via File &rarr; "Load Add-On File".
 
 Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, OpSec, Privacy, Camera Makernote
-
-<!--
-vim: sw=4 ts=4 sts=4 spell expandtab
--->
