@@ -95,14 +95,14 @@ $ java -classpath image-location-scanner.jar  com.veggiespam.imagelocationscanne
     * IPTC: Keywords = Communications
 ```
 
-Of course, confirm jar filenames and classpath.  Yes, "Ubited" is misspelled in the sample jpg.
+Please confirm jar filename and classpath.  Yes, "Ubited" is misspelled in the sample jpg.
 
 
 # Usage Requirements
 The Image Location and Privacy Scanner runs as both a Burp and ZAP plug-in.
 The required versions of those packages are:
 
-* Burp Pro, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/pro) - the ILS plugin does not work in the free version of Burp.
+* Burp Pro, any recent version from [PortSwigger Burp web site](https://portswigger.net/burp/pro) - the ILS plugin does not work in Burp Community Edition.
 * ZAP, 2.7.x or newer from
   [ZAP web site](https://www.zaproxy.org)
 
@@ -123,7 +123,7 @@ Click close to return to Burp.
 🚨 **IMPORTANT** 🚨 By default, Burp hides the images and this has the side effect of also hiding any alerts detected by this plug-in.  So, you will need to enable **"Show Images"** in the filtering on the Target tab before you begin your testing.  Then, in the Target &rarr; Issues pane, you will see the privacy exposure alerts raised by the Image Location and Privacy Scanner plug-in.
 
 Note: This is a scanner-type plug-in and the scanner is disabled in Burp
-Free version.  So, the plug-in will only function inside of Burp Pro.
+Community Edition.  So, the plug-in will only function inside of Burp Pro or Enterprise.
 
 ## ZAP Installation
 
@@ -160,6 +160,11 @@ Image Location and Privacy Scanner also can be built locally and installed via F
     "Off" when there is no data entered into the text field or a feature is
     inactive, or a single space for a name, or "-" for something.
     ILS does not consider these as location or privacy leaks, so they are not displayed.
+* Why do you abbreviate this project "ILS" and not "ILPS"?
+  - The plug-in was originally called "Image Location Scanner" with `ils` in the classpath, git repo name, and my own website's whitepaper.  At some point, I switched to a new dependency which gave new functions for examining photo data and I could now see Privacy leaks like serial number and ITPC encodings.  Changing a classpath and git repo seemed overkill for a non-major feature, so I just kept it as "ILS".
+* What about detection of artifacts from drone images and videos?
+  - Data from DJI and compatible drones is detected, but only GPS location if present.  Data like speed, pitch, yaw, roll, etc are not displayed as those don't expose the location.
+
 
 ## Build Requirements
 
