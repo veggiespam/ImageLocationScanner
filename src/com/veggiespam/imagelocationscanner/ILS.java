@@ -70,7 +70,7 @@ import com.drew.metadata.exif.makernotes.FujifilmMakernoteDescriptor;
  * proprietary camera codes which may contain things like serial numbers.  This
  * class is designed to be a plug-in for both ZAP and Burp proxies.
  * 
- * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
+ * @author Jay Ball | github: @veggiespam | linktr.ee/veggiespam | https://www.veggiespam.com/ils/
  * @license Apache License 2.0
  * @version 1.3
  * @see https://www.veggiespam.com/ils/
