@@ -6,9 +6,9 @@
 * Have a configuration option to only show alerts if the Exif or other location is in a selective area, like a certain country or range of GPS coordinates. Otherwise, ignore the image. [enhancement suggestion #10](https://github.com/veggiespam/ImageLocationScanner/issues/10)
 * Need better testing and examples.
 	* Get more IPTC test images with both location names and GPS positions.  ILS tests for names, but it is unknown if IPTC GPS works as no real world images have been provided for testing.
-	* More testing with PNG & TIFF file types.  Burp and ZAP will flag what ever MetaData Extractor finds.
+	* More testing with PNG & TIFF file types.
 	* Donate any new test images to MetaData Extractor project for better cataloging.
-* XMP scanner support was removed from MDE as processing [was not reliable](https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7).  Since some drones embedded GPS information tags via XMP, it would be good to add support back once MDE adds it.  There is an XMP tag for TAG_CAMERA_SERIAL_NUMBER too.
+* <s>XMP scanner support was removed from MDE as processing [was not reliable](https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7).  Since some drones embedded GPS information tags via XMP, it would be good to add support back once MDE adds it.  There is an XMP tag for TAG_CAMERA_SERIAL_NUMBER too.</s> ✅ DONE!
 * We don't scan many file types, like gif, psd, or raw camera files as they generally don't have leaked data (gif)
  or mostly downloaded and not embedded into a page (psd / raw).  So, perhaps a command-line file scanner works better.  But, ILS can scan raw; have it as a configuration option?  Other types too?
 * There is much repeated code.  It would be better to use function pointers.  String of subtype, Class of camera type, int[] of TAGS.  One of these days, I'll do that.  There is some non-working commented out code that experiments with this.

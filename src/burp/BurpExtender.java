@@ -101,6 +101,10 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
             int i = fileName.lastIndexOf('.');
             if (i > 0) {
                 extension = fileName.substring(i+1).toLowerCase();
+                i = extension.indexOf('?'); // remove query string if it exists
+                if (i > 0) {
+                    extension = extension.substring(0, i);
+                }
             }        
         }
         db("mimeStated: " + mimeStated + SEP + "mimeInferred: " + mimeInferred + SEP + "ext: " + extension + SEP + fileName);

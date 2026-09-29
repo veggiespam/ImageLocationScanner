@@ -2,6 +2,15 @@
 
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  See also [Contributors](CONTRIBUTORS.md) for people to thank and [TODO.md](TODO.md) for future ideas to implement. 
 
+## 1.3 - 2023-09-29 Work in Progress - actively moving to deploy to Burp and ZAP
+- Updated Metadata Extractor dependency to 2.21.0
+    + Better HEIF scanning
+    + Re-implementation of XMP processing
+- Added scanning for common XMP data leaks, including those not found in Exif
+- DJI drone data leaks now detected
+- Made Makernote tag scanning constant across all data types, simplified code, and ignore non-useful results (e.g., "-" for location name)
+- Burp: If a URL filename also contained a query string (e.g., `photo.jpeg?res=640x480`) and the mimetype of the response was not any `image/xxx`, ILS would not scan the file; query strings now stripped during determination
+
 ## 1.2 - 2025-06-01
 - Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
     + Burp Extender is legacy API, need to migrate to Burp's Montoya API in future
@@ -14,7 +23,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Added Markdown output support for [#24](https://github.com/veggiespam/ImageLocationScanner/issues/24) (*\*sponsored feature\**)
 - Moved changelog to KeepAChangelog pretty format
 - Tons of typo updates and better English
-- Fixed issue [#26](https://github.com/veggiespam/ImageLocationScanner/issues/26) where newer versions Burp are not setting mimeInferred in many instances, so ILS never gets called to scan valid jpeg images.
+- Burp: Fixed issue [#26](https://github.com/veggiespam/ImageLocationScanner/issues/26) where newer versions Burp are not setting mimeInferred in many instances, so ILS never gets called to scan valid jpeg images.
 - Split TODO into [TODO.md](TODO.md) since [README.md](README.md) was getting long
 - Full removed XMP support as it was unreliable (was partially removed before)
 
@@ -58,7 +67,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 ## 0.2 - 2016-06-02
 - Added location scanning inside IPTC tags and proprietary Panasonic codes
 - Added scanning of png and tiff files
-- Replaced Apache Sanselan with MetaData Extractor and Adobe XMP libraries
+- Replaced dependency Apache Sanselan with MetaData Extractor and Adobe XMP libraries
 
 ## 0.1 - 2016-01-26
 - Initial release

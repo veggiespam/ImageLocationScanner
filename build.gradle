@@ -6,7 +6,7 @@ plugins {
 // I have OpenJDK 21 LTS. 
 java {
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(21))
+    languageVersion.set(JavaLanguageVersion.of(23))
   }
 }
 
@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     compileOnly 'net.portswigger.burp.extender:burp-extender-api:2.3'
-    implementation 'com.drewnoakes:metadata-extractor:2.19.0'
+    implementation 'com.drewnoakes:metadata-extractor:2.21.0'
 }
 
 sourceSets {
