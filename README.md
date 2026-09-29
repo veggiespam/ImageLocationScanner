@@ -165,10 +165,8 @@ Image Location and Privacy Scanner also can be built locally and installed via F
 
 * Java 1.9 or newer
 * Gradle 8.x or newer to build
-* &dagger; [Legacy Burp Extender API](https://portswigger.net/burp/extender/api/)
-  2.3; uses proprietary license
-* &dagger; [MetaData Extractor](https://github.com/drewnoakes/metadata-extractor)
-  version 2.19.0; uses Apache License v2.0
+* &dagger; [Legacy Burp Extender API](https://portswigger.net/burp/extender/api/) v2.3; uses proprietary license
+* &dagger; [MetaData Extractor](https://github.com/drewnoakes/metadata-extractor) v2.21.0; uses Apache License v2.0
 
 &dagger; These will be auto-fetched if you build with Gradle.
 
