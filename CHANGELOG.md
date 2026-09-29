@@ -7,6 +7,7 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
     + Better HEIF scanning
     + Re-implementation of XMP processing
 - Added scanning for common XMP data leaks, including those not found in Exif
+- Now scan HEIC extension and mimetype
 - DJI drone data leaks now detected
 - Made Makernote tag scanning constant across all data types, simplified code, and ignore non-useful results (e.g., "-" for location name)
 - Burp: If a URL filename also contained a query string (e.g., `photo.jpeg?res=640x480`) and the mimetype of the response was not any `image/xxx`, ILS would not scan the file; query strings now stripped during determination
