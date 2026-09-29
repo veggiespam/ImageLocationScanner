@@ -136,7 +136,7 @@ Image Location and Privacy Scanner also can be built locally and installed via F
 	software displays all that are detected.
   - With DJI drones, location and altitude is shown as both standard Exif GPS and using DJI's custom XMP tags
 * What types of image files are scanned, why don't you scan type X
-  - Currently, ILS scans: "jpeg", "jpg", "png", "heif", "tiff", "tif" extensions and mime types
+  - Currently, ILS scans: "jpeg", "jpg", "png", "heif", "heic", "tiff", "tif" extensions and mime types
   - ILS could possibly find leaks in "raw" or "psd" (Photoshop), but those files 1) are generally not displayed in-line on a browser and 2) can be huge and would start slowing down Burp - but Burp is already reading them.  TBD.
   - We generally don't see embedded leakage data in "gif", so we don't scan those.
 * I see GPS location and altitude, but where is the speed, bearing, reference data, etc
