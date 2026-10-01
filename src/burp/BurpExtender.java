@@ -23,7 +23,7 @@ import com.veggiespam.imagelocationscanner.ILS;
  * 
  * @author  Jay Ball / github: veggiespam / twitter: @veggiespam / www.veggiespam.com
  * @license Apache License 2.0
- * @version 1.2
+ * @version 1.3
  * @see https://www.veggiespam.com/ils/
  */
 public class BurpExtender implements IBurpExtender, IScannerCheck
@@ -63,7 +63,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
             need to scan for jpg, heif, and png as those are what most devices produce. 
             
             We should experiment with raw types too. */
-        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif", "tiff", "tif"));
+        mimeList = new ArrayList<String>(Arrays.asList("jpeg", "jpg", "png", "heif", "heic", "tiff", "tif"));
 
         db(modName + " v" + ILS.pluginVersion + " started.");
         db("Registered mimetypes to scan: " + mimeList.toString());
@@ -101,6 +101,10 @@ public class BurpExtender implements IBurpExtender, IScannerCheck
             int i = fileName.lastIndexOf('.');
             if (i > 0) {
                 extension = fileName.substring(i+1).toLowerCase();
+                i = extension.indexOf('?'); // remove query string if it exists
+                if (i > 0) {
+                    extension = extension.substring(0, i);
+                }
             }        
         }
         db("mimeStated: " + mimeStated + SEP + "mimeInferred: " + mimeInferred + SEP + "ext: " + extension + SEP + fileName);
