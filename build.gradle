@@ -2,11 +2,9 @@ plugins {
     id 'java'
 }
 
-// Burp on the Mac ships with Java v22 (aka binary version 66).  Thus, set 22 or earlier to compile.
-// I have OpenJDK 21 LTS. 
 java {
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(23))
+    languageVersion.set(JavaLanguageVersion.of(21))
   }
 }
 
