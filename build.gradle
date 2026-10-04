@@ -2,9 +2,13 @@ plugins {
     id 'java'
 }
 
+/* This setting depends on your Java installation:
+   - veggiespam needs version 23.
+   - portswigger needs version 21.
+   - wolf needs version 22. */
 java {
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(21))
+    languageVersion.set(JavaLanguageVersion.of(23))
   }
 }
 
@@ -15,6 +19,7 @@ repositories {
 
 dependencies {
     compileOnly 'net.portswigger.burp.extender:burp-extender-api:2.3'
+    compileOnly 'net.portswigger.burp.extensions:montoya-api:2026.2'
     implementation 'com.drewnoakes:metadata-extractor:2.21.0'
 }
 

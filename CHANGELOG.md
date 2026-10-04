@@ -2,6 +2,23 @@
 
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  See also [Contributors](CONTRIBUTORS.md) for people to thank and [TODO.md](TODO.md) for future ideas to implement. 
 
+## 2.0-ALPHA - TBD Work in Progress Not Released GitHub tip
+### Updated
+- Complete re-architecture of internals using function pointers; code size reduced 80% and future code maintenance costs will decrease
+- Combined Privacy and Location results into a single result set
+    + Side effect is results are presented differently now
+    + *TODO* ZAP Unit tests updated to match new presentation
+- Results now collected as a class/struct instead of a three concatenated strings
+- Format results only for desired output, do not compute all three (e.g., HTML instead of HTML+Text+Markdown)
+- New PNG tags scanned
+- *TODO* Updated dependency to Metadata Extractor 2.xxxx
+
+### Added
+- Display results from AI-generated images that shove prompt data into PNG iText tags
+- *TODO* Migrated to Burp Montoya API from the Legacy Burp Extender
+- *TODO* Created Unit tests for Burp
+- Split BUILD.md out of README.md to make readme smaller.
+
 ## 1.3 - 2023-09-29 Work in Progress - actively moving to deploy to Burp and ZAP
 - Updated Metadata Extractor dependency to 2.21.0
     + Better HEIF scanning
@@ -10,10 +27,11 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Now scan HEIC extension and mimetype
 - DJI drone data leaks now detected
 - Made Makernote tag scanning constant across all data types, simplified code, and ignore non-useful results (e.g., "-" for location name)
-- Burp: If a URL filename also contained a query string (e.g., `photo.jpeg?res=640x480`) and the mimetype of the response was not any `image/xxx`, ILS would not scan the file; query strings now stripped during determination
+- Burp: If a URL filename also contained a query string (e.g., `photo.jpeg?res=640x480`) and the mimetype of the response was not any `image/xxx`, ILS would not scan the file; query strings now stripped during determination of the file extension
+- ZAP: If a URL filename also contained a query string (e.g., `photo.jpeg?res=640x480`) and, ILS sometimes did not scan the file; query strings now stripped during determination so it scans all the time (different problem than the Burp issue above)
 
 ## 1.2 - 2025-06-01
-- Updated build to Metadata Extractor 2.19.0 & Burp Extender API v2.3
+- Updated dependencies for Metadata Extractor 2.19.0 & Burp Extender API v2.3
     + Burp Extender is legacy API, need to migrate to Burp's Montoya API in future
 - Added support for scanning HEIF image format used by modern iPhone images
 - Minor safety update to fix theoretical missed file close by [@kingthorin](https://github.com/kingthorin) in [#22](https://github.com/veggiespam/ImageLocationScanner/issues/22) 

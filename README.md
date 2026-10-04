@@ -147,9 +147,8 @@ Image Location and Privacy Scanner also can be built locally and installed via F
 	added, then ILS needs to also account for it.  File a bug report
 	[on GitHub](https://github.com/veggiespam/ImageLocationScanner/issues)
   and we will update in a future release.
-* Another Exif scanner says `City = ` with no city listed or `City = ---` but ILS does not show this.
-	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls or "City = (single space)".
-	ILS simply filter out strings that start with a null character (we assume someone isn't hiding data after the first null) or empty spaces.
+* Another Exif scanner says `City = ` with no city listed or `City = ---` but ILS does not show this; another app has "User Comment = [136 values]"
+	- It actually says "City = \\0\\0\\0\\0\\0 ..." with maybe 64 nulls or "City = (single space)".  Those 136 values are 136 nulls. ILS simply filter out strings that start with a null character (we assume someone isn't hiding data after the first null) or are all spaces.  Under the hood, ILS performs a string conversion and if the byte array is just nulls, the resultant string is empty and not displayed. 
   - Some cameras and devices, like Panasonic, place "---" into fields 
     where there is no value or the value is unknown.  Other examples observed are
     "Off" when there is no data entered into the text field or a feature is
@@ -159,5 +158,7 @@ Image Location and Privacy Scanner also can be built locally and installed via F
   - The plug-in was originally called "Image Location Scanner" with `ils` in the classpath, git repo name, and my own website's whitepaper.  At some point, I switched to a new dependency which gave new functions for examining photo data and I could now see Privacy leaks like serial number and ITPC encodings.  Changing a classpath and git repo seemed overkill for a non-major feature, so I just kept it as "ILS".
 * What about detection of artifacts from drone images and videos?
   - Data from DJI and compatible drones is detected, but only GPS location if present.  Data like speed, pitch, yaw, roll, etc are not displayed as those don't expose the location.
+* What the heck is a "Windows XP Comment" and why is it in my results?
+  - Standard Exif has tags really called Windows XP Comment, Title, Note, etc and these tags are still being used in new images, such as DJI drones.  ILS flags them as risky since many submitted images have contained GPS locations in these tags.  
 
   Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, XMP, OpSec, Privacy, Camera Makernote
