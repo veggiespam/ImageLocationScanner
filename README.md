@@ -1,5 +1,7 @@
 # Image Location and Privacy Scanner
 
+💥 Welcome to the v20 Alpha Branch ... stuff may not compile at all.  You have been warned. 🧨
+
 Passively scans for GPS location and other privacy-related exposures in images during normal
 security assessments of websites via plug-ins for both Burp & ZAP.  Image
 Location and Privacy Scanner (ILS) assists in situations where end users may post profile
