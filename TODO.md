@@ -11,7 +11,7 @@
 * <s>XMP scanner support was removed from MDE as processing [was not reliable](https://github.com/drewnoakes/metadata-extractor/commit/5b07a49f7b3d90c43a36a79dc4f6474845e1ebc7).  Since some drones embedded GPS information tags via XMP, it would be good to add support back once MDE adds it.  There is an XMP tag for TAG_CAMERA_SERIAL_NUMBER too.</s> ✅ DONE!
 * We don't scan many file types, like gif, psd, or raw camera files as they generally don't have leaked data (gif)
  or mostly downloaded and not embedded into a page (psd / raw).  So, perhaps a command-line file scanner works better.  But, ILS can scan raw; have it as a configuration option?  Other types too?
-* There is much repeated code.  It would be better to use function pointers.  String of subtype, Class of camera type, int[] of TAGS.  One of these days, I'll do that.  There is some non-working commented out code that experiments with this.
+* <s>There is much repeated code.  It would be better to use function pointers.  String of subtype, Class of camera type, int[] of TAGS.  One of these days, I'll do that.  There is some non-working commented out code that experiments with this.</s> ✅ DONE!
 
 ## Research & Help
 * More generalized research.  Images with embedded locations were found in a real-world situation with high privacy implications; thus a severe audit finding and the impetus for this project.  This images have also been seen on other sites with local expectations of privacy.  However, we need people to try the tool when browsing sensitive sites, like dating or children-only social networking sites.  How pervasive is the issue on sensitive websites?
