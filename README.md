@@ -19,7 +19,7 @@ Burp Scanner or ZAP Alerts list as an information message.  It would be
 up to the auditor to determine if location exposure is truly a security
 risk based on context.
 
-There are two major branches: *master* which is the mainline set of releases and *tng* which will be a next generation set of changes that may or may not compile when you clone the repo.  The master branch has tags for some released versions.
+There are two major branches: *master* which is the mainline set of releases and *v20* which will be a next generation set of changes that may or may not compile when you clone the repo.  The master branch has tags for some released versions.
 
 Special thanks to my [contributors, listed here](CONTRIBUTORS.md).
 Full version history can be found in the [CHANGELOG.md](CHANGELOG.md) and future ideas for implementation can be found in the [TODO.md](TODO.md).
@@ -48,9 +48,12 @@ src="img/screenshot-2-zap.png" align="center"/></p>
 
 ## Command Line Options
 
-The ILS jar file contains a `main()` function, so you can scan local files from the command line.  The classpath must contain the ILS jar and its dependencies.
+The ILS jar file contains a `main()` function to scan local files from the command line; classpath must contain the ILS jar and its dependencies.
 
 ```sh
+
+FIXME - 💥 this changes in v20!!! 💥
+
 $ export CLASSPATH=build/libs/image-location-scanner.jar   ;# for example
 $ java com.veggiespam.imagelocationscanner.ILS
 Image Location and Privacy Scanner v1.3
@@ -132,10 +135,8 @@ Image Location and Privacy Scanner also can be built locally and installed via F
 # <a name="faq"> FAQ
 * When I use Burp or ZAP, no issues are displayed
 	- By default, both hide images in general usage. As such, enable image display using the directions above.
-* Why do I see two sets of Exif_GPS coordinates (or another tag)
-	- This means the image has been embedded with multiple Exif tags of
-	the same type.  Thus more than one GPS location can appear.  The ILS
-	software displays all that are detected.
+* Why do I see two sets of GPS coordinates (or another tag)
+	- This means the image has been embedded with multiple tags of the same type, thus more than one GPS location can appear.  ILS displays all that are detected.
   - With DJI drones, location and altitude is shown as both standard Exif GPS and using DJI's custom XMP tags
 * What types of image files are scanned, why don't you scan type X
   - Currently, ILS scans: "jpeg", "jpg", "png", "heif", "heic", "tiff", "tif" extensions and mime types
@@ -157,10 +158,10 @@ Image Location and Privacy Scanner also can be built locally and installed via F
     inactive, or a single space for a name, or "-" for something.
     ILS does not consider these as location or privacy leaks, so they are not displayed.
 * Why do you abbreviate this project "ILS" and not "ILPS"?
-  - The plug-in was originally called "Image Location Scanner" with `ils` in the classpath, git repo name, and my own website's whitepaper.  At some point, I switched to a new dependency which gave new functions for examining photo data and I could now see Privacy leaks like serial number and ITPC encodings.  Changing a classpath and git repo seemed overkill for a non-major feature, so I just kept it as "ILS".
+  - The plug-in was originally called "Image Location Scanner" with `ils` in the classpath, git repo name, and my own website's whitepaper.  At some point, I gained new functions for examining photo data and I could now see Privacy leaks like serial number and ITPC encodings.  Changing a classpath and git repo seemed overkill, so I just kept it as "ILS".
 * What about detection of artifacts from drone images and videos?
   - Data from DJI and compatible drones is detected, but only GPS location if present.  Data like speed, pitch, yaw, roll, etc are not displayed as those don't expose the location.
 * What the heck is a "Windows XP Comment" and why is it in my results?
-  - Standard Exif has tags really called Windows XP Comment, Title, Note, etc and these tags are still being used in new images, such as DJI drones.  ILS flags them as risky since many submitted images have contained GPS locations in these tags.  
+  - Standard Exif really contains tags Windows XP Comment, Title, Note, etc and these tags are still being used in new images, such as DJI drones.  ILS flags them as risky since many submitted images have contained GPS locations in these tags.  
 
   Keywords: Infosec, Burp, ZAP, Audit, Information Exposure, Data Leakage, Vulnerability, GPS, Exif, IPTC, PII, XMP, OpSec, Privacy, Camera Makernote
