@@ -89,18 +89,17 @@ public class ILS {
 		= "The image was found to contain embedded location information, such as GPS coordinates, or "
 		+ "another privacy exposure, such as camera serial number.  "
 		+ "Depending on the context of the image in the website, "
-		+ "this information may expose private details of the users of a site.  For example, a site that allows "
+		+ "this information could by a privacy leak.  For example, a site that allows "
 		+ "users to upload profile pictures taken in the home may expose the home's address.  ";
 	public static final String remediationBackground 
 		= "Before allowing images to be stored on the server and/or transmitted to the browser, strip out the "
-		+ "embedded location information from image.  This could mean removing all Exif data or just the GPS "
+		+ "embedded location information from image.  This could mean removing all Exif and Makernote data or just the GPS "
 		+ "component.  Other data, like serial numbers, should also be removed.";
 	public static final String remediationDetail = null;
 	public static final String referenceURL = "https://www.veggiespam.com/ils/"; 
 	public static final String pluginAuthor = "Jay Ball (@veggiespam) www.veggiespam.com"; 
 
 	private static final String EmptyString = "";
-	private static final String TextSubtypeEnd = ": "; // colon space for plain text results
 
 	private static final String HTML_subtype_begin = "<li>";
 	private static final String HTML_subtype_title_end = "\n\t<ul>\n";
@@ -109,7 +108,7 @@ public class ILS {
 	private static final String HTML_finding_begin = "\t<li>";
 	private static final String HTML_finding_end = "</li>\n";
 
-	// Used in the results array and elsewhere, values are an index.
+	/** Used in the results array and elsewhere, values are an index. */
 	public static enum OutputFormat { 
 		out_text,				// == 0
 		out_html, 				// == 1
@@ -125,13 +124,14 @@ public class ILS {
 		return pluginAuthor;
 	}
 
+	/** Hexadecimal character array used for converting byte arrays to hex strings during debugging. */
 	private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 	/**
-	 * Converts byte array to hex String, prepending "0x" to the result, similar to Apache Commons code.  Probably should be replaced with org.apache.commons.codec.binary.Hex someday.  This code is used only for debugging.  Maybe java.util.HexFormat as suggested in newer Java versions.
+	 * Converts byte array to hex String, prepending "0x" to the result, similar to Apache Commons code.  Probably should be replaced with org.apache.commons.codec.binary.Hex someday.  This code is used only for debugging.  Maybe use java.util.HexFormat as suggested in newer Java versions.
 	 * 
 	 * @param bytes the byte array
 	 * @return the hexadecimal representation of the byte array
-	 * @see https://stackoverflow.com/questions/9655181/java-convert-a-byte-array-to-a-hex-string (first answer for code, 
+	 * @see https://stackoverflow.com/questions/9655181/java-convert-a-byte-array-to-a-hex-string (first answer for code)
 	 */
 	private static String byteArrayToHex(byte[] bytes) {
 		if (bytes == null || bytes.length == 0)
@@ -371,6 +371,7 @@ public class ILS {
         return false;
     }
 
+	/* Maps/Sets for Makernote and XMP metadata scanning along with static{} initialization. */
 	private static final HashMap<Class,int[]> class_tag_set;
 	private static final Set<String> xmp_tag_set;
 
@@ -427,7 +428,9 @@ public class ILS {
 		class_tag_set.put(
 				CanonMakernoteDirectory.class, new int[] {
 					CanonMakernoteDirectory.TAG_CANON_OWNER_NAME,
-					CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER
+					CanonMakernoteDirectory.TAG_CANON_SERIAL_NUMBER,
+					CanonMakernoteDirectory.TAG_SERIAL_NUMBER_FORMAT,		// is this useful?
+					CanonMakernoteDirectory.TAG_SERIAL_INFO_ARRAY			// data not decoded, unknown format
 				}
 		);
 		class_tag_set.put(
@@ -528,7 +531,7 @@ public class ILS {
 	/** Test the Metadata for privacy leaks, generally the file stream or other processor calls this.  Returns ... .
 	 * 
 	 * @param md is a Metadata object that represents the image file to test, such as entire jpeg file.
-	 * @return String Array containing the Location data or an empty String indicating no GPS data found.
+	 * @return Array of ScanResultEntry containing the leaks data or an empty list if no leaks are found.
 	 */
 	public static ArrayList<ScanResultEntry> scanForLeaks(Metadata md)   {
 	
@@ -589,9 +592,7 @@ public class ILS {
 							+ byteArrayToHex(dir.getByteArray(ExifDirectoryBase.TAG_USER_COMMENT)) + " characters");
 					}
 					*/
-					if (description == null)
-						continue; // instead of calling "is this meaningful" since we know it isn't
-					
+
 					if ( isTagMeaningful(description) ) {
 						res.addFinding(tagName + " = " + description );
 					}
@@ -762,5 +763,3 @@ public class ILS {
 		}
 	}
 }
-
-// vim: autoindent noexpandtab tabstop=4 shiftwidth=4
