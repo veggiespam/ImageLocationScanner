@@ -47,7 +47,7 @@ public class BurpPassiveScan implements PassiveScanCheck
     private static final String remediationBackground = ILS.remediationBackground;
     private static final String remediationDetail = ILS.remediationDetail;
 
-        /** Used in some debug statements. */
+    /** Used in some debug statements. */
     private static final String SEP = " | ";
 
     @Override
