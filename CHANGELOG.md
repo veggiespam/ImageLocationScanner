@@ -2,7 +2,7 @@
 
 Notable changes for humans to read.  The format is semi-based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).  See also [Contributors](CONTRIBUTORS.md) for people to thank and [TODO.md](TODO.md) for future ideas to implement. 
 
-## 1.3 - 2023-09-29 Work in Progress - actively moving to deploy to Burp and ZAP
+## 1.3 - 2023-10-21
 - Updated Metadata Extractor dependency to 2.21.0
     + Better HEIF scanning
     + Re-implementation of XMP processing
