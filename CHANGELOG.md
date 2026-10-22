@@ -5,21 +5,22 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 ## 2.0-ALPHA - TBD Work in Progress Not Released GitHub tip
 ### Updated
 - Complete re-architecture of internals using function pointers; code size reduced 80% and future code maintenance costs will decrease
+- Breaking changes in API - interface glue in ZAP, Burp, and another scanner adjusted; deprecated functions removed
 - Combined Privacy and Location results into a single result set
     + Side effect is results are presented differently now
     + *TODO* ZAP Unit tests updated to match new presentation
 - Results now collected as a class/struct instead of a three concatenated strings
 - Format results only for desired output, do not compute all three (e.g., HTML instead of HTML+Text+Markdown)
-- New PNG tags scanned
-- *TODO* Updated dependency to Metadata Extractor 2.xxxx
+- Updated dependency to Metadata Extractor 2.22.0
 
 ### Added
 - Display results from AI-generated images that shove prompt data into PNG iText tags
+- Tags from a new Canon camera, various PNGs
 - *TODO* Migrated to Burp Montoya API from the Legacy Burp Extender
 - *TODO* Created Unit tests for Burp
 - Split BUILD.md out of README.md to make readme smaller.
 
-## 1.3 - 2023-09-29 Work in Progress - actively moving to deploy to Burp and ZAP
+## 1.3 - 2023-10-21
 - Updated Metadata Extractor dependency to 2.21.0
     + Better HEIF scanning
     + Re-implementation of XMP processing
@@ -68,13 +69,13 @@ Notable changes for humans to read.  The format is semi-based on [Keep a Changel
 - Updated to MetaData Extractor 2.10.1 & XMP Core 6.1.10
 - Some XMP support removed via MDE; XMP tags weren't correct in some cases.  Those tags will be introduced again in a future MDE
 - Removed legacy jar dependencies
-- Build process is now Gradle only, Makefile is dead
+- Build process is now Gradle only, Makefile is simply short-cut now
 - Added display of camera serial numbers for Leica, Reconyx Hyper Fire, Reconyx Ultra Fire
 - Now shows name and age of facial recognition in Panasonic cameras
 
 ## 0.3 - 2016-11-03
 - Fixed bugs where some codes Proprietary Camera codes were displayed as ID numbers instead of text
-- Strip out tag that are \\0 null values or array of nulls
+- Filter out results that are \\0 null values or array of nulls
 - More testing of IPTC with good results
 - Updated to MetaData Extractor 2.9.1 for new XMP embedded in Exif tag support and other bug fixes
 - Detect multiple instances of categories, for example, if there are many sets of Exif GPS records, all are displayed
